@@ -64,7 +64,7 @@ jobs:
         run: |
         
          # SOLR config
-          cp ~/project/ckan/config/solr/schema.xml /etc/solr/conf/schema.xml
+          cp ckan/config/solr/schema.xml /etc/solr/conf/schema.xml
           service jetty9 restart || true  # erroring out but does seem to work
           
           # Database Creation
