@@ -24,8 +24,8 @@ jobs:
       matrix:
         test_group: [1, 2, 3, 4]
         
-    
-    container: python:3.7-bullseye
+    #container: python:3.7-bullseye
+    container: python:3-stretch
     
     services:
     
