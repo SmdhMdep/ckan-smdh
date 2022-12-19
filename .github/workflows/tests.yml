@@ -20,6 +20,10 @@ env:
 jobs:
   build:
     runs-on: ubuntu-20.04
+    strategy:
+      matrix:
+        test_group: [1, 2, 3, 4]
+        
     
     container: python:3.7-bullseye
     
@@ -68,16 +72,19 @@ jobs:
           ckan -c test-core-circle-ci.ini datastore set-permissions | psql --host=ckan-postgres --username=ckan
           psql --host=ckan-postgres --username=ckan --dbname=${CKAN_DATASTORE_POSTGRES_DB} --command="CREATE extension tablefunc;"
           ckan -c test-core-circle-ci.ini db init
-        
+          gunzip .test_durations.gz
+          
       - name: Run tests
         run: |
           mkdir -p ~/junit/result
-          python -m pytest ${PYTEST_COMMON_OPTIONS}
+          python -m pytest ${PYTEST_COMMON_OPTIONS} --splits 4 --group ${{matrix.test_group}} --splitting-algorithm least_duration
+      
       - name: Store test results
         uses: actions/upload-artifact@v3
         with:
           name: store-test-results
           path: ~/junit
+      
       - name: Run coveralls
         run: coveralls
           
