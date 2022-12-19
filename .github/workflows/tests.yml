@@ -15,7 +15,7 @@ env:
   CKAN_POSTGRES_USER: ckan_default
   CKAN_POSTGRES_PWD: pass
   PGPASSWORD: ckan
-  PYTEST_COMMON_OPTIONS: -v --ckan-ini=test-core-circle-ci.ini --cov=ckan --cov=ckanext --junitxml=~/junit/result/junit.xml
+  PYTEST_COMMON_OPTIONS: -v --ckan-ini=test-core-circle-ci.ini --cov=ckan --cov=ckanext --junitxml=~/junit/result/junit.xml --test-group-count 4  --test-group-random-seed 1
 
 jobs:
   build:
