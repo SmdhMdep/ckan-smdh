@@ -159,9 +159,10 @@ def call_auth(auth_name, context, **kwargs):
     assert "user" in context, (
         "Test methods must put a user name in the " "context dict"
     )
-    assert "model" in context, (
-        "Test methods must put a model in the " "context dict"
-    )
+#     assert "model" in context, (
+#         "Test methods must put a model in the " "context dict"
+#     )
+    context.setdefault("model", model)
 
     return logic.check_access(auth_name, context, data_dict=kwargs)
 
