@@ -50,8 +50,9 @@ jobs:
       - name: Install dependencies
         run: | 
           # OS Dependencies
-          apt update
-          apt install -y postgresql-client solr-jetty openjdk-8-jdk
+          #apt update
+          apt-get update -y
+          apt-get install -y postgresql-client solr-jetty openjdk-8-jdk
           # CkAN dependencies
           pip install -r requirement-setuptools.txt
           pip install -r requirements.txt
