@@ -79,13 +79,17 @@ def test_building_the_docs():
         ), u"Building the docs failed with return code: {code}".format(
             code=err.returncode
         )
-    output_lines = output.split(six.b(u"\n"))
-
-    errors = [line for line in output_lines if six.b(u"ERROR") in line]
+    # output_lines = output.split(six.b(u"\n"))
+    output_lines = output.decode("utf8").split("\n")
+    
+    # errors = [line for line in output_lines if six.b(u"ERROR") in line]
+    errors = [line for line in output_lines if "ERROR" in line]
     if errors:
         assert False, (
-            u"Don't add any errors to the Sphinx build: "
-            u"{errors}".format(errors=errors)
+            # u"Don't add any errors to the Sphinx build: "
+            # u"{errors}".format(errors=errors)
+            u"Don't add any errors to the Sphinx build: \n"
+            u"{errors}".format(errors="\n".join(errors))
         )
 
     warnings = [line for line in output_lines if six.b(u"WARNING") in line]
