@@ -72,8 +72,9 @@ jobs:
           mkdir -p ~/junit/result
           python -m pytest ${PYTEST_COMMON_OPTIONS}
       - name: Store test results
-        uses: actions/store-test-results@v1
-        with: 
+        uses: actions/upload-artifact@v3
+        with:
+          name: store-test-results
           path: ~/junit
       - name: Run coveralls
         run: coveralls
