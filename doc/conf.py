@@ -19,6 +19,8 @@ import os
 import subprocess
 import six
 
+from packaging.version import parse as version_parse
+
 import ckan
 
 # If your extensions (or modules documented by autodoc) are in another directory,
@@ -133,7 +135,7 @@ def get_release_tags():
 
     # git tag -l prints out the tags in the right order anyway, but don't rely
     # on that, sort them again here for good measure.
-    release_tags_.sort()
+    release_tags_.sort(key=version_parse)
 
     return release_tags_
 
