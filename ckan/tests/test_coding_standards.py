@@ -86,8 +86,6 @@ def walk_python_files():
 #             u"Don't add any errors to the Sphinx build: \n"
 #             u"{errors}".format(errors="\n".join(errors))
 #         )
-
-
     # Some warnings have been around for a long time and aren't easy to fix.
     # These are allowed, but no more should be added.
 #     allowed_warnings = [
