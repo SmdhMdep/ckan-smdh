@@ -80,7 +80,7 @@ def test_building_the_docs():
             code=err.returncode
         )
     # output_lines = output.split(six.b(u"\n"))
-    output_lines = output.decode("utf8").split("\n") 
+    output_lines = output.decode("utf8").split("\n")
     # errors = [line for line in output_lines if six.b(u"ERROR") in line]
     errors = [line for line in output_lines if "ERROR" in line]
     if errors:
@@ -137,6 +137,7 @@ def test_building_the_docs():
             u"Don't add any new warnings to the Sphinx build: \n"
             u"{warnings}".format(warnings="\n".join(warnings))
         )
+
 
 def test_source_files_specify_encoding():
     u"""
