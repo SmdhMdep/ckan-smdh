@@ -52,7 +52,7 @@ jobs:
           # OS Dependencies
           #apt update
           apt-get update -y
-          apt-get install -y postgresql-client solr-jetty openjdk-8-jdk
+          apt-get install -y postgresql-client solr-jetty openjdk-8-jdk git
           # CkAN dependencies
           pip install -r requirement-setuptools.txt
           pip install -r requirements.txt
