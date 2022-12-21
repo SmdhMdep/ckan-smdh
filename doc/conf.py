@@ -19,6 +19,8 @@ import os
 import subprocess
 import six
 
+from packaging.version import parse as version_parse
+
 import ckan
 
 # If your extensions (or modules documented by autodoc) are in another directory,
@@ -127,12 +129,13 @@ SUPPORTED_CKAN_VERSIONS = 3
 
 def get_release_tags():
     git_tags = subprocess.check_output(
-        ['git', 'tag', '-l'], stderr=subprocess.STDOUT).split()
-    release_tags_ = [tag for tag in git_tags if tag.startswith(six.b('ckan-'))]
+        ['git', 'tag', '-l'], stderr=subprocess.STDOUT).decode('utf8')
+    git_tags = git_tags.split()
+    release_tags_ = [tag for tag in git_tags if tag.startswith('ckan-')]
 
     # git tag -l prints out the tags in the right order anyway, but don't rely
     # on that, sort them again here for good measure.
-    release_tags_.sort()
+    release_tags_.sort(key=version_parse)
 
     return release_tags_
 
