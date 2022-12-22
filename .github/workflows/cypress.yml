@@ -1,8 +1,8 @@
 on:
   workflow_run:
-    workflows: [ tests ]
+    workflows: [ "tests" ]
     # only runs additional steps if [ tests ] was successful
-    branches: [ main ]
+    branches: [ "main" ]
     types: [ completed ]
 env:
   NODE_VERSION: "16"
