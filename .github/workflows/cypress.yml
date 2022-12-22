@@ -44,9 +44,11 @@ jobs:
       CKAN_REDIS_URL: redis://localhost:6379/1
 
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-python@v4
       - uses: ahmadnassri/action-workflow-run-wait@v1
+      
+      - uses: actions/checkout@v3
+      
+      - uses: actions/setup-python@v4
         with:
           python-version: ${{ env.PYTHON_VERSION }}
       - uses: actions/setup-node@v2-beta
