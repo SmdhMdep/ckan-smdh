@@ -1,3 +1,4 @@
+name: Test frontend with Cypress
 on:
   workflow_run:
     workflows: [ "tests" ]
