@@ -1,7 +1,7 @@
-name: Test frontend with Cypress
+name: Test Frontend
 on:
   workflow_run:
-    workflows: [ "tests" ]
+    workflows: [ Test Python Backend ]
     # only runs additional steps if [ tests ] was successful
     branches: [ "main" ]
     types: [ completed ]
