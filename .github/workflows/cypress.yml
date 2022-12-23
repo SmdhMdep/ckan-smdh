@@ -1,7 +1,7 @@
 name: Test Frontend
 on:
   workflow_run:
-    workflows: [ Test Python Backend ]
+    workflows: [ Run Backend Tests ]
     # only runs additional steps if [ tests ] was successful
     branches: [ "main" ]
     types: [ completed ]
@@ -48,6 +48,7 @@ jobs:
         image: redis
         ports:
           - 6379:6379
+          
       ckan-solr:
         image: ckan/ckan-solr:master
         ports:
