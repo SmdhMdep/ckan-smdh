@@ -1,10 +1,11 @@
 name: Docker Image CI
 
 on:
-  push:
+  workflow_run:
+    workflows: [ Run Backend Tests, Test Frontend ]
+    # only runs additional steps if [ tests ] was successful
     branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
+    types: [ completed ]
 
 jobs:
 
