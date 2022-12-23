@@ -7,7 +7,7 @@ on:
     types: [ completed ]
 env:
   NODE_VERSION: "16"
-  PYTHON_VERSION: "3.7"
+  PYTHON_VERSION: "3.7.4"
 
 permissions: 
   contents: read
