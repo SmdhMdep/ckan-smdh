@@ -1,4 +1,4 @@
-name: Test Python Backend
+name: Run Tests (Backend + Frontend)
 on: 
   push:
     branches: [ "main" ]
@@ -15,6 +15,7 @@ env:
   CKAN_POSTGRES_USER: ckan_default
   CKAN_POSTGRES_PWD: pass
   PGPASSWORD: ckan
+  NODE_TESTS_CONTAINER: 3
   PYTEST_COMMON_OPTIONS: -v --ckan-ini=test-core-circle-ci.ini --cov=ckan --cov=ckanext --junitxml=~/junit/result/junit.xml --test-group-count 4  --test-group-random-seed 1
 
 jobs:
@@ -52,6 +53,14 @@ jobs:
           # OS Dependencies
           #apt update
           apt-get update -y
+          case ${{matrix.test_group}} in 
+            $NODE_TESTS_CONTAINER)
+            curl -sL https://deb.nodesource.com/setup_10.x | bash -
+            apt install -y nodejs
+            apt install -y libgtk2.0-0 libgtk-3-0 libnotify-dev libgconf-2-4 libnss3 libxss1 libasound2 libxtst6 xauth xvfb
+            npm install
+            ;;
+          esac
           apt-get install -y postgresql-client solr-jetty openjdk-8-jdk git
           # CkAN dependencies
           pip install -r requirement-setuptools.txt
@@ -78,19 +87,40 @@ jobs:
           ckan -c test-core-circle-ci.ini datastore set-permissions | psql --host=ckan-postgres --username=ckan
           psql --host=ckan-postgres --username=ckan --dbname=${CKAN_DATASTORE_POSTGRES_DB} --command="CREATE extension tablefunc;"
           ckan -c test-core-circle-ci.ini db init
-          gunzip test_durations.gz
+          # gunzip test_durations.gz
           
       - name: Run tests
         run: |
           mkdir -p ~/junit/result
           # python -m pytest ${PYTEST_COMMON_OPTIONS} --splits 4 --group ${{matrix.test_group}} --splitting-algorithm least_duration
           python -m pytest ${PYTEST_COMMON_OPTIONS} --test-group ${{matrix.test_group}}
-      
-      - name: Store test results
+          
+      - name: Store backend test results
         uses: actions/upload-artifact@v3
         with:
           name: store-test-results
           path: ~/junit
+          
+      - name: Start Test Server for Frontend Tests
+        run: |
+          case ${{matrix.test_group}} in 
+            $NODE_TESTS_CONTAINER) ckan -c test-core-circle-ci.ini run
+            ;;
+          esac
+
+      - name: Run Frontend Tests
+        run: |
+          case ${{matrix.test_group}} in 
+            $NODE_TESTS_CONTAINER)
+              sleep 5
+              $(npm bin)/cypress run
+            ;;
+          esac
+      - name: Store Frontend test results
+        uses: actions/upload-artifact@v3
+        with:
+          name: store-test-results
+          path: ~/cypress/screenshots
       
       - name: Run coveralls
         env: 
