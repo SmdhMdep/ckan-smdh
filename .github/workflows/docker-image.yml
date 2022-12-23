@@ -18,7 +18,7 @@ jobs:
       
       - name: Testing triggers
         run: |
-          echo "Unit and integration tests done"
+          echo "Unit and integration tests done "
 #     - uses: actions/checkout@v3
 #     - name: Build the Docker image
 #       run: docker build . --file Dockerfile --tag my-image-name:$(date +%s)
