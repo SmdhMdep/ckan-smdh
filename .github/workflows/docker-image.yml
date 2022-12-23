@@ -19,7 +19,7 @@ jobs:
         uses: ahmadnassri/action-workflow-run-wait@v1
         with:
           timeout: 900000 # we stop trying to check altogether after 15 mins
-          delay: 480000 # we try to check the statuis of the presrequisite workflows after 8 mins
+          delay: 300000 # we try to check the statuis of the presrequisite workflows after 5 mins after frontend testing ends
           
      
       
