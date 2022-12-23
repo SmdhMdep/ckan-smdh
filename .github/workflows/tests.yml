@@ -15,14 +15,14 @@ env:
   CKAN_POSTGRES_USER: ckan_default
   CKAN_POSTGRES_PWD: pass
   PGPASSWORD: ckan
-  PYTEST_COMMON_OPTIONS: -v --ckan-ini=test-core-circle-ci.ini --cov=ckan --cov=ckanext --junitxml=~/junit/result/junit.xml --test-group-count 4  --test-group-random-seed 1
+  PYTEST_COMMON_OPTIONS: -v --ckan-ini=test-core-circle-ci.ini --cov=ckan --cov=ckanext --junitxml=~/junit/result/junit.xml --test-group-count 6  --test-group-random-seed 1
 
 jobs:
   build:
     runs-on: ubuntu-20.04
     strategy:
       matrix:
-        test_group: [1, 2, 3, 4]
+        test_group: [1, 2, 3, 4, 5, 6]
         
     container: python:3-stretch
     
