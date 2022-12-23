@@ -1,4 +1,4 @@
-name: Docker Image CI
+name: Dockerizing
 
 on:
   workflow_run:
