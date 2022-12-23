@@ -45,14 +45,9 @@ jobs:
           POSTGRES_DB: ckan_test
 
       ckan-redis:
-        image: redis
+        image: redis:3
         ports:
           - 6379:6379
-          
-      ckan-solr:
-        image: ckan/ckan-solr:master
-        ports:
-          - 8983:8983
       
 
     steps:
@@ -90,6 +85,9 @@ jobs:
 
       - name: Init environment
         run: |
+          # SOLR config
+          cp ckan/config/solr/schema.xml /etc/solr/conf/schema.xml
+          service jetty9 restart || true  # erroring out but does seem to work
           ckan -c test-core-cypress.ini db init
    
           
