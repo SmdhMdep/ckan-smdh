@@ -1,10 +1,9 @@
 name: Test Frontend
 on:
-  workflow_run:
-    workflows: [ Run Backend Tests ]
-    # only runs additional steps if [ tests ] was successful
+  push:
     branches: [ "main" ]
-    types: [ completed ]
+  pull_request:
+    branches: [ "main" ]
 env:
   NODE_VERSION: "16"
   PYTHON_VERSION: "3.7"
@@ -51,7 +50,6 @@ jobs:
       
 
     steps:
-      - uses: ahmadnassri/action-workflow-run-wait@v1
       
       - uses: actions/checkout@v3
       
