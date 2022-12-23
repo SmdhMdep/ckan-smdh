@@ -6,6 +6,7 @@ on:
     # only runs additional steps if [ tests ] was successful
     branches: [ "main" ]
     types: [ completed ]
+    
 
 jobs:
 
@@ -14,7 +15,13 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - name: Validate prerequisites
       - uses: ahmadnassri/action-workflow-run-wait@v1
+        with:
+          timeout: 900000 # we stop trying to check altogether after 15 mins
+          delay: 480000 # we try to check the statuis of the presrequisite workflows after 8 mins
+          
+     
       
       - name: Testing triggers
         run: |
