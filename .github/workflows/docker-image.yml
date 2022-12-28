@@ -34,7 +34,7 @@ jobs:
         uses: ahmadnassri/action-workflow-run-wait@v1
         with:
           timeout: 900000 # we stop trying to check altogether after 15 mins
-          delay: 300000 # we try to check the status of the prerequisite workflows after 5 mins
+          delay: 198000 # we try to check the status of the prerequisite workflows after 3.5 mins
 
       - name: Checkout repo          
         uses: actions/checkout@v3
@@ -74,7 +74,7 @@ jobs:
 
       - name: Build and push
         id: docker_build
-        uses: docker/build-push-action@v2
+        uses: docker/build-push-action@v3
         with:
           file: ./contrib/docker-ckan/base/Dockerfile
           context: .
@@ -89,7 +89,7 @@ jobs:
           # ${{ steps.docker_meta.outputs.tags }}
           # labels: ${{ steps.docker_meta.outputs.labels }}
 
-      - name: Show iamge digest
+      - name: Show image digest
         run: echo ${{ steps.docker_build.outputs.digest }}
      
       
