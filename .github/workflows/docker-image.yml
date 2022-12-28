@@ -2,26 +2,26 @@ name: Dockerizing
 
 on:
   push:
+    branches: [ "main" ]
   # workflow_run:
     # workflows: [ Run Backend Tests, Test Frontend ]
     # only runs additional steps if [ tests ] was successful
-    branches: [ "main" ]
-    paths:
-      - '.github/workflows'
-      - 'dev-requirements.txt'
-      - 'requirements.txt'
-      - 'requirements.in'
-      - 'test-core-circle-ci.ini'
-      - 'test-core-cypress.ini'
-      - 'test-core.ini'
-      - 'wsgi.py'
-      - 'ckan/**'
-      - 'ckanext/**'
-      - 'contrib/**'
-      - 'setup.cfg'
-      - 'setup.py'
+    # paths:
+    #   - '.github/workflows'
+    #   - 'dev-requirements.txt'
+    #   - 'requirements.txt'
+    #   - 'requirements.in'
+    #   - 'test-core-circle-ci.ini'
+    #   - 'test-core-cypress.ini'
+    #   - 'test-core.ini'
+    #   - 'wsgi.py'
+    #   - 'ckan/**'
+    #   - 'ckanext/**'
+    #   - 'contrib/**'
+    #   - 'setup.cfg'
+    #   - 'setup.py'
 
-    types: [ completed ]
+    # types: [ completed ]
     
 
 jobs:

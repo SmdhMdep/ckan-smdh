@@ -1,9 +1,9 @@
 name: Test Frontend
 on:
-  push:
-    branches: [ "dev" ]
+  # push:
+  #   branches: [ "main" ]
   pull_request:
-    branches: [ "dev" ]
+    branches: [ "main" ]
 env:
   NODE_VERSION: '16'
   PYTHON_VERSION: '3.7'
