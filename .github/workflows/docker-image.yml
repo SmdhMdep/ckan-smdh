@@ -71,7 +71,7 @@ jobs:
             ${{ secrets.CONTAINER_REGISTRY_URL }}/aep_ckan/ckan-smdh-base
           github-token: ${{ secrets.GITHUB_TOKEN }}
           flavor: |
-            latest=false
+            latest=false 
           tags: |
             type=raw,value=latest
 
