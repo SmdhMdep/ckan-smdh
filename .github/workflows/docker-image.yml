@@ -59,8 +59,8 @@ jobs:
           password: ${{ secrets.CONTAINER_REGISTRY_PASSWORD }}
           logout: true
       
-      - name: set env vars
-        run: echo CONTAINER_REG_URL=${{ secrets.CONTAINER_REGISTRY_URL }} >> $GITHUB_ENV
+      # - name: set env vars
+        # run: echo CONTAINER_REG_URL=${{ secrets.CONTAINER_REGISTRY_URL }} >> $GITHUB_ENV
         
       - name : Docker Metadata
       # IDs are necessary when we need to reference this step from another step
@@ -68,7 +68,7 @@ jobs:
         uses: docker/metadata-action@v3.3.0
         with: 
           images: |
-            ${{ env.CONTAINER_REG_URL }}/aep_ckan/ckan-smdh-base
+            ${{ secrets.CONTAINER_REGISTRY_URL }}/aep_ckan/ckan-smdh-base
           github-token: ${{ secrets.GITHUB_TOKEN }}
           flavor: |
             latest=false
