@@ -25,7 +25,7 @@ def update_plugins():
     plugins = os.environ.get("CKAN__PLUGINS", "")
     print(("[prerun] Setting the following plugins in {}:".format(ckan_ini)))
     print(plugins)
-    cmd = ["ckan", "config-tool", ckan_ini, "ckan.plugins = {}".format(plugins)]
+    cmd = ["ckan", "config-tool", ckan_ini, "ckan.plugins = {}".format(plugins)]  # noqa
     subprocess.check_output(cmd, stderr=subprocess.STDOUT)
     print("[prerun] Plugins set.")
 
@@ -89,9 +89,9 @@ def check_solr_connection(retry=None):
         conn_info = connection.read()                                                                                                                                  
         schema_name = json.loads(conn_info)                                                                                                                            
         if 'ckan' in schema_name['name']:                                                                                                                              
-            print('[prerun] Succesfully connected to solr and CKAN schema loaded')                                                                                     
-        else:                                                                                                                                                          
-            print('[prerun] Succesfully connected to solr, but CKAN schema not found')
+            print('[prerun] Succesfully connected to solr and CKAN schema loaded')  # noqa
+        else:
+            print('[prerun] Succesfully connected to solr, but CKAN schema not found')  # noqa
 
 
 def init_db():
@@ -119,7 +119,7 @@ def init_datastore_db():
         print("[prerun] Skipping datastore initialization")
         return
 
-    datastore_perms_command = ["ckan", "-c", ckan_ini, "datastore", "set-permissions"]
+    datastore_perms_command = ["ckan", "-c", ckan_ini, "datastore", "set-permissions"]  # noqa
 
     connection = psycopg2.connect(conn_str)
     cursor = connection.cursor()
@@ -211,4 +211,3 @@ if __name__ == "__main__":
         init_datastore_db()
         check_solr_connection()
         create_sysadmin()
-        
