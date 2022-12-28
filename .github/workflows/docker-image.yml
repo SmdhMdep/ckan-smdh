@@ -86,7 +86,7 @@ jobs:
           # don't push the image if it's a pull request, only build it which is a way of testing if the image can be successfully built
           push: ${{ github.event_name != 'pull_request' }}
           tags:
-            $REGISTRY/aep_ckan/ckan-smdh-base:latest
+            ${{ env.REGISTRY }}/aep_ckan/ckan-smdh-base:latest
           # ${{ steps.docker_meta.outputs.tags }}
           # labels: ${{ steps.docker_meta.outputs.labels }}
 
