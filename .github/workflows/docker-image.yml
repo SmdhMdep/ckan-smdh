@@ -60,7 +60,8 @@ jobs:
           logout: true
       
       - name: set env vars
-        run: echo $CONTAINER_REG_URL=${{ secrets.CONTAINER_REGISTRY_URL }} >> $GITHUB_ENV
+        run: echo CONTAINER_REG_URL=${{ secrets.CONTAINER_REGISTRY_URL }} >> $GITHUB_ENV
+        
       - name : Docker Metadata
       # IDs are necessary when we need to reference this step from another step
         id: docker_meta
