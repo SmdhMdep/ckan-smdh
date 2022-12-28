@@ -1,8 +1,9 @@
 name: Dockerizing
 
 on:
-  workflow_run:
-    workflows: [ Run Backend Tests, Test Frontend ]
+  push:
+  # workflow_run:
+    # workflows: [ Run Backend Tests, Test Frontend ]
     # only runs additional steps if [ tests ] was successful
     branches: [ "main" ]
     paths:
