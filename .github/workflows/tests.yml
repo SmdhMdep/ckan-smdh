@@ -1,9 +1,9 @@
 name: Run Backend Tests
 on: 
   push:
-    branches: [ "main" ]
+    branches: [ "dev" ]
   pull_request:
-    branches: [ "main" ]
+    branches: [ "dev" ]
 
 env:
   CKAN_DATASTORE_POSTGRES_DB: datastore_test
@@ -88,27 +88,6 @@ jobs:
         with:
           name: store-test-results
           path: ~/junit
-          
-#       - name: Start Test Server for Frontend Tests
-#         run: |
-#           case ${{matrix.test_group}} in 
-#             $NODE_TESTS_CONTAINER) ckan -c test-core-circle-ci.ini run
-#             ;;
-#           esac
-
-#       - name: Run Frontend Tests
-#         run: |
-#           case ${{matrix.test_group}} in 
-#             $NODE_TESTS_CONTAINER)
-#               sleep 5
-#               $(npm bin)/cypress run
-#             ;;
-#           esac
-#       - name: Store Frontend test results
-#         uses: actions/upload-artifact@v3
-#         with:
-#           name: store-test-results
-#           path: ~/cypress/screenshots
       
       - name: Run coveralls
         env: 
