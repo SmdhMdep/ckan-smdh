@@ -31,11 +31,11 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Validate prerequisites
-        uses: ahmadnassri/action-workflow-run-wait@v1
-        with:
-          timeout: 900000 # we stop trying to check altogether after 15 mins
-          delay: 198000 # we try to check the status of the prerequisite workflows after 3.5 mins
+      # - name: Validate prerequisites
+      #   uses: ahmadnassri/action-workflow-run-wait@v1
+      #   with:
+      #     timeout: 900000 # we stop trying to check altogether after 15 mins
+      #     delay: 198000 # we try to check the status of the prerequisite workflows after 3.5 mins
 
       - name: Checkout repo          
         uses: actions/checkout@v3
