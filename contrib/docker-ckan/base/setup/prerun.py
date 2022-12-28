@@ -85,10 +85,10 @@ def check_solr_connection(retry=None):
         time.sleep(10)
         check_solr_connection(retry=retry - 1)
     else:
-        import re                                                                                                                                                      
-        conn_info = connection.read()                                                                                                                                  
-        schema_name = json.loads(conn_info)                                                                                                                            
-        if 'ckan' in schema_name['name']:                                                                                                                              
+        import re
+        conn_info = connection.read()
+        schema_name = json.loads(conn_info)
+        if 'ckan' in schema_name['name']:
             print('[prerun] Succesfully connected to solr and CKAN schema loaded')  # noqa
         else:
             print('[prerun] Succesfully connected to solr, but CKAN schema not found')  # noqa
@@ -171,7 +171,7 @@ def create_sysadmin():
         command = ["ckan", "-c", ckan_ini, "user", "show", name]
 
         out = subprocess.check_output(command)
-        if b"User:None" not in re.sub(b"\s", b"", out):
+        if b"User:None" not in re.sub(br"\s", b"", out):
             print("[prerun] Sysadmin user exists, skipping creation")
             return
 
