@@ -1,9 +1,9 @@
 name: Run Backend Tests
 on: 
   push:
-    branches: [ "main" ]
+    branches: [ "dev" ]
   pull_request:
-    branches: [ "main" ]
+    branches: [ "dev" ]
 
 env:
   CKAN_DATASTORE_POSTGRES_DB: datastore_test
