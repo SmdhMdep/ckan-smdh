@@ -85,7 +85,7 @@ def check_solr_connection(retry=None):
         time.sleep(10)
         check_solr_connection(retry=retry - 1)
     else:
-        import re                                                                                                                                                      
+        import re
         conn_info = connection.read()
         schema_name = json.loads(conn_info)
         if 'ckan' in schema_name['name']:
