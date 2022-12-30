@@ -15,7 +15,8 @@ RUN mkdir ${SRC_EXTENSIONS_DIR}
 
 COPY ./contrib/docker-ckan/dev/setup/start_ckan_development.sh ${APP_DIR}
 
-RUN chown ckan -R /srv/app
+RUN chown ckan -R /srv/app \
+    && chmod +x ${APP_DIR}/start_ckan_development.sh
 
 WORKDIR ${SRC_EXTENSIONS_DIR}
 
