@@ -17,4 +17,16 @@ COPY ./contrib/docker-ckan/dev/setup/start_ckan_development.sh ${APP_DIR}
 
 RUN chown ckan -R /srv/app
 
+WORKDIR ${SRC_EXTENSIONS_DIR}
+
+RUN git clone https://github.com/SmdhMdep/ckanext-sso.git \
+    && git clone https://github.com/SmdhMdep/ckanext-saml2auth.git \
+    && git clone https://github.com/SmdhMdep/ckanext-smdh.git \
+    && git clone https://github.com/SmdhMdep/ckanext-privatedatasets.git \
+    && git clone https://github.com/SmdhMdep/ckanext-usertracking.git \
+    # && git clone https://github.com/SmdhMdep/ckanext-s3filestore.git \
+    && git clone https://github.com/SmdhMdep/ckanext-taglist.git \
+    && git clone https://github.com/SmdhMdep/ckanext-falkor.git \
+    && git clone https://github.com/SmdhMdep/ckanext-restricted.git 
+    
 CMD ["/srv/app/start_ckan_development.sh"]
