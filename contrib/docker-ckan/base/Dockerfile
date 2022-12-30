@@ -95,7 +95,8 @@ ADD https://raw.githubusercontent.com/SmdhMdep/ckan-smdh/main/wsgi.py ${APP_DIR}
 # Create entrypoint directory for children image scripts
 ONBUILD RUN mkdir /docker-entrypoint.d
 
-RUN chown ckan -R /srv/app
+RUN chown ckan -R /srv/app \
+    && chmod +x ${APP_DIR}/start_ckan.sh
 
 RUN addgroup sudo && \
     adduser ckan sudo
