@@ -96,7 +96,8 @@ ADD https://raw.githubusercontent.com/SmdhMdep/ckan-smdh/main/wsgi.py ${APP_DIR}
 ONBUILD RUN mkdir /docker-entrypoint.d
 
 RUN chown ckan -R /srv/app \
-    && chmod +x ${APP_DIR}/start_ckan.sh
+    && chmod +x ${APP_DIR}/start_ckan.sh \
+    ls -la ${APP_DIR}
 
 RUN addgroup sudo && \
     adduser ckan sudo
