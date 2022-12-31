@@ -97,7 +97,7 @@ ONBUILD RUN mkdir /docker-entrypoint.d
 
 RUN chown ckan -R /srv/app \
     && chmod +x ${APP_DIR}/start_ckan.sh \
-    ls -la ${APP_DIR}
+    && ls -la ${APP_DIR}
 
 RUN addgroup sudo && \
     adduser ckan sudo
