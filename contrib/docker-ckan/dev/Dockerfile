@@ -16,7 +16,10 @@ RUN mkdir ${SRC_EXTENSIONS_DIR}
 COPY ./contrib/docker-ckan/dev/setup/start_ckan_development.sh ${APP_DIR}
 
 RUN chown ckan -R /srv/app \
-    && chmod +x ${APP_DIR}/start_ckan_development.sh
+    && chmod +x ${APP_DIR}/start_ckan_development.sh \
+    && ls -la ${APP_DIR}
+
+
 
 WORKDIR ${SRC_EXTENSIONS_DIR}
 
@@ -28,6 +31,7 @@ RUN git clone https://github.com/SmdhMdep/ckanext-sso.git \
     # && git clone https://github.com/SmdhMdep/ckanext-s3filestore.git \
     && git clone https://github.com/SmdhMdep/ckanext-taglist.git \
     && git clone https://github.com/SmdhMdep/ckanext-falkor.git \
-    && git clone https://github.com/SmdhMdep/ckanext-restricted.git 
+    && git clone https://github.com/SmdhMdep/ckanext-restricted.git \
+    && ls -la ${SRC_EXTENSIONS_DIR}
     
 CMD ["/srv/app/start_ckan_development.sh"]
