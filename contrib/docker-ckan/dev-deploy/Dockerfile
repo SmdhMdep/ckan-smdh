@@ -1,5 +1,5 @@
 
-FROM ckan-smdh-dev:latest
+FROM harbor.stfc.ac.uk/aep_ckan/ckan-smdh-dev:latest
 
 
 # Set up environment variables
