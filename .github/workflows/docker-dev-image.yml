@@ -57,7 +57,7 @@ jobs:
         id: docker_build
         uses: docker/build-push-action@v3
         with:
-          file: ./contrib/docker-ckan/dev/Dockerfile
+          file: ./contrib/docker-ckan/dev-base/Dockerfile
           context: .
           platforms: linux/amd64
           builder: ${{ steps.buildx.outputs.name }}
