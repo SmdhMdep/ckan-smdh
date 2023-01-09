@@ -13,7 +13,7 @@ RUN pip3 install -r https://raw.githubusercontent.com/SmdhMdep/ckan-smdh/main/de
 # Create folder for local extensions sources
 RUN mkdir ${SRC_EXTENSIONS_DIR}
 
-COPY ./contrib/docker-ckan/dev/setup/start_ckan_development.sh ${APP_DIR}
+COPY ./contrib/docker-ckan/dev-base/setup/start_ckan_development.sh ${APP_DIR}
 
 RUN chown ckan -R /srv/app \
     && chmod +x ${APP_DIR}/start_ckan_development.sh
