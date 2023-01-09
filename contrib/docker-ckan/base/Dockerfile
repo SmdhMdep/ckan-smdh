@@ -52,6 +52,7 @@ RUN apk add --no-cache tzdata \
         linux-headers \
         openssl-dev \
         libffi-dev \
+        xmlsec-dev \
         cargo && \
     # Create SRC_DIR
     mkdir -p ${SRC_DIR} && \
