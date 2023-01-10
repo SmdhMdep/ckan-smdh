@@ -27,5 +27,5 @@ jobs:
           role-session-name: CKANDockerDeployment
 
       - run: |
-          # Check if AWS Credentials environment variable exists
-          if [ -z "$AWS_ACCESS_KEY_ID" ]; then echo "AWS_ACCESS_KEY_ID is empty"; else echo "AWS_ACCESS_KEY_ID is NOT empty"; fi
+         docker context create ecs ckan-ecs --from-env
+         docker context ls
