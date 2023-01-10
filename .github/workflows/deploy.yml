@@ -27,5 +27,6 @@ jobs:
           role-session-name: CKANDockerDeployment
 
       - run: |
+         apt-get update -y
          docker context create ecs --help
          docker context ls
