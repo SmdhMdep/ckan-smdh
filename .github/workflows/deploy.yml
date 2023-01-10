@@ -27,7 +27,7 @@ jobs:
           role-session-name: CKANDockerDeployment
           
       - name: Install Docker Compose CLI
-      - uses: withlogicco/setup-compose-cli@v1
+        uses: withlogicco/setup-compose-cli@v1
       
       - run: |
          docker context create ecs --help
