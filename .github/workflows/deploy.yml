@@ -25,8 +25,11 @@ jobs:
           role-to-assume: arn:aws:iam::261730452028:role/OIDC_Github
           aws-region: eu-west-2
           role-session-name: CKANDockerDeployment
-
+          
+      - name: Install Docker Compose CLI
+      - uses: withlogicco/setup-compose-cli@v1
+      
       - run: |
-         apt-get update -y
          docker context create ecs --help
+         docker context create ecs ckan-ecs --from-env
          docker context ls
