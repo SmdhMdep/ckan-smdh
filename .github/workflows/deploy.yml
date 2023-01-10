@@ -27,5 +27,5 @@ jobs:
           role-session-name: CKANDockerDeployment
 
       - run: |
-         docker context create ecs ckan-ecs --from-env
+         docker context create ecs --help
          docker context ls
