@@ -14,7 +14,7 @@ jobs:
       - name: Validate prerequisites
         uses: ahmadnassri/action-workflow-run-wait@v1
         with:
-          timeout: 600000 # we stop trying to check altogether after 10 mins
+          timeout: 15000 # we stop trying to check altogether after 15 secs because there is no delay set up; this prevents hanging if the workflow is cancelled
           # delay: 60000 # we try to check the status of the prerequisite workflows after 1 min
       
       - name: Checkout repo          
