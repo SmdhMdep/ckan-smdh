@@ -3,6 +3,8 @@ name: Create Postgresql image
 on:
   push:
     branches: [ "main" ]
+    paths:
+      - 'contrib/docker-ckan-postgresql/**'
 
 jobs:
 
