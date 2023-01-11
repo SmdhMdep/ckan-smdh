@@ -35,16 +35,16 @@ jobs:
       - name: Install Docker Compose CLI
         uses: withlogicco/setup-compose-cli@v1
       
+      - run: |
+         docker context create ecs --help
+         docker context create ecs ckan-ecs --from-env
+         docker context use ckan-ecs
+      
       - name: Generate Cred
         id: gen_cred
         run: |
          ls -la
          docker secret create ContainerRegistryCredentials contrib/docker-ckan/prod/cr_cred.json
-      
-      - run: |
-         docker context create ecs --help
-         docker context create ecs ckan-ecs --from-env
-         docker context use ckan-ecs
          
       - name: Update docker-compose
         run: |
