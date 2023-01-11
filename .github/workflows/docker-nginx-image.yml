@@ -56,7 +56,7 @@ jobs:
         uses: docker/build-push-action@v3
         with:
           file: ./contrib/docker-ckan/nginx/Dockerfile
-          context: .
+          context: ./contrib/docker-ckan/nginx
           platforms: linux/amd64
           builder: ${{ steps.buildx.outputs.name }}
           cache-from: type=local,src=/tmp/.buildx-cache
