@@ -3,6 +3,23 @@ name: Create Ckan Base image
 on:
   push:
     branches: [ "main" ]
+    paths-ignore:
+      - '.github/workflows/cypress.yml'
+      - '.github/workflows/tests.yml'
+      - '.github/workflows/docker-dev-image.yml'
+      - '.github/workflows/docker-nginx-image.yml'
+      - '.github/workflows/docker-postgresql-image.yml'
+      - '.github/workflows/docker-deployment-image.yml'
+      - '.github/workflows/deploy.yml'
+      - '.github/ISSUE_TEMPLATE'
+      - '.github/PULL_REQUEST_TEMPLATE.md'
+      - 'contrib/docker-ckan/postgresql/**'
+      - 'contrib/docker-ckan/nginx/**'
+      - 'contrib/docker-ckan/dev-base/**'
+      - 'contrib/docker-ckan/dev-deploy/**'
+      - 'contrib/docker-ckan/prod/**'
+      - 'contrib/docker-ckan/docker-compose.dev.yml'
+      - 'contrib/docker-ckan/docker-compose.yml'
 
 jobs:
 
