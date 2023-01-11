@@ -4,6 +4,17 @@ on:
   #   branches: [ "main" ]
   pull_request:
     branches: [ "main" ]
+    paths-ignore:
+      - 'contrib/**'
+      - '.github/workflows/tests.yml'
+      - '.github/workflows/docker-base-image.yml'
+      - '.github/workflows/docker-dev-image.yml'
+      - '.github/workflows/docker-nginx-image.yml'
+      - '.github/workflows/docker-postgresql-image.yml'
+      - '.github/workflows/docker-deployment-image.yml'
+      - '.github/workflows/deploy.yml'
+      - '.github/ISSUE_TEMPLATE'
+      - '.github/PULL_REQUEST_TEMPLATE.md'
 env:
   NODE_VERSION: '16'
   PYTHON_VERSION: '3.7'

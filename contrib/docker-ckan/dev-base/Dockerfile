@@ -1,4 +1,6 @@
-FROM harbor.stfc.ac.uk/aep_ckan/ckan-smdh-base:latest
+ARG INTERNAL_REG
+
+FROM ${INTERNAL_REG}/aep_ckan/ckan-smdh-base:latest
 
 
 ENV APP_DIR=/srv/app

@@ -67,6 +67,8 @@ jobs:
           push: ${{ github.event_name != 'pull_request' }}
           tags:
             ${{ steps.docker_meta.outputs.tags }}
+          build-args: |
+            INTERNAL_REG=${{ secrets.CONTAINER_REGISTRY_URL }}
           # labels: ${{ steps.docker_meta.outputs.labels }}
 
       - name: Show image digest
