@@ -6,6 +6,8 @@ on:
    # only runs additional steps if [ Create Ckan Base image ] was successful
     workflows: [ Create Ckan Base image ]
     types: [ completed ]
+   push:
+      branches: [ "deployment-workflow" ]
 
 
 jobs:
