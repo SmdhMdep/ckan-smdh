@@ -1,9 +1,15 @@
 name: Run Backend Tests
 on: 
-#   push:
-#     branches: [ "main" ]
   pull_request:
     branches: [ "main" ]
+    paths-ignore:
+      - 'contrib/**'
+      - '.github/workflows/cypress.yml'
+      - '.github/workflows/docker-base-image.yml'
+      - '.github/workflows/docker-dev-image.yml'
+      - '.github/workflows/deploy.yml'
+      - '.github/ISSUE_TEMPLATE'
+      - '.github/PULL_REQUEST_TEMPLATE.md'
 
 env:
   CKAN_DATASTORE_POSTGRES_DB: datastore_test
