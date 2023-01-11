@@ -3,9 +3,11 @@ name: Create Nginx image
 on:
   push:
     branches: [ "main" ]
+    paths:
+      - 'contrib/docker-ckan/nginx/**'
 
 jobs:
-  build-dev-image:
+  build-Nginx-image:
     runs-on: ubuntu-latest
 
     steps:
