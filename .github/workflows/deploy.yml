@@ -39,7 +39,7 @@ jobs:
         id: gen_cred
         run: |
          ls -la
-         docker secret create containerRegAccessToken contrib/docker-ckan/prod/cr_cred.json
+         docker secret create ContainerRegistryCredentials contrib/docker-ckan/prod/cr_cred.json
          
       - name: Update docker-compose
         run: |
