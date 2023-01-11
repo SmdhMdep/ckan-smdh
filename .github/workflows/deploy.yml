@@ -1,11 +1,11 @@
 name: Deploy CKAN image
 
 on:
+   workflow_dispatch:
    workflow_run:
    # only runs additional steps if [ Create Ckan Base image ] was successful
     workflows: [ Create Ckan Base image ]
     types: [ completed ]
-    workflow_dispatch:
 
 
 jobs:
@@ -16,6 +16,12 @@ jobs:
       id-token: write
       contents: read
     steps:
+      - name: Validate prerequisites
+        uses: ahmadnassri/action-workflow-run-wait@v1
+        with:
+          timeout: 15000 # we stop trying to check altogether after 15 secs because there is no delay set up; this prevents hanging if the workflow is cancelled
+          # delay: 60000 # we try to check the status of the prerequisite workflows after 1 min
+          
       - name: Checkout repo
         uses: actions/checkout@v3
 
@@ -29,6 +35,17 @@ jobs:
       - name: Install Docker Compose CLI
         uses: withlogicco/setup-compose-cli@v1
       
+      - name: Generate Cred
+        id: gen_cred
+        run: |
+         ls -la
+         docker secret create containerRegAccessToken ./ckan-smdh/contrib/docker-ckan/prod/cr_cred.json
+         
+      - name: Update docker-compose
+        run: |
+         yq -yi '.services.nginx + {"x-aws-pull_credentials": ${{ steps.gen_cred.results.output }}}' ./ckan-smdh/contrib/docker-ckan/docker-compose.yml
+         cat ./ckan-smdh/contrib/docker-ckan/docker-compose.yml
+         
       - run: |
          docker context create ecs --help
          docker context create ecs ckan-ecs --from-env
