@@ -40,13 +40,15 @@ jobs:
         run: |
          ls -la
          docker secret create ContainerRegistryCredentials contrib/docker-ckan/prod/cr_cred.json
+      
+      - run: |
+         docker context create ecs --help
+         docker context create ecs ckan-ecs --from-env
+         docker context use ckan-ecs
          
       - name: Update docker-compose
         run: |
          yq -yi '.services.nginx + {"x-aws-pull_credentials": ${{ steps.gen_cred.results.output }}}' ./ckan-smdh/contrib/docker-ckan/docker-compose.yml
          cat contrib/docker-ckan/docker-compose.yml
          
-      - run: |
-         docker context create ecs --help
-         docker context create ecs ckan-ecs --from-env
-         docker context ls
+      
