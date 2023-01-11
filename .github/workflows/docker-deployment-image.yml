@@ -7,7 +7,7 @@ on:
     types: [ completed ]
 
 jobs:
-  build-dev-image:
+  build-deployment-image:
     runs-on: ubuntu-latest
 
     steps:
