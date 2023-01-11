@@ -1,5 +1,6 @@
+ARG INTERNAL_REG
 
-FROM harbor.stfc.ac.uk/aep_ckan/ckan-smdh-dev:latest
+FROM ${INTERNAL_REG}/aep_ckan/ckan-smdh-dev:latest
 
 
 # Set up environment variables
