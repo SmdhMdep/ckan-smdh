@@ -55,7 +55,7 @@ jobs:
          yq e '.services.nginx += {"x-aws-pull_credentials": "${{ env.CR_PULL_SECRET}}"}' -i contrib/docker-ckan/docker-compose.yml
          yq e '.services.ckan += {"x-aws-pull_credentials": "${{ env.CR_PULL_SECRET }}"}' -i contrib/docker-ckan/docker-compose.yml
          yq e '.services.db += {"x-aws-pull_credentials": "${{ env.CR_PULL_SECRET }}"}' -i contrib/docker-ckan/docker-compose.yml
-         cat contrib/docker-ckan/docker-compose.yml
+      
       - name: Update env file
         run: |
          # mv contrib/docker-ckan/prod.env.template contrib/docker-ckan/prod.env
@@ -71,9 +71,8 @@ jobs:
          s|^CKANEXT__S3FILESTORE__AWS_ACCESS_KEY_ID=.*|CKANEXT__S3FILESTORE__AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}|g
          s|^CKANEXT__S3FILESTORE__AWS_SECRET_ACCESS_KEY=.*|CKANEXT__S3FILESTORE__AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}|g' \
          "contrib/docker-ckan/prod.env.template" > "contrib/docker-ckan/prod.env"
-         ls -l contrib/docker-ckan
+         
          echo "INTERNAL_REG=${{ secrets.CONTAINER_REGISTRY_URL }}" >> contrib/docker-ckan/prod.env
-         cat contrib/docker-ckan/prod.env
 
       - name: Gen Cloud Formation Template - Debug compose file
         run: |
