@@ -73,9 +73,16 @@ jobs:
          "contrib/docker-ckan/prod.env.template" > "contrib/docker-ckan/prod.env"
          
          echo "INTERNAL_REG=${{ secrets.CONTAINER_REGISTRY_URL }}" >> contrib/docker-ckan/prod.env
-
+      
+      - name: Login into the Container Registry
+        uses: docker/login-action@v2.1.0
+        with: 
+          registry: ${{ secrets.CONTAINER_REGISTRY_URL }}
+          username: ${{ secrets.CONTAINER_REGISTRY_USERNAME }}
+          password: ${{ secrets.CONTAINER_REGISTRY_PASSWORD }}
+          logout: true
+          
       - name: Gen Cloud Formation Template - Debug compose file
         run: |
          docker compose -f contrib/docker-ckan/docker-compose.yml --env-file contrib/docker-ckan/prod.env config
-         docker compose -f contrib/docker-ckan/docker-compose.yml --env-file contrib/docker-ckan/prod.env convert
-      
+         docker compose --debug -f contrib/docker-ckan/docker-compose.yml --env-file contrib/docker-ckan/prod.env convert 
