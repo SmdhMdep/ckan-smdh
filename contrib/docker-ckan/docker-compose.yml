@@ -22,7 +22,7 @@ services:
     
   ckan:
     container_name: ${CKAN_CONTAINER_NAME}
-    image: harbor.stfc.ac.uk/aep-ckan/ckan-smdh-deploy
+    image: harbor.stfc.ac.uk/aep-ckan/ckan-smdh-deploy:latest
     x-aws-pull_credentials: "${AWS_CR_ARN}"
     env_file:
       - prod.env
@@ -53,7 +53,7 @@ services:
 
   db:
     container_name: ${POSTGRESQL_CONTAINER_NAME}
-    image: harbor.stfc.ac.uk/aep-ckan/postgresql
+    image: harbor.stfc.ac.uk/aep-ckan/postgresql:latest
     x-aws-pull_credentials: "${AWS_CR_ARN}"
     environment:
       - DATASTORE_READONLY_PASSWORD=${DATASTORE_READONLY_PASSWORD}
