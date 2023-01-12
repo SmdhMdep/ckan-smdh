@@ -46,7 +46,9 @@ jobs:
       - name: Set AWS SMS secret
         id: gen_secret
         run: |
-         docker secret ls
+         docker secret ls | grep -q "pullcredentials" && \
+         echo "Pull credentials already exist" && \
+         CR_PULL_SECRET=${{ secrets.AWS_CR_ARN2 }} || \
          CR_PULL_SECRET=$(echo '{"username": "${{ secrets.CONTAINER_REGISTRY_USERNAME }}","password":"${{ secrets.CONTAINER_REGISTRY_PASSWORD }}"}' | docker secret create pullcredentials )
       - name: Update docker-compose
         run: |
