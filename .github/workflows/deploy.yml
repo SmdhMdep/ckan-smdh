@@ -36,11 +36,12 @@ jobs:
           role-to-assume: arn:aws:iam::261730452028:role/OIDC_Github
           aws-region: eu-west-2
           role-session-name: CKANDockerDeployment
-          
-      - run: |
-         docker context create ecs --help
-         docker context create ecs ckan-ecs --from-env
-         docker context use ckan-ecs
+      
+      # - name: Set up ECS context
+        # run: |
+         # docker context create ecs --help
+         # docker context create ecs ckan-ecs --from-env
+         # docker context use ckan-ecs
          
       - name: Update docker-compose
         run: |
@@ -67,5 +68,5 @@ jobs:
       
       - name: Gen Cloud Formation Template
         run: |
-         docker compose convert
+         docker compose config
       
