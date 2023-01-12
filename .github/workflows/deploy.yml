@@ -48,13 +48,13 @@ jobs:
         run: |
          docker secret ls | grep -q "pullcredentials" && \
          echo "Pull credentials already exist" && \
-         env CR_PULL_SECRET=${{ secrets.AWS_CR_ARN2 }} || \
-         env CR_PULL_SECRET=$(echo '{"username": "${{ secrets.CONTAINER_REGISTRY_USERNAME }}","password":"${{ secrets.CONTAINER_REGISTRY_PASSWORD }}"}' | docker secret create pullcredentials )
+         echo "CR_PULL_SECRET=${{ secrets.AWS_CR_ARN2 }}" >> $GITHUB_ENV || \
+         echo "CR_PULL_SECRET=$(echo '{"username": "${{ secrets.CONTAINER_REGISTRY_USERNAME }}","password":"${{ secrets.CONTAINER_REGISTRY_PASSWORD }}"}' | docker secret create pullcredentials )"
       - name: Update docker-compose
         run: |
-         yq e '.services.nginx += {"x-aws-pull_credentials": "$CR_PULL_SECRET"}' -i contrib/docker-ckan/docker-compose.yml
-         yq e '.services.ckan += {"x-aws-pull_credentials": "$CR_PULL_SECRET"}' -i contrib/docker-ckan/docker-compose.yml
-         yq e '.services.db += {"x-aws-pull_credentials": "$CR_PULL_SECRET"}' -i contrib/docker-ckan/docker-compose.yml
+         yq e '.services.nginx += {"x-aws-pull_credentials": "${{ env.CR_PULL_SECRET}}"}' -i contrib/docker-ckan/docker-compose.yml
+         yq e '.services.ckan += {"x-aws-pull_credentials": "${{ env.CR_PULL_SECRET }}"}' -i contrib/docker-ckan/docker-compose.yml
+         yq e '.services.db += {"x-aws-pull_credentials": "${{ env.CR_PULL_SECRET }}"}' -i contrib/docker-ckan/docker-compose.yml
          cat contrib/docker-ckan/docker-compose.yml
       - name: Update env file
         run: |
