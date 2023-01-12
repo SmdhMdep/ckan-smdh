@@ -68,5 +68,5 @@ jobs:
       
       - name: Gen Cloud Formation Template
         run: |
-         docker compose -f contrib/docker-ckan/docker-compose.yml config
+         docker compose -f contrib/docker-ckan/docker-compose.yml --env-file contrib/docker-ckan/prod.env config
       
