@@ -19,11 +19,14 @@ jobs:
       contents: read
     steps:
       - name: Validate prerequisites
-        uses: ahmadnassri/action-workflow-run-wait@v1
+        uses: ahmadnassri/action-workflow-run-wait@2aa3d9e1a12ecaaa9908e368eaf2123bb084323e
         with:
           timeout: 15000 # we stop trying to check altogether after 15 secs because there is no delay set up; this prevents hanging if the workflow is cancelled
           # delay: 60000 # we try to check the status of the prerequisite workflows after 1 min
-          
+      
+      - name: Install Docker Compose CLI
+        uses: withlogicco/setup-compose-cli@631064dfb7d769983c89a86bd42e6bc7936101dc
+      
       - name: Checkout repo
         uses: actions/checkout@v3
 
@@ -34,9 +37,6 @@ jobs:
           aws-region: eu-west-2
           role-session-name: CKANDockerDeployment
           
-      - name: Install Docker Compose CLI
-        uses: withlogicco/setup-compose-cli@v1
-      
       - run: |
          docker context create ecs --help
          docker context create ecs ckan-ecs --from-env
@@ -45,7 +45,27 @@ jobs:
       - name: Update docker-compose
         run: |
          yq e '.services.nginx += {"x-aws-pull_credentials": "${{ secrets.AWS_CR_ARN }}"}' -i contrib/docker-ckan/docker-compose.yml
+         yq e '.services.ckan += {"x-aws-pull_credentials": "${{ secrets.AWS_CR_ARN }}"}' -i contrib/docker-ckan/docker-compose.yml
+         yq e '.services.db += {"x-aws-pull_credentials": "${{ secrets.AWS_CR_ARN }}"}' -i contrib/docker-ckan/docker-compose.yml
          
-         cat contrib/docker-ckan/docker-compose.yml
-         
+      - name: Update env file
+        run: |
+         mv contrib/docker-ckan/prod.env.template contrib/docker-ckan/prod.env
+         sed -i -e 's/^POSTRGESS_PASSWORD=.*/POSTGRES_PASSWORD=${{ secrets.DB_P }}' -e
+         's/^POSTRGESS_PASSWORD=.*/POSTGRES_PASSWORD=${{ secrets.DB_P }}'
+         's/^DATASTORE_READONLY_PASSWORD=.*/DATASTORE_READONLY_PASSWORD=${{ secrets.DS_P }}' -e
+         's/^CKAN_SMTP_SERVER=.*/CKAN___SMTP__SERVER=${{ secrets.SMTP_SRV }}' -e
+         's/^CKAN_SMTP_USER=.*/CKAN___SMTP__USER=${{ secrets.SMTP_U }}' -e
+         's/^CKAN_SMTP_PASSWORD=.*/CKAN___SMTP__PASSWORD=${{ secrets.SMTP_P }}' -e
+         's/^CKANEXT__SAML2AUTH__IDP_METADATA__REMOTE_URL=.*/CKANEXT__SAML2AUTH__IDP_METADATA__REMOTE_URL=${{ secrets.SAML_REMOTE_URL }}' -e
+         's/^CKANEXT__SAML2AUTH__IDENTITY_ID=.*/CKANEXT__SAML2AUTH__IDENTITY_ID=${{ secrets.SAML_IDENTITY_ID }}' -e
+         's/^CKANEXT__S3FILESTORE__AWS_BUCKET_NAME=.*/CKANEXT__S3FILESTORE__AWS_BUCKET_NAME=${{ secrets.S3_NAME }}' -e
+         's/^CKANEXT__S3FILESTORE__REGION_NAME=.*/CKANEXT__S3FILESTORE__REGION_NAME=${{ secrets.S3_REG }}' -e
+         's/^CKANEXT__S3FILESTORE__AWS_ACCESS_KEY_ID=.*/CKANEXT__S3FILESTORE__AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}' -e
+         's/^CKANEXT__S3FILESTORE__AWS_SECRET_ACCESS_KEY=.*/CKANEXT__S3FILESTORE__AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}' -e
+         contrib/docker-ckan/prod.env
+      
+      - name: Gen Cloud Formation Template
+        run: |
+         docker compose convert
       
