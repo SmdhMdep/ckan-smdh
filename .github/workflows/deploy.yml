@@ -1,5 +1,6 @@
 name: Deploy CKAN image
 
+
 on:
    workflow_dispatch:
    workflow_run:
@@ -11,13 +12,16 @@ on:
 
 
 jobs:
+  
   deploy:
     name: Deploy to AWS ECS
     runs-on: ubuntu-latest
+ 
     permissions:
       id-token: write
       contents: read
     steps:
+      
       - name: Validate prerequisites
         uses: ahmadnassri/action-workflow-run-wait@2aa3d9e1a12ecaaa9908e368eaf2123bb084323e
         with:
@@ -50,11 +54,7 @@ jobs:
          echo "Pull credentials already exist" && \
          echo "CR_PULL_SECRET=${{ secrets.AWS_CR_ARN2 }}" >> $GITHUB_ENV || \
          echo "CR_PULL_SECRET=$(echo '{"username": "robot$aep_ckan+pipeline","password":"${{ secrets.CONTAINER_REGISTRY_PASSWORD }}"}' | docker secret create pullcredentials )"
-      - name: Update docker-compose
-        run: |
-         yq e '.services.nginx += {"x-aws-pull_credentials": "${{ env.CR_PULL_SECRET }}"}' -i contrib/docker-ckan/docker-compose.yml
-         yq e '.services.ckan += {"x-aws-pull_credentials": "${{ env.CR_PULL_SECRET }}"}' -i contrib/docker-ckan/docker-compose.yml
-         yq e '.services.db += {"x-aws-pull_credentials": "${{ env.CR_PULL_SECRET }}"}' -i contrib/docker-ckan/docker-compose.yml
+         
       
       - name: Update env file
         run: |
@@ -73,6 +73,7 @@ jobs:
          "contrib/docker-ckan/prod.env.template" > "contrib/docker-ckan/prod.env"
          
          echo "INTERNAL_REG=${{ secrets.CONTAINER_REGISTRY_URL }}" >> contrib/docker-ckan/prod.env
+         echo "AWS_CR_ARN=${{ secrets.AWS_CR_ARN }} >> contrib/docker-ckan/prod.env
           
       - name: Gen Cloud Formation Template - Debug compose file
         run: |
