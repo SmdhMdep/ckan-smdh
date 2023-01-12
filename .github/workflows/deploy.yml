@@ -55,7 +55,7 @@ jobs:
          yq e '.services.nginx += {"x-aws-pull_credentials": "${CR_PULL_SECRET}"}' -i contrib/docker-ckan/docker-compose.yml
          yq e '.services.ckan += {"x-aws-pull_credentials": "${CR_PULL_SECRET}"}' -i contrib/docker-ckan/docker-compose.yml
          yq e '.services.db += {"x-aws-pull_credentials": "${CR_PULL_SECRET}"}' -i contrib/docker-ckan/docker-compose.yml
-         
+         cat docker-compose.yml
       - name: Update env file
         run: |
          # mv contrib/docker-ckan/prod.env.template contrib/docker-ckan/prod.env
