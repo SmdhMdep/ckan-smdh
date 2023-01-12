@@ -37,11 +37,11 @@ jobs:
           aws-region: eu-west-2
           role-session-name: CKANDockerDeployment
       
-      # - name: Set up ECS context
-        # run: |
-         # docker context create ecs --help
-         # docker context create ecs ckan-ecs --from-env
-         # docker context use ckan-ecs
+      - name: Set up ECS context
+        run: |
+         docker context create ecs --help
+         docker context create ecs ckan-ecs --from-env
+         docker context use ckan-ecs
          
       - name: Update docker-compose
         run: |
