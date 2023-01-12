@@ -73,7 +73,7 @@ jobs:
          "contrib/docker-ckan/prod.env.template" > "contrib/docker-ckan/prod.env"
          
          echo "INTERNAL_REG=${{ secrets.CONTAINER_REGISTRY_URL }}" >> contrib/docker-ckan/prod.env
-         echo "AWS_CR_ARN=${{ secrets.AWS_CR_ARN }}" >> contrib/docker-ckan/prod.env
+         echo "AWS_CR_ARN=${{ secrets.AWS_CR_ARN2 }}" >> contrib/docker-ckan/prod.env
           
       - name: Gen Cloud Formation Template - Debug compose file
         run: |
