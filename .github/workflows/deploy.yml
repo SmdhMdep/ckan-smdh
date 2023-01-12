@@ -63,7 +63,7 @@ jobs:
          s/^CKANEXT__S3FILESTORE__REGION_NAME=.*/CKANEXT__S3FILESTORE__REGION_NAME="${{ secrets.S3_REG }}"/g
          s/^CKANEXT__S3FILESTORE__AWS_ACCESS_KEY_ID=.*/CKANEXT__S3FILESTORE__AWS_ACCESS_KEY_ID="${AWS_ACCESS_KEY_ID}"/g
          s/^CKANEXT__S3FILESTORE__AWS_SECRET_ACCESS_KEY=.*/CKANEXT__S3FILESTORE__AWS_SECRET_ACCESS_KEY="${AWS_SECRET_ACCESS_KEY}"/g' \
-         "contrib/docker-ckan/prod.env.template" > "contrib/docker-ckan/prod.env
+         "contrib/docker-ckan/prod.env.template" > "contrib/docker-ckan/prod.env"
       
       - name: Gen Cloud Formation Template
         run: |
