@@ -8,17 +8,6 @@ volumes:
   solr_data:
 
 services:
-
-  nginx:
-    container_name: ${NGINX_CONTAINER_NAME}
-    image: harbor.stfc.ac.uk/aep-ckan/nginx:latest
-    x-aws-pull_credentials: "${AWS_CR_ARN}"
-    depends_on:
-      ckan:
-        condition: service_healthy
-    ports:
-      - "0.0.0.0:${NGINX_PORT_HOST}:${NGINX_PORT}"
-      - "0.0.0.0:${NGINX_SSLPORT_HOST}:${NGINX_SSLPORT}"
     
   ckan:
     container_name: ${CKAN_CONTAINER_NAME}
