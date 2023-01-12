@@ -11,7 +11,7 @@ services:
 
   nginx:
     container_name: ${NGINX_CONTAINER_NAME}
-    image: ${INTERNAL_REG}/aep-ckan/nginx:latest
+    image: harbor.stfc.ac.uk/aep-ckan/nginx:latest
     depends_on:
       ckan:
         condition: service_healthy
@@ -21,7 +21,7 @@ services:
     
   ckan:
     container_name: ${CKAN_CONTAINER_NAME}
-    image: ${INTERNAL_REG}/aep-ckan/ckan-smdh-deploy
+    image: harbor.stfc.ac.uk/aep-ckan/ckan-smdh-deploy
     env_file:
       - prod.env
     depends_on:
@@ -51,7 +51,7 @@ services:
 
   db:
     container_name: ${POSTGRESQL_CONTAINER_NAME}
-    image: ${INTERNAL_REG}/aep-ckan/postgresql
+    image: harbor.stfc.ac.uk/aep-ckan/postgresql:latest
     environment:
       - DATASTORE_READONLY_PASSWORD=${DATASTORE_READONLY_PASSWORD}
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
