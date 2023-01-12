@@ -55,9 +55,9 @@ jobs:
          sed -e 's|^POSTGRES_PASSWORD=.*|POSTGRES_PASSWORD=${{ secrets.DB_P }}|g
          s|^POSTGRES_PASSWORD=.*|POSTGRES_PASSWORD=${{ secrets.DB_P }}|g
          s|^DATASTORE_READONLY_PASSWORD=.*|DATASTORE_READONLY_PASSWORD=${{ secrets.DS_P }}|g
-         s|^CKAN_SMTP_SERVER=.*|CKAN___SMTP__SERVER=${{ secrets.SMTP_SRV }}|g
-         s|^CKAN_SMTP_USER=.*|CKAN___SMTP__USER=${{ secrets.SMTP_U }}|g
-         s|^CKAN_SMTP_PASSWORD=.*|CKAN___SMTP__PASSWORD=${{ secrets.SMTP_P }}|g
+         s|^CKAN_SMTP_SERVER=.*|CKAN_SMTP_SERVER=${{ secrets.SMTP_SRV }}|g
+         s|^CKAN_SMTP_USER=.*|CKAN_SMTP_USER=${{ secrets.SMTP_U }}|g
+         s|^CKAN_SMTP_PASSWORD=.*|CKAN_SMTP_PASSWORD=${{ secrets.SMTP_P }}|g
          s|^CKANEXT__SAML2AUTH__IDP_METADATA__REMOTE_URL=.*|CKANEXT__SAML2AUTH__IDP_METADATA__REMOTE_URL=`${{ secrets.SAML_REMOTE_URL }}`|g
          s|^CKANEXT__SAML2AUTH__IDENTITY_ID=.*|CKANEXT__SAML2AUTH__IDENTITY_ID=${{ secrets.SAML_IDENTITY_ID }}|g
          s|^CKANEXT__S3FILESTORE__AWS_BUCKET_NAME=.*|CKANEXT__S3FILESTORE__AWS_BUCKET_NAME=${{ secrets.S3_NAME }}|g
@@ -67,6 +67,7 @@ jobs:
          "contrib/docker-ckan/prod.env.template" > "contrib/docker-ckan/prod.env"
          ls -l contrib/docker-ckan
          echo "INTERNAL_REG=${{ secrets.CONTAINER_REGISTRY_URL }}" >> contrib/docker-ckan/prod.env
+         cat contrib/docker-ckan/prod.env
       
       - name: Gen Cloud Formation Template - Debug compose file
         run: |
