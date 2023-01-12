@@ -51,18 +51,18 @@ jobs:
       - name: Update env file
         run: |
          # mv contrib/docker-ckan/prod.env.template contrib/docker-ckan/prod.env
-         sed -e 's/^POSTGRES_PASSWORD=.*/POSTGRES_PASSWORD=${{ secrets.DB_P }}/g
-         s/^POSTGRES_PASSWORD=.*/POSTGRES_PASSWORD=${{ secrets.DB_P }}/g
-         s/^DATASTORE_READONLY_PASSWORD=.*/DATASTORE_READONLY_PASSWORD=${{ secrets.DS_P }}/g
-         s/^CKAN_SMTP_SERVER=.*/CKAN___SMTP__SERVER=${{ secrets.SMTP_SRV }}/g
-         s/^CKAN_SMTP_USER=.*/CKAN___SMTP__USER=${{ secrets.SMTP_U }}/g
-         s/^CKAN_SMTP_PASSWORD=.*/CKAN___SMTP__PASSWORD=${{ secrets.SMTP_P }}/g
-         s/^CKANEXT__SAML2AUTH__IDP_METADATA__REMOTE_URL=.*/CKANEXT__SAML2AUTH__IDP_METADATA__REMOTE_URL=`${{ secrets.SAML_REMOTE_URL }}`/g
-         s/^CKANEXT__SAML2AUTH__IDENTITY_ID=.*/CKANEXT__SAML2AUTH__IDENTITY_ID=${{ secrets.SAML_IDENTITY_ID }}/g
-         s/^CKANEXT__S3FILESTORE__AWS_BUCKET_NAME=.*/CKANEXT__S3FILESTORE__AWS_BUCKET_NAME=${{ secrets.S3_NAME }}/g
-         s/^CKANEXT__S3FILESTORE__REGION_NAME=.*/CKANEXT__S3FILESTORE__REGION_NAME=${{ secrets.S3_REG }}/g
-         s/^CKANEXT__S3FILESTORE__AWS_ACCESS_KEY_ID=.*/CKANEXT__S3FILESTORE__AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}/g
-         s/^CKANEXT__S3FILESTORE__AWS_SECRET_ACCESS_KEY=.*/CKANEXT__S3FILESTORE__AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}/g' \
+         sed -e 's|^POSTGRES_PASSWORD=.*|POSTGRES_PASSWORD=${{ secrets.DB_P }}|g
+         s|^POSTGRES_PASSWORD=.*|POSTGRES_PASSWORD=${{ secrets.DB_P }}|g
+         s|^DATASTORE_READONLY_PASSWORD=.*|DATASTORE_READONLY_PASSWORD=${{ secrets.DS_P }}|g
+         s|^CKAN_SMTP_SERVER=.*|CKAN___SMTP__SERVER=${{ secrets.SMTP_SRV }}|g
+         s|^CKAN_SMTP_USER=.*|CKAN___SMTP__USER=${{ secrets.SMTP_U }}|g
+         s|^CKAN_SMTP_PASSWORD=.*|CKAN___SMTP__PASSWORD=${{ secrets.SMTP_P }}|g
+         s|^CKANEXT__SAML2AUTH__IDP_METADATA__REMOTE_URL=.*|CKANEXT__SAML2AUTH__IDP_METADATA__REMOTE_URL=`${{ secrets.SAML_REMOTE_URL }}`|g
+         s|^CKANEXT__SAML2AUTH__IDENTITY_ID=.*|CKANEXT__SAML2AUTH__IDENTITY_ID=${{ secrets.SAML_IDENTITY_ID }}|g
+         s|^CKANEXT__S3FILESTORE__AWS_BUCKET_NAME=.*|CKANEXT__S3FILESTORE__AWS_BUCKET_NAME=${{ secrets.S3_NAME }}|g
+         s|^CKANEXT__S3FILESTORE__REGION_NAME=.*|CKANEXT__S3FILESTORE__REGION_NAME=${{ secrets.S3_REG }}|g
+         s|^CKANEXT__S3FILESTORE__AWS_ACCESS_KEY_ID=.*|CKANEXT__S3FILESTORE__AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}|g
+         s|^CKANEXT__S3FILESTORE__AWS_SECRET_ACCESS_KEY=.*|CKANEXT__S3FILESTORE__AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}|g' \
          "contrib/docker-ckan/prod.env.template" > "contrib/docker-ckan/prod.env"
       
       - name: Gen Cloud Formation Template
