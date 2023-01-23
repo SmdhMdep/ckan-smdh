@@ -10,7 +10,9 @@ on:
 jobs:
   build-Nginx-image:
     runs-on: ubuntu-latest
-
+    permissions:
+      id-token: write
+      contents: read
     steps:
       - name: Validate prerequisites
         uses: ahmadnassri/action-workflow-run-wait@v1
