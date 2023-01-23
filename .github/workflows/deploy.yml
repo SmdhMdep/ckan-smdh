@@ -56,6 +56,7 @@ jobs:
          sed -e 's|^POSTGRES_PASSWORD=.*|POSTGRES_PASSWORD=${{ secrets.DB_P }}|g
          s|^DATASTORE_READONLY_PASSWORD=.*|DATASTORE_READONLY_PASSWORD=${{ secrets.DT_P }}|g
          s|^CKAN_SMTP_SERVER=.*|CKAN_SMTP_SERVER=${{ secrets.SMTP_SRV }}|g
+         s|^CKAN_SITE_URL=.*|CKAN_SITE_URL=${{ secrets.MDEP_URL }}|g
          s|^CKAN_SMTP_USER=.*|CKAN_SMTP_USER=${{ secrets.SMTP_U }}|g
          s|^CKAN_SMTP_PASSWORD=.*|CKAN_SMTP_PASSWORD=${{ secrets.SMTP_P }}|g
          s|^CKANEXT__SAML2AUTH__IDP_METADATA__REMOTE_URL=.*|CKANEXT__SAML2AUTH__IDP_METADATA__REMOTE_URL=${{ secrets.SAML_REMOTE_URL }}|g
