@@ -58,8 +58,6 @@ jobs:
       - name: Build and push
         id: docker_build
         uses: docker/build-push-action@v3
-        env:
-          SHORT_SHA: $(git rev-parse --short "${{ github.sha }}") 
         with:
           file: ./contrib/docker-ckan/nginx/Dockerfile
           context: ./contrib/docker-ckan/nginx
