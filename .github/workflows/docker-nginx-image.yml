@@ -17,7 +17,7 @@ jobs:
       - name: Validate prerequisites
         uses: ahmadnassri/action-workflow-run-wait@v1
         with:
-          timeout: 600000 # we stop trying to check altogether after 10 mins
+          timeout: 15000 # we stop trying to check altogether after 15 secs because there is no delay set up; this prevents hanging if the workflow is cancelled
           # delay: 60000 # we try to check the status of the prerequisite workflows after 1 min
       
       - name: Checkout repo
@@ -71,14 +71,3 @@ jobs:
             ${{ secrets.CONTAINER_REGISTRY_URL }}/mdepckan/ckan-nginx:${{ steps.sha.outputs.sha }}
             ${{ secrets.CONTAINER_REGISTRY_URL }}/mdepckan/ckan-nginx:latest
           # labels: ${{ steps.docker_meta.outputs.labels }}
-          build-args: |
-            INTERNAL_REG=${{ secrets.CONTAINER_REGISTRY_URL }}
-
-      # - name: Build and push
-      #   env:
-      #     REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-      #     REPOSITORY: mdepckan/ckan-nginx
-      #     IMAGE_TAG: ${{ steps.docker_meta.outputs.tags }}
-      #   run: |
-      #     docker build -t $REPOSITORY:
-      #     docker build -t $REGISTRY/$REPOSITORY:$IMAGE_TAG -f ./contrib/docker-ckan/nginx/Dockerfile --build-arg INTERNAL_REG=${{ steps.login-ecr.outputs.registry }}/$REPOSITORY ./contrib/docker-ckan/nginx
