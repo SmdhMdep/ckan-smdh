@@ -71,4 +71,4 @@ jobs:
           
       - name: Gen Cloud Formation Template - Debug compose file
         run: |
-         docker compose -f contrib/docker-ckan/docker-compose.yml --env-file contrib/docker-ckan/prod.env convert
+         docker compose -f contrib/docker-ckan/docker-compose.yml --env-file contrib/docker-ckan/prod.env up

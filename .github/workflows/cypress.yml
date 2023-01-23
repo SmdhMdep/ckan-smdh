@@ -15,7 +15,6 @@ on:
       - '.github/workflows/deploy.yml'
       - '.github/ISSUE_TEMPLATE'
       - '.github/PULL_REQUEST_TEMPLATE.md'
-      - 'contrib/**'
 env:
   NODE_VERSION: '16'
   PYTHON_VERSION: '3.7'
