@@ -61,11 +61,6 @@ ckan config-tool $SRC_DIR/ckan/test-core.ini \
 echo "Enabling ckan tracking"
 ckan config-tool $CKAN_INI "ckan.tracking_enabled = true"
 
-echo "Loading API settings into ckan.ini"
-ckan config-tool $CKAN_INI "api_token.jwt.encode.secret = $CKAN___API__TOKEN__JWT__ENCODE__SECRET"
-ckan config-tool $CKAN_INI "api_token.jwt.decode.secret = $CKAN___API__TOKEN__JWT__DECODE__SECRET"
-ckan config-tool $CKAN_INI "api_token.jwt.algorithm = $CKAN___API_TOKEN__JWT__ALGORITHM"
-
 
 echo "Loading FrontEnd settings into ckan.ini"
 ckan config-tool $CKAN_INI "ckan.site_title = MDEP AEP"
@@ -74,12 +69,12 @@ ckan config-tool $CKAN_INI "ckan.site_logo = /base/images/ckan-logo.png"
 ckan config-tool $CKAN_INI "ckan.favicon = /base/images/ckan.ico"
 
 echo "Loading Email settings into ckan.ini"
-ckan config-tool $CKAN_INI "smtp.server = $CKAN___SMTP__SERVER"
-ckan config-tool $CKAN_INI "smtp.starttls = $CKAN___SMTP__STARTTLS"
-ckan config-tool $CKAN_INI "smtp.user = $CKAN___SMTP__USER"
-ckan config-tool $CKAN_INI "smtp.password = $CKAN___SMTP__PASSWORD"
-ckan config-tool $CKAN_INI "smtp.mail_from = $CKAN___SMTP__MAIL_FROM"
-ckan config-tool $CKAN_INI "smtp.reply_to = $CKAN___SMTP__REPLY_TO"
+ckan config-tool $CKAN_INI "smtp.server = $CKAN_SMTP_SERVER"
+ckan config-tool $CKAN_INI "smtp.starttls = $CKAN_SMTP_STARTTLS"
+ckan config-tool $CKAN_INI "smtp.user = $CKAN_SMTP_USER"
+ckan config-tool $CKAN_INI "smtp.password = $CKAN_SMTP_PASSWORD"
+ckan config-tool $CKAN_INI "smtp.mail_from = $CKAN_SMTP_MAIL_FROM"
+ckan config-tool $CKAN_INI "smtp.reply_to = $CKAN_SMTP_REPLY_TO"
 
 echo "Loading SAML2 settings into ckan.ini"
 ckan config-tool $CKAN_INI "ckanext.saml2auth.idp_metadata.location = remote"

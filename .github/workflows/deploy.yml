@@ -1,54 +1,76 @@
 name: Deploy CKAN image
 
+
 on:
    workflow_dispatch:
    workflow_run:
    # only runs additional steps if [ Create Ckan Base image ] was successful
     workflows: [ Create Ckan Base image ]
     types: [ completed ]
+   push:
+      branches: [ "deployment-workflow" ]
 
 
 jobs:
+  
   deploy:
     name: Deploy to AWS ECS
     runs-on: ubuntu-latest
+ 
     permissions:
       id-token: write
       contents: read
     steps:
+      
       - name: Validate prerequisites
-        uses: ahmadnassri/action-workflow-run-wait@v1
+        uses: ahmadnassri/action-workflow-run-wait@2aa3d9e1a12ecaaa9908e368eaf2123bb084323e
         with:
           timeout: 15000 # we stop trying to check altogether after 15 secs because there is no delay set up; this prevents hanging if the workflow is cancelled
           # delay: 60000 # we try to check the status of the prerequisite workflows after 1 min
-          
+      
+      - name: Install Docker Compose CLI
+        uses: withlogicco/setup-compose-cli@631064dfb7d769983c89a86bd42e6bc7936101dc
+      
       - name: Checkout repo
         uses: actions/checkout@v3
 
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
-          role-to-assume: arn:aws:iam::261730452028:role/OIDC_Github
+          role-to-assume: ${{ secrets.ROLE_OIDC }}
           aws-region: eu-west-2
           role-session-name: CKANDockerDeployment
+      
+      
+      - name: Set up ECS context
+        run: |
+         docker context create ecs ckanecs --from-env
+         docker context use ckanecs
+         
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v1
+        
+      - name: Update env file
+        run: | 
+         sed -e 's|^POSTGRES_PASSWORD=.*|POSTGRES_PASSWORD=${{ secrets.DB_P }}|g
+         s|^DATASTORE_READONLY_PASSWORD=.*|DATASTORE_READONLY_PASSWORD=${{ secrets.DT_P }}|g
+         s|^CKAN_SMTP_SERVER=.*|CKAN_SMTP_SERVER=${{ secrets.SMTP_SRV }}|g
+         s|^CKAN_SITE_URL=.*|CKAN_SITE_URL=${{ secrets.MDEP_URL }}|g
+         s|^CKAN_SMTP_USER=.*|CKAN_SMTP_USER=${{ secrets.SMTP_U }}|g
+         s|^CKAN_SMTP_PASSWORD=.*|CKAN_SMTP_PASSWORD=${{ secrets.SMTP_P }}|g
+         s|^CKANEXT__SAML2AUTH__IDP_METADATA__REMOTE_URL=.*|CKANEXT__SAML2AUTH__IDP_METADATA__REMOTE_URL=${{ secrets.SAML_REMOTE_URL }}|g
+         s|^CKANEXT__SAML2AUTH__ENTITY_ID=.*|CKANEXT__SAML2AUTH__ENTITY_ID=${{ secrets.SAML_IDENTITY_ID }}|g
+         s|^CKANEXT__S3FILESTORE__AWS_BUCKET_NAME=.*|CKANEXT__S3FILESTORE__AWS_BUCKET_NAME=${{ secrets.S3_NAME }}|g
+         s|^CKANEXT__S3FILESTORE__REGION_NAME=.*|CKANEXT__S3FILESTORE__REGION_NAME=${{ secrets.S3_REG }}|g
+         s|^CKANEXT__S3FILESTORE__AWS_ACCESS_KEY_ID=.*|CKANEXT__S3FILESTORE__AWS_ACCESS_KEY_ID=${{ env.AWS_ACCESS_KEY_ID }}|g
+         s|^CKANEXT__S3FILESTORE__AWS_SECRET_ACCESS_KEY=.*|CKANEXT__S3FILESTORE__AWS_SECRET_ACCESS_KEY=${{ env.AWS_SECRET_ACCESS_KEY }}|g' \
+         "contrib/docker-ckan/prod.env.template" > "contrib/docker-ckan/prod.env"
+         
+         echo INTERNAL_REG=${{ secrets.CONTAINER_REGISTRY_URL }} >> contrib/docker-ckan/prod.env
+         echo "CERT_ARN=${{ secrets.CERT_ARN }}" >> contrib/docker-ckan/prod.env
           
-      - name: Install Docker Compose CLI
-        uses: withlogicco/setup-compose-cli@v1
-      
-      - name: Generate Cred
-        id: gen_cred
+      - name: Gen Cloud Formation Template - Debug compose file
+        #  docker compose -f contrib/docker-ckan/docker-compose.yml --env-file contrib/docker-ckan/prod.env up
         run: |
-         ls -la
-         docker secret create ContainerRegistryCredentials contrib/docker-ckan/prod/cr_cred.json
-      
-      - run: |
-         docker context create ecs --help
-         docker context create ecs ckan-ecs --from-env
-         docker context use ckan-ecs
-         
-      - name: Update docker-compose
-        run: |
-         yq -yi '.services.nginx + {"x-aws-pull_credentials": ${{ steps.gen_cred.results.output }}}' ./ckan-smdh/contrib/docker-ckan/docker-compose.yml
-         cat contrib/docker-ckan/docker-compose.yml
-         
-      
+         echo "To be continued"

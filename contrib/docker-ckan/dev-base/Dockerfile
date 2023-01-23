@@ -1,6 +1,6 @@
 ARG INTERNAL_REG
 
-FROM ${INTERNAL_REG}/aep_ckan/ckan-smdh-base:latest
+FROM ${INTERNAL_REG}/mdepckan/ckan-base:latest
 
 
 ENV APP_DIR=/srv/app

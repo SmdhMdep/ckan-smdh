@@ -47,4 +47,5 @@ node_modules/
 
 # docker
 contrib/docker/.env
+contrib/docker-ckan/prod.env
 cypress.env.json

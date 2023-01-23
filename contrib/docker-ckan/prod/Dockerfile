@@ -1,6 +1,6 @@
 ARG INTERNAL_REG
 
-FROM ${INTERNAL_REG}/aep_ckan/ckan-smdh-base:latest
+FROM ${INTERNAL_REG}/mdepckan/ckan-deploy:latest
 #FROM ckan/ckan-base:2.9.7
 
 # Set up environment variables
