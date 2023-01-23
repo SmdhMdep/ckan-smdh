@@ -37,7 +37,7 @@ jobs:
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
-          role-to-assume: arn:aws:iam::261730452028:role/OIDC_Github
+          role-to-assume: ${{ secrets.ROLE_OIDC }}
           aws-region: eu-west-2
           role-session-name: CKANDockerDeployment
       
