@@ -43,22 +43,12 @@ jobs:
       
       - name: Set up ECS context
         run: |
-         docker context create ecs --help
-         docker context create ecs ckan-ecs --from-env
-         docker context use ckan-ecs
-         
-      - name: Set AWS SMS secret
-        id: gen_secret
-        run: |
-         docker secret ls | grep -q "pullcredentials" && \
-         echo "Pull credentials already exist" && \
-         echo "CR_PULL_SECRET=${{ secrets.AWS_CR_ARN2 }}" >> $GITHUB_ENV || \
-         echo "CR_PULL_SECRET=$(echo '{"username": "robot$aep_ckan+pipeline","password":"${{ secrets.CONTAINER_REGISTRY_PASSWORD }}"}' | docker secret create pullcredentials )"
+         docker context create ecs ckanecs --from-env
+         docker context use ckanecs
          
       
       - name: Update env file
-        run: |
-         # mv contrib/docker-ckan/prod.env.template contrib/docker-ckan/prod.env
+        run: | 
          sed -e 's|^POSTGRES_PASSWORD=.*|POSTGRES_PASSWORD=${{ secrets.DB_P }}|g
          s|^DATASTORE_READONLY_PASSWORD=.*|DATASTORE_READONLY_PASSWORD=${{ secrets.DT_P }}|g
          s|^CKAN_SMTP_SERVER=.*|CKAN_SMTP_SERVER=${{ secrets.SMTP_SRV }}|g
@@ -72,8 +62,8 @@ jobs:
          s|^CKANEXT__S3FILESTORE__AWS_SECRET_ACCESS_KEY=.*|CKANEXT__S3FILESTORE__AWS_SECRET_ACCESS_KEY=${{ env.AWS_SECRET_ACCESS_KEY }}|g' \
          "contrib/docker-ckan/prod.env.template" > "contrib/docker-ckan/prod.env"
          
-         echo "INTERNAL_REG=${{ secrets.CONTAINER_REGISTRY_URL }}" >> contrib/docker-ckan/prod.env
-         echo "AWS_CR_ARN=${{ secrets.AWS_CR_ARN2 }}" >> contrib/docker-ckan/prod.env
+         echo INTERNAL_REG=${{ secrets.CONTAINER_REGISTRY_URL }} >> contrib/docker-ckan/prod.env
+         echo "CERT_ARN=${{ secrets.CERT_ARN }}" >> contrib/docker-ckan/prod.env
           
       - name: Gen Cloud Formation Template - Debug compose file
         run: |

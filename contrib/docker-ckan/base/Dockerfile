@@ -90,6 +90,7 @@ RUN mkdir -p ${CKAN_STORAGE_PATH} && \
     chown -R ckan:ckan ${CKAN_STORAGE_PATH}
 
 COPY ./contrib/docker-ckan/base/setup/prerun.py ${APP_DIR}
+COPY ./contrib/docker-ckan/base/setup/prerun_prod.py ${APP_DIR}
 COPY ./contrib/docker-ckan/base/setup/start_ckan.sh ${APP_DIR}
 ADD https://raw.githubusercontent.com/SmdhMdep/ckan-smdh/main/wsgi.py ${APP_DIR}
 

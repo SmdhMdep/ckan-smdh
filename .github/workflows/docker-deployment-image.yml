@@ -17,12 +17,8 @@ jobs:
           timeout: 15000 # we stop trying to check altogether after 15 secs because there is no delay set up; this prevents hanging if the workflow is cancelled
           # delay: 60000 # we try to check the status of the prerequisite workflows after 1 min
       
-      - name: Checkout repo          
+      - name: Checkout repo
         uses: actions/checkout@v3
-
-      - name: Set up Docker Buildx
-        id: buildx
-        uses: docker/setup-buildx-action@v1
 
       - name: Cache Docker layers
         uses: actions/cache@v2
@@ -31,45 +27,38 @@ jobs:
           key: ${{ runner.os }}-buildx-${{ github.sha }}
           restore-keys: |
             ${{ runner.os }}-buildx-
-      
-      - name: Login into the Container Registry
-        uses: docker/login-action@v2.1.0
-        with: 
-          registry: ${{ secrets.CONTAINER_REGISTRY_URL }}
-          username: ${{ secrets.CONTAINER_REGISTRY_USERNAME }}
-          password: ${{ secrets.CONTAINER_REGISTRY_PASSWORD }}
-          logout: true
-
+        
       - name : Docker Metadata
       # IDs are necessary when we need to reference this step from another step
         id: docker_meta
         uses: docker/metadata-action@v3.3.0
         with: 
           images: |
-            ${{ secrets.CONTAINER_REGISTRY_URL }}/aep_ckan/ckan-smdh-deploy
+            ${{ secrets.CONTAINER_REGISTRY_URL }}/mdepckan/ckan-deploy
           github-token: ${{ secrets.GITHUB_TOKEN }}
           flavor: |
             latest=false 
           tags: |
-            type=raw,value=latest
+            type=raw,value=latest,
+            type=sha
+
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          role-to-assume: ${{ secrets.ROLE_OIDC }}
+          aws-region: eu-west-2
+          role-session-name: CKANDockerDeployment
+
+
+      - name: Login into the Container Registry
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v1
 
       - name: Build and push
-        id: docker_build
-        uses: docker/build-push-action@v3
-        with:
-          file: ./contrib/docker-ckan/prod/Dockerfile
-          context: .
-          platforms: linux/amd64
-          builder: ${{ steps.buildx.outputs.name }}
-          cache-from: type=local,src=/tmp/.buildx-cache
-          cache-to: type=local,dest=/tmp/.buildx-cache
-          # don't push the image if it's a pull request, only build it which is a way of testing if the image can be successfully built
-          push: ${{ github.event_name != 'pull_request' }}
-          tags:
-            ${{ steps.docker_meta.outputs.tags }}
-          build-args: |
-            INTERNAL_REG=${{ secrets.CONTAINER_REGISTRY_URL }}
-          # labels: ${{ steps.docker_meta.outputs.labels }}
-
-      - name: Show image digest
-        run: echo ${{ steps.docker_build.outputs.digest }}
+        env:
+          REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          REPOSITORY: mdepckan/ckan-deploy
+          IMAGE_TAG: ${{ steps.docker_meta.outputs.tags }}
+        run: |
+          docker build -t $REGISTRY/$REPOSITORY:$IMAGE_TAG -f ./contrib/docker-ckan/prod/Dockerfile --build-arg INTERNAL_REG=${{ steps.login-ecr.outputs.registry }}/$REPOSITORY .

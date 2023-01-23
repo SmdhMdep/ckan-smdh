@@ -2,19 +2,68 @@ version: "3.8"
 
 volumes:
   ckan_config:
+    driver_opts:
+      uid: 0
+      gid: 0
   ckan_home:
+    driver_opts:
+      uid: 0
+      gid: 0
   ckan_storage:
+    driver_opts:
+      uid: 0
+      gid: 0
   pg_data:
+    driver_opts:
+      uid: 0
+      gid: 0
   solr_data:
+    driver_opts:
+      uid: 0
+      gid: 0
+
+x-aws-loadbalancer: "MDEP-Staging-ALB"
+x-aws-cloudformation:
+  Resources:
+    NginxTCP80Listener:
+      Properties:
+        DefaultActions:
+          - ForwardConfig:
+              TargetGroups:
+                - TargetGroupArn:
+                    Ref: NginxTCP80TargetGroup
+            Type: forward
+        Certificates:
+          - CertificateArn: "${CERT_ARN}"
+        Protocol: HTTPS
+        Port: 443
+      Type: AWS::ElasticLoadBalancingV2::Listener
 
 services:
-    
+  nginx:
+    container_name: ${NGINX_CONTAINER_NAME}
+    image: ${INTERNAL_REG}/mdepckan/ckan-nginx:latest
+    depends_on:
+      ckan:
+        condition: service_healthy
+    networks:
+      - ckan-internal
+    ports:
+      - "${NGINX_PORT_HOST}:${NGINX_PORT}"
+
+
   ckan:
     container_name: ${CKAN_CONTAINER_NAME}
-    image: harbor.stfc.ac.uk/aep-ckan/ckan-smdh-deploy:latest
-    x-aws-pull_credentials: "${AWS_CR_ARN}"
+    image: ${INTERNAL_REG}/mdepckan/ckan-deploy:latest
+    deploy:
+      resources:
+        limits:
+          cpus: '2'
+          memory: 30GB
     env_file:
       - prod.env
+    networks:
+      - ckan-internal
     depends_on:
       db:
         condition: service_healthy
@@ -22,48 +71,56 @@ services:
         condition: service_healthy
       redis:
         condition: service_healthy
-    ports:
-      - "0.0.0.0:${CKAN_PORT_HOST}:${CKAN_PORT}" 
 
     volumes:
       - ckan_config:/etc/ckan
       - ckan_home:/usr/lib/ckan
       - ckan_storage:/var/lib/ckan
-    restart: unless-stopped
-    healthcheck:
-      test: ["CMD", "wget", "-qO", "/dev/null", "${CKAN_SITE_URL}"]
+    # restart: unless-stopped
+    # healthcheck:
+    #   test: ["CMD", "wget", "-qO", "/dev/null", "${CKAN_SITE_URL}"]
     
   datapusher:
     container_name: ${DATAPUSHER_CONTAINER_NAME}
     image: ckan/ckan-base-datapusher:${DATAPUSHER_VERSION}
-    restart: unless-stopped
+    # restart: unless-stopped
     healthcheck:
       test: ["CMD", "wget", "-qO", "/dev/null", "${CKAN_DATAPUSHER_URL}"]
+    networks:
+      - ckan-internal
 
   db:
     container_name: ${POSTGRESQL_CONTAINER_NAME}
-    image: harbor.stfc.ac.uk/aep-ckan/postgresql:latest
-    x-aws-pull_credentials: "${AWS_CR_ARN}"
+    image: ${INTERNAL_REG}/mdepckan/ckan-postgresql:latest
     environment:
       - DATASTORE_READONLY_PASSWORD=${DATASTORE_READONLY_PASSWORD}
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
       - PGDATA=/var/lib/postgresql/data/db
     volumes:
       - pg_data:/var/lib/postgresql/data
-    restart: unless-stopped
+    # restart: unless-stopped
     healthcheck:
       test: ["CMD", "pg_isready", "-U", "ckan"]
+    networks:
+      - ckan-internal
      
   solr:
     container_name: ${SOLR_CONTAINER_NAME}
     image: ckan/ckan-solr:${SOLR_IMAGE_VERSION}
-    restart: unless-stopped
+    networks:
+      - ckan-internal
+    # restart: unless-stopped
     healthcheck:
-      test: ["CMD", "wget", "-qO", "/dev/null", "${CKAN_SOLR_URL}"]
+      test: ["CMD", "wget", "-qO", "/dev/null", "http://localhost:8983/solr/"]
 
   redis:
     container_name: ${REDIS_CONTAINER_NAME}
     image: redis:${REDIS_VERSION}
-    restart: unless-stopped
+    # restart: unless-stopped
     healthcheck:
       test: ["CMD", "redis-cli", "-e", "QUIT"]
+    networks:
+      - ckan-internal
+
+networks:
+    ckan-internal:
