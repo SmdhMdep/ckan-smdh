@@ -12,9 +12,6 @@ RUN echo ${TZ} > /etc/timezone
 RUN if ! [ /usr/share/zoneinfo/${TZ} -ef /etc/localtime ]; then \
         cp /usr/share/zoneinfo/${TZ} /etc/localtime ;\
     fi ;
-RUN apk add --no-cache tzdata --virtual .build-deps \
-        xmlsec1 \
-        rustc
 
 ### SSO ###
 RUN pip3 install -e 'git+https://github.com/SmdhMdep/ckanext-sso.git@main#egg=ckanext-sso' && \ 
