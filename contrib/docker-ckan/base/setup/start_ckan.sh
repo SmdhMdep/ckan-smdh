@@ -69,7 +69,6 @@ ckan config-tool $CKAN_INI "ckanext.s3filestore.filesystem_download_fallback = $
 ckan config-tool $CKAN_INI "ckanext.s3filestore.signed_url_expiry = $CKANEXT__S3FILESTORE__SIGNED_URL_EXPIRY"
 ckan config-tool $CKAN_INI "ckanext.s3filestore.signed_url_cache_window = $CKANEXT__S3FILESTORE__SIGNED_URL_CACHE_WINDOW"
 ckan config-tool $CKAN_INI "ckanext.s3filestore.public_cache_window = $CKANEXT__S3FILESTORE__PUBLIC_URL_CACE_WINDOW"
-ckan con
 
 echo "Loading Private Datasets settinngs into ckan.ini"
 ckan config-tool $CKAN_INI "ckan.privatedatasets.parser = $CKAN__PRIVATEDATASETS__PARSER"
