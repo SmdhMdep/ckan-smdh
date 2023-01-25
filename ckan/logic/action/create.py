@@ -602,12 +602,12 @@ def member_create(context, data_dict=None):
         filter(model.Member.state == 'active').first()
     if member:
         user_obj = model.User.get(user)
-        if member.table_name == u'user' and \
-                member.table_id == user_obj.id and \
-                member.capacity == u'admin' and \
-                capacity != u'admin':
-            raise NotAuthorized("Administrators cannot revoke their "
-                                "own admin status")
+#         if member.table_name == u'user' and \
+#                 member.table_id == user_obj.id and \
+#                 member.capacity == u'admin' and \
+#                 capacity != u'admin':
+#             raise NotAuthorized("Administrators cannot revoke their "
+#                                 "own admin status")
     else:
         member = model.Member(table_name=obj_type,
                               table_id=obj.id,
