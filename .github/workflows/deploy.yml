@@ -5,7 +5,7 @@ on:
    workflow_dispatch:
    workflow_run:
    # only runs additional steps if [ Create Ckan Base image ] was successful
-    workflows: [ Create Ckan Base image ]
+    workflows: [ Create Ckan Deployment image ]
     types: [ completed ]
    push:
       branches: [ "deployment-workflow" ]
