@@ -58,7 +58,6 @@ ckan config-tool $CKAN_INI "ckanext.saml2auth.want_response_signed = $CKANEXT__S
 ckan config-tool $CKAN_INI "ckanext.saml2auth.want_assertions_or_response_signed = $CKANEXT__SAML2AUTH__WANT_ASSERTIONS_OR_RESPONSE_SIGNED"
 ckan config-tool $CKAN_INI "ckanext.saml2auth.logout_expected_binding = $CKANEXT__SAML2AUTH__LOGOUT_EXPECTED_BINDING"
 ckan config-tool $CKAN_INI "ckanext.saml2auth.enable_ckan_internal_login = $CKANEXT__SAML2AUTH__ENABLE_CKAN_INTERNAL_LOGIN"
-ckan config-tool $CKAN_INI "ckanext.saml2auth.default_fallback_endpoint = home.index" 
 
 echo "Loading S3Filestore settings into ckan.ini"
 ckan config-tool $CKAN_INI "ckanext.s3filestore.aws_bucket_name = $CKANEXT__S3FILESTORE__AWS_BUCKET_NAME"
