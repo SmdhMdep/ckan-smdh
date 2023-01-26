@@ -101,7 +101,7 @@ services:
       - ckan-internal
     # restart: unless-stopped
     volumes:
-      - - solr_data:/var/solr
+      - solr_data:/var/solr
     healthcheck:
       test: ["CMD", "wget", "-qO", "/dev/null", "http://localhost:8983/solr/"]
 
