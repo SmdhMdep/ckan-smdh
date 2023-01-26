@@ -53,6 +53,7 @@ jobs:
         
       - name: Update env file
         run: | 
+         value=$(openssl rand -base64 32)
          sed -e 's|^POSTGRES_PASSWORD=.*|POSTGRES_PASSWORD=${{ secrets.DB_P }}|g
          s|^DATASTORE_READONLY_PASSWORD=.*|DATASTORE_READONLY_PASSWORD=${{ secrets.DT_P }}|g
          s|^CKAN_SMTP_SERVER=.*|CKAN_SMTP_SERVER=${{ secrets.SMTP_SRV }}|g
@@ -66,9 +67,11 @@ jobs:
          s|^CKANEXT__S3FILESTORE__AWS_ACCESS_KEY_ID=.*|CKANEXT__S3FILESTORE__AWS_ACCESS_KEY_ID=${{ env.AWS_ACCESS_KEY_ID }}|g
          s|^CKANEXT__S3FILESTORE__AWS_SECRET_ACCESS_KEY=.*|CKANEXT__S3FILESTORE__AWS_SECRET_ACCESS_KEY=${{ env.AWS_SECRET_ACCESS_KEY }}|g' \
          "contrib/docker-ckan/prod.env.template" > "contrib/docker-ckan/prod.env"
+         sed -e "s|^POSTGRES_PASSWORD=.*|POSTGRES_PASSWORD=$value|g" "contrib/docker-ckan/prod.env" > "contrib/docker-ckan/prod.env"
+         
          
          echo INTERNAL_REG=${{ secrets.CONTAINER_REGISTRY_URL }} >> contrib/docker-ckan/prod.env
-         echo "CERT_ARN=${{ secrets.CERT_ARN }}" >> contrib/docker-ckan/prod.env
+         echo "CERT_ARN=${{ secrets.CERT_ARN }}" >> contrib/docker-ckan/.env
           
       - name: Gen Cloud Formation Template - Debug compose file
         run: |

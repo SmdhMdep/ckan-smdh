@@ -1,14 +1,6 @@
 version: "3.8"
 
 volumes:
-  ckan_config:
-    driver_opts:
-      uid: 0
-      gid: 0
-  ckan_home:
-    driver_opts:
-      uid: 0
-      gid: 0
   ckan_storage:
     driver_opts:
       uid: 0
@@ -73,8 +65,6 @@ services:
         condition: service_healthy
 
     volumes:
-      - ckan_config:/etc/ckan
-      - ckan_home:/usr/lib/ckan
       - ckan_storage:/var/lib/ckan
     # restart: unless-stopped
     # healthcheck:
@@ -110,6 +100,8 @@ services:
     networks:
       - ckan-internal
     # restart: unless-stopped
+    volumes:
+      - - solr_data:/var/solr
     healthcheck:
       test: ["CMD", "wget", "-qO", "/dev/null", "http://localhost:8983/solr/"]
 
