@@ -1,5 +1,18 @@
 #!/bin/bash
 
+# This script is run by the ckan container to start CKAN
+
+# Set up the Secret key used by Beaker and Flask
+# This can be overriden using a CKAN___BEAKER__SESSION__SECRET env var
+if grep -E "beaker.session.secret ?= ?$" ckan.ini
+then
+    echo "Setting beaker.session.secret in ini file"
+    ckan config-tool $CKAN_INI "beaker.session.secret=$(python3 -c 'import secrets; print(secrets.token_urlsafe(34))')"
+    JWT_SECRET=$(python3 -c 'import secrets; print("string:" + secrets.token_urlsafe())')
+    ckan config-tool $CKAN_INI "api_token.jwt.encode.secret=${JWT_SECRET}"
+    ckan config-tool $CKAN_INI "api_token.jwt.decode.secret=${JWT_SECRET}"
+fi
+
 # Run the prerun script to init CKAN and create the default admin user
 sudo -u ckan -EH python3 $APP_DIR/prerun_prod.py
 
@@ -33,7 +46,7 @@ ckan config-tool $CKAN_INI "ckan.tracking_enabled = true"
 
 echo "Loading FrontEnd settings into ckan.ini"
 ckan config-tool $CKAN_INI "ckan.site_title = MDEP AEP"
-ckan config-tool $CKAN_INI "ckan.site_logo = /base/images/ckan-logo.png"
+ckan config-tool $CKAN_INI "ckan.site_logo = /base/images/made-smarter-logo-2.png"
 # ckan config-tool $CKAN_INI "ckan.site_description = "
 ckan config-tool $CKAN_INI "ckan.favicon = /base/images/ckan.ico"
 
@@ -45,19 +58,19 @@ ckan config-tool $CKAN_INI "smtp.password = $CKAN_SMTP_PASSWORD"
 ckan config-tool $CKAN_INI "smtp.mail_from = $CKAN_SMTP_MAIL_FROM"
 ckan config-tool $CKAN_INI "smtp.reply_to = $CKAN_SMTP_REPLY_TO"
 
-echo "Loading SAML2 settings into ckan.ini"
-ckan config-tool $CKAN_INI "ckanext.saml2auth.idp_metadata.location = remote"
-ckan config-tool $CKAN_INI "ckanext.saml2auth.idp_metadata.remote_url = $CKANEXT__SAML2AUTH__IDP_METADATA__REMOTE_URL"
-ckan config-tool $CKAN_INI "ckanext.saml2auth.user_firstname = $CKANEXT__SAML2AUTH__USER_FIRSTNAME"
-ckan config-tool $CKAN_INI "ckanext.saml2auth.user_lastname = $CKANEXT__SAML2AUTH__USER_LASTNAME"
-ckan config-tool $CKAN_INI "ckanext.saml2auth.user_fullname = $CKANEXT__SAML2AUTH__USER_FULLNAME"
-ckan config-tool $CKAN_INI "ckanext.saml2auth.user_email = $CKANEXT__SAML2AUTH__USER_EMAIL"
-ckan config-tool $CKAN_INI "ckanext.saml2auth.entity_id = $CKANEXT__SAML2AUTH__ENTITY_ID"
-ckan config-tool $CKAN_INI "ckanext.saml2auth.want_assertions_signed = $CKANEXT__SAML2AUTH__WANT_ASSERTIONS_SIGNED"
-ckan config-tool $CKAN_INI "ckanext.saml2auth.want_response_signed = $CKANEXT__SAML2AUTH__WANT_RESPONSE_SIGNED"
-ckan config-tool $CKAN_INI "ckanext.saml2auth.want_assertions_or_response_signed = $CKANEXT__SAML2AUTH__WANT_ASSERTIONS_OR_RESPONSE_SIGNED"
-ckan config-tool $CKAN_INI "ckanext.saml2auth.logout_expected_binding = $CKANEXT__SAML2AUTH__LOGOUT_EXPECTED_BINDING"
-ckan config-tool $CKAN_INI "ckanext.saml2auth.enable_ckan_internal_login = $CKANEXT__SAML2AUTH__ENABLE_CKAN_INTERNAL_LOGIN"
+# echo "Loading SAML2 settings into ckan.ini"
+# ckan config-tool $CKAN_INI "ckanext.saml2auth.idp_metadata.location = remote"
+# ckan config-tool $CKAN_INI "ckanext.saml2auth.idp_metadata.remote_url = $CKANEXT__SAML2AUTH__IDP_METADATA__REMOTE_URL"
+# ckan config-tool $CKAN_INI "ckanext.saml2auth.user_firstname = $CKANEXT__SAML2AUTH__USER_FIRSTNAME"
+# ckan config-tool $CKAN_INI "ckanext.saml2auth.user_lastname = $CKANEXT__SAML2AUTH__USER_LASTNAME"
+# ckan config-tool $CKAN_INI "ckanext.saml2auth.user_fullname = $CKANEXT__SAML2AUTH__USER_FULLNAME"
+# ckan config-tool $CKAN_INI "ckanext.saml2auth.user_email = $CKANEXT__SAML2AUTH__USER_EMAIL"
+# ckan config-tool $CKAN_INI "ckanext.saml2auth.entity_id = $CKANEXT__SAML2AUTH__ENTITY_ID"
+# ckan config-tool $CKAN_INI "ckanext.saml2auth.want_assertions_signed = $CKANEXT__SAML2AUTH__WANT_ASSERTIONS_SIGNED"
+# ckan config-tool $CKAN_INI "ckanext.saml2auth.want_response_signed = $CKANEXT__SAML2AUTH__WANT_RESPONSE_SIGNED"
+# ckan config-tool $CKAN_INI "ckanext.saml2auth.want_assertions_or_response_signed = $CKANEXT__SAML2AUTH__WANT_ASSERTIONS_OR_RESPONSE_SIGNED"
+# ckan config-tool $CKAN_INI "ckanext.saml2auth.logout_expected_binding = $CKANEXT__SAML2AUTH__LOGOUT_EXPECTED_BINDING"
+# ckan config-tool $CKAN_INI "ckanext.saml2auth.enable_ckan_internal_login = $CKANEXT__SAML2AUTH__ENABLE_CKAN_INTERNAL_LOGIN"
 
 echo "Loading S3Filestore settings into ckan.ini"
 ckan config-tool $CKAN_INI "ckanext.s3filestore.aws_bucket_name = $CKANEXT__S3FILESTORE__AWS_BUCKET_NAME"
