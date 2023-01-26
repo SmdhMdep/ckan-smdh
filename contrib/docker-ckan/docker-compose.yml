@@ -53,7 +53,7 @@ services:
           cpus: '2'
           memory: 30GB
     env_file:
-      - prod.env
+      - .env
     networks:
       - ckan-internal
     depends_on:
