@@ -45,3 +45,7 @@ RUN pip3 install -e 'git+https://github.com/SmdhMdep/ckanext-taglist.git@main#eg
 
 ## GRANULAR VISIBILITY ##
 RUN pip3 install -e 'git+https://github.com/SmdhMdep/ckanext-granularvisibility.git@main#egg=ckanext-granularvisibility'
+
+## GENERAL PUBLIC ##
+RUN pip3 install -e 'git+https://github.com/SmdhMdep/ckanext-generalpublic.git@main#egg=ckanext-generalpublic' && \
+    pip3 install -r ${APP_DIR}/src/ckanext-generalpublic/requirements.txt
