@@ -6,19 +6,19 @@ volumes:
       uid: 0
       gid: 0
       backup_policy: ENABLED
-        lifecycle_policy: AFTER_30_DAYS
+      lifecycle_policy: AFTER_30_DAYS
   pg_data:
     driver_opts:
       uid: 0
       gid: 0
       backup_policy: ENABLED
-        lifecycle_policy: AFTER_30_DAYS
+      lifecycle_policy: AFTER_30_DAYS
   solr_data:
     driver_opts:
       uid: 0
       gid: 0
       backup_policy: ENABLED
-        lifecycle_policy: AFTER_30_DAYS
+      lifecycle_policy: AFTER_30_DAYS
 
 x-aws-loadbalancer: "MDEP-Staging-ALB"
 x-aws-cloudformation:
@@ -44,9 +44,9 @@ services:
     deploy:
       replicas: 2
       x-aws-autoscaling:
-          min: 1
-          max: 3 #required
-          cpu: 75
+        min: 1
+        max: 3 #required
+        cpu: 75
     depends_on:
       ckan:
         condition: service_healthy
@@ -62,9 +62,9 @@ services:
     deploy:
       replicas: 2
       x-aws-autoscaling:
-          min: 1
-          max: 3 #required
-          cpu: 75
+        min: 1
+        max: 3 #required
+        cpu: 75
     env_file:
       - .env
     networks:
@@ -98,9 +98,9 @@ services:
     deploy:
       replicas: 2
       x-aws-autoscaling:
-          min: 1
-          max: 3 #required
-          cpu: 75
+        min: 1
+        max: 3 #required
+        cpu: 75
     environment:
       - DATASTORE_READONLY_PASSWORD=${DATASTORE_READONLY_PASSWORD}
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
