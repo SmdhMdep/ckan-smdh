@@ -1,4 +1,4 @@
-name: Deploy CKAN image
+name: Deploy to ECS
 
 
 on:
