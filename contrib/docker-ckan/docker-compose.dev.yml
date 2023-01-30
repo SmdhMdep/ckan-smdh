@@ -14,6 +14,7 @@ services:
       dockerfile: Dockerfile
       args:
         - TZ=${TZ}
+        - INTERNAL_REG=${INTERNAL_REG}
     env_file:
       - dev.env
     depends_on:
