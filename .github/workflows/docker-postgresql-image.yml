@@ -56,6 +56,9 @@ jobs:
         with:
           file: ./contrib/docker-ckan/postgresql/Dockerfile
           context: ./contrib/docker-ckan/postgresql
+          build-args: |
+            POSTGRES_PASSWORD=${{ secrets.DB_P }}
+            DATASTORE_READONLY_PASSWORD=${{ secrets.DT_P }}
           platforms: linux/amd64
           builder: ${{ steps.buildx.outputs.name }}
           cache-from: type=local,src=/tmp/.buildx-cache
