@@ -21,6 +21,9 @@ on:
       - 'contrib/docker-ckan/prod/**'
       - 'contrib/docker-ckan/docker-compose.dev.yml'
       - 'contrib/docker-ckan/docker-compose.yml'
+      - 'contrib/docker-ckan/dev.env.template'
+      - 'contrib/docker-ckan/prod.env.template'
+      
 
 jobs:
 
