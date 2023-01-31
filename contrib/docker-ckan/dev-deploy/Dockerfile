@@ -7,10 +7,12 @@ FROM ${INTERNAL_REG}/mdepckan/ckan-dev:latest
 ENV APP_DIR=/srv/app
 ENV TZ=UTC
 RUN echo ${TZ} > /etc/timezone
+ENV CKAN_STORAGE_WEBASSETS_PATH=${CKAN_STORAGE_PATH/webassets}
 
 
-RUN mkdir /var/lib/ckan/webassets/.webassets-cache && \
-    chown -R ckan:ckan /var/lib/ckan/webassets/.webassets-cache
+RUN mkdir ${CKAN_WEBASSETS_PATH} && \
+    mkdir ${CKAN_WEBASSETS_PATH}/.webassets-cache && \
+    chown -R ckan:ckan /var/lib/ckan/webassets
 # Make sure both files are not exactly the same
 RUN if ! [ /usr/share/zoneinfo/${TZ} -ef /etc/localtime ]; then \
         cp /usr/share/zoneinfo/${TZ} /etc/localtime ;\
