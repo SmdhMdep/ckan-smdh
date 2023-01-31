@@ -37,14 +37,13 @@ services:
     image: ${INTERNAL_REG}/mdepckan/ckan-nginx:latest
     deploy:
       resources:
-        limits:
-          cpus: '2'
-          memory: 8GB
-#       replicas: 2
-#       x-aws-autoscaling:
-#         min: 2
-#         max: 3
-#         cpu: 75
+         limits:
+           cpus: '2'
+           memory: 8GB
+      x-aws-autoscaling:
+        min: 1
+        max: 3
+        cpu: 75
     depends_on:
       ckan:
         condition: service_healthy
@@ -62,11 +61,11 @@ services:
           limits:
             cpus: '2'
             memory: 16GB
-#       replicas: 2
-#       x-aws-autoscaling:
-#         min: 2
-#         max: 3
-#         cpu: 75
+      replicas: 1
+      x-aws-autoscaling:
+        min: 1
+        max: 3
+        cpu: 75
     env_file:
       - .env
     networks:
@@ -97,6 +96,11 @@ services:
   db:
     container_name: ${POSTGRESQL_CONTAINER_NAME}
     image: ${INTERNAL_REG}/mdepckan/ckan-postgresql:latest
+    deploy:
+      resources:
+          limits:
+            cpus: '2'
+            memory: 8GB
     environment:
       - DATASTORE_READONLY_PASSWORD=${DATASTORE_READONLY_PASSWORD}
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
