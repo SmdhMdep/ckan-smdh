@@ -36,11 +36,15 @@ services:
     container_name: ${NGINX_CONTAINER_NAME}
     image: ${INTERNAL_REG}/mdepckan/ckan-nginx:latest
     deploy:
-      replicas: 2
-      x-aws-autoscaling:
-        min: 2
-        max: 3
-        cpu: 75
+      resources:
+        limits:
+          cpus: 2
+          memory: 8GB
+#       replicas: 2
+#       x-aws-autoscaling:
+#         min: 2
+#         max: 3
+#         cpu: 75
     depends_on:
       ckan:
         condition: service_healthy
@@ -54,11 +58,15 @@ services:
     container_name: ${CKAN_CONTAINER_NAME}
     image: ${INTERNAL_REG}/mdepckan/ckan-deploy:latest
     deploy:
-      replicas: 2
-      x-aws-autoscaling:
-        min: 2
-        max: 3
-        cpu: 75
+      resources:
+          limits:
+            cpus: '2'
+            memory: 16GB
+#       replicas: 2
+#       x-aws-autoscaling:
+#         min: 2
+#         max: 3
+#         cpu: 75
     env_file:
       - .env
     networks:
