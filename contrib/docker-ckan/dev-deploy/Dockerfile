@@ -7,7 +7,7 @@ FROM ${INTERNAL_REG}/mdepckan/ckan-dev:latest
 ENV APP_DIR=/srv/app
 ENV TZ=UTC
 RUN echo ${TZ} > /etc/timezone
-ENV CKAN_STORAGE_WEBASSETS_PATH=${CKAN_STORAGE_PATH/webassets}
+ENV CKAN_STORAGE_WEBASSETS_PATH=${CKAN_STORAGE_PATH}/webassets
 
 
 RUN mkdir ${CKAN_WEBASSETS_PATH} && \
