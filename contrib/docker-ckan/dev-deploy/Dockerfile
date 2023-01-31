@@ -10,8 +10,7 @@ RUN echo ${TZ} > /etc/timezone
 ENV CKAN_STORAGE_WEBASSETS_PATH=${CKAN_STORAGE_PATH}/webassets
 
 
-RUN mkdir ${CKAN_WEBASSETS_PATH} && \
-    mkdir ${CKAN_WEBASSETS_PATH}/.webassets-cache && \
+RUN mkdir -p ${CKAN_WEBASSETS_PATH}/.webassets-cache && \
     chown -R ckan:ckan /var/lib/ckan/webassets
 # Make sure both files are not exactly the same
 RUN if ! [ /usr/share/zoneinfo/${TZ} -ef /etc/localtime ]; then \
