@@ -38,7 +38,7 @@ services:
     deploy:
       resources:
         limits:
-          cpus: 2
+          cpus: '2'
           memory: 8GB
 #       replicas: 2
 #       x-aws-autoscaling:
