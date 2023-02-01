@@ -33,7 +33,6 @@ x-aws-cloudformation:
 
 services:
   nginx:
-    container_name: ${NGINX_CONTAINER_NAME}
     image: ${INTERNAL_REG}/mdepckan/ckan-nginx:latest
     deploy:
       resources:
@@ -54,7 +53,6 @@ services:
 
 
   ckan:
-    container_name: ${CKAN_CONTAINER_NAME}
     image: ${INTERNAL_REG}/mdepckan/ckan-deploy:latest
     deploy:
       replicas: 2
