@@ -3,12 +3,12 @@ name: Deploy to ECS
 
 on:
    workflow_dispatch:
-#    workflow_run:
-#    # only runs additional steps if [ Create Ckan Base image ] was successful
-#     workflows: [ Create Ckan Deployment image ]
-#     types: [ completed ]
-#    push:
-#       branches: [ "deployment-workflow" ]
+   workflow_run:
+    # only runs additional steps if [ Create Ckan Base image ] was successful
+    workflows: [ Create Ckan Deployment image ]
+    types: [ completed ]
+   push:
+       branches: [ "deployment-workflow" ]
 
 
 jobs:
@@ -22,11 +22,11 @@ jobs:
       contents: read
     steps:
       
-#       - name: Validate prerequisites
-#         uses: ahmadnassri/action-workflow-run-wait@2aa3d9e1a12ecaaa9908e368eaf2123bb084323e
-#         with:
-#           timeout: 15000 # we stop trying to check altogether after 15 secs because there is no delay set up; this prevents hanging if the workflow is cancelled
-#           # delay: 60000 # we try to check the status of the prerequisite workflows after 1 min
+      - name: Validate prerequisites
+        uses: ahmadnassri/action-workflow-run-wait@2aa3d9e1a12ecaaa9908e368eaf2123bb084323e
+        with:
+          timeout: 15000 # we stop trying to check altogether after 15 secs because there is no delay set up; this prevents hanging if the workflow is cancelled
+          # delay: 60000 # we try to check the status of the prerequisite workflows after 1 min
       
       - name: Install Docker Compose CLI
         uses: withlogicco/setup-compose-cli@631064dfb7d769983c89a86bd42e6bc7936101dc
