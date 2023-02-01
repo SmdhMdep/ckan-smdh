@@ -81,8 +81,8 @@ services:
     volumes:
       - ckan_storage:/var/lib/ckan
     # restart: unless-stopped
-    # healthcheck:
-    #   test: ["CMD", "wget", "-qO", "/dev/null", "${CKAN_SITE_URL}"]
+    healthcheck:
+      test: ["CMD", "wget", "-qO", "/dev/null", "${CKAN_SITE_URL}"]
     
   datapusher:
     container_name: ${DATAPUSHER_CONTAINER_NAME}
