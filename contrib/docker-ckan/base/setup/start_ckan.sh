@@ -4,6 +4,9 @@
 
 # Set up the Secret key used by Beaker and Flask
 # This can be overriden using a CKAN___BEAKER__SESSION__SECRET env var
+echo "Setting up beaker to use the database instead of disk"
+ckan config-tool $CKAN_INI "beaker.session.type=ext:database"
+
 if grep -E "beaker.session.secret ?= ?$" ckan.ini
 then
     echo "Setting beaker.session.secret in ini file"
