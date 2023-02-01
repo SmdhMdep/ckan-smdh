@@ -57,6 +57,7 @@ services:
     container_name: ${CKAN_CONTAINER_NAME}
     image: ${INTERNAL_REG}/mdepckan/ckan-deploy:latest
     deploy:
+      replicas: 2
       resources:
           limits:
             cpus: '2'
