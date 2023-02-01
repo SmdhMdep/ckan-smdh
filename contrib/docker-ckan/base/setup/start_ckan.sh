@@ -6,15 +6,7 @@
 # This can be overriden using a CKAN___BEAKER__SESSION__SECRET env var
 echo "Setting up beaker to use the database instead of disk"
 ckan config-tool $CKAN_INI "beaker.session.type=ext:database"
-
-if grep -E "beaker.session.secret ?= ?$" ckan.ini
-then
-    echo "Setting beaker.session.secret in ini file"
-    ckan config-tool $CKAN_INI "beaker.session.secret=$(python3 -c 'import secrets; print(secrets.token_urlsafe(34))')"
-    JWT_SECRET=$(python3 -c 'import secrets; print("string:" + secrets.token_urlsafe())')
-    ckan config-tool $CKAN_INI "api_token.jwt.encode.secret=${JWT_SECRET}"
-    ckan config-tool $CKAN_INI "api_token.jwt.decode.secret=${JWT_SECRET}"
-fi
+ckan config-tool $CKAN_INI "beaker.session.url=$CKAN_SQLALCHEMY_URL"
 
 # Run the prerun script to init CKAN and create the default admin user
 sudo -u ckan -EH python3 $APP_DIR/prerun_prod.py
