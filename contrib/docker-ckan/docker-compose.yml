@@ -33,6 +33,7 @@ x-aws-cloudformation:
 
 services:
   nginx:
+    container_name: ${NGINX_CONTAINER_NAME}
     image: ${INTERNAL_REG}/mdepckan/ckan-nginx:latest
     deploy:
       resources:
@@ -43,9 +44,9 @@ services:
 #         min: 1
 #         max: 3
 #         cpu: 75
-    depends_on:
-      ckan:
-        condition: service_healthy
+#     depends_on:
+#       ckan:
+#         condition: service_healthy
     networks:
       - ckan-internal
     ports:
@@ -53,6 +54,7 @@ services:
 
 
   ckan:
+    container_name: ${CKAN_CONTAINER_NAME}
     image: ${INTERNAL_REG}/mdepckan/ckan-deploy:latest
     deploy:
       replicas: 2
