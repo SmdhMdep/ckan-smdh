@@ -88,6 +88,7 @@ then
     # Start supervisord
     supervisord --configuration /etc/supervisord.conf &
     # Start uwsgi
+    echo "STARTING CKAN..."
     sudo -u ckan -EH uwsgi $UWSGI_OPTS
 else
   echo "[prerun] failed...not starting CKAN."
