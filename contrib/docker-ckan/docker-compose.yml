@@ -17,13 +17,13 @@ volumes:
 x-aws-loadbalancer: "MDEP-Staging-ALB"
 x-aws-cloudformation:
   Resources:
-    CkanTCP5000Listener:
+    Ckan5000Listener:
       Properties:
         DefaultActions:
           - ForwardConfig:
               TargetGroups:
                 - TargetGroupArn:
-                    Ref: CkanTCP5000TargetGroup
+                    Ref: Ckan5000TargetGroup
             Type: forward
         Certificates:
           - CertificateArn: "${CERT_ARN}"
@@ -63,7 +63,8 @@ services:
     healthcheck:
       test: ["CMD", "wget", "-qO", "/dev/null", "${CKAN_SITE_URL}"]
     ports:
-      - "${CKAN_PORT_HOST}:${CKAN_PORT}"
+      - target: "${CKAN_PORT_HOST}"
+        x-aws-protocol: http
     
   datapusher:
     container_name: ${DATAPUSHER_CONTAINER_NAME}
