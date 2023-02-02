@@ -37,8 +37,9 @@ services:
     image: ${INTERNAL_REG}/mdepckan/ckan-deploy:latest
     deploy:
       update_config:
-        x-aws-min_percent: 50%
-        x-aws-max_percent: 200%
+        x-aws-min_percent: 50
+        x-aws-max_percent: 200
+      # replicas: 2
       resources:
           limits:
             cpus: '2'
@@ -73,12 +74,8 @@ services:
     image: ckan/ckan-base-datapusher:${DATAPUSHER_VERSION}
     deploy:
       update_config:
-        x-aws-min_percent: 50%
-        x-aws-max_percent: 200%
-      x-aws-autoscaling:
-        min: 2
-        max: 3
-        cpu: 75
+        x-aws-min_percent: 50
+        x-aws-max_percent: 200
     # restart: unless-stopped
     healthcheck:
       test: ["CMD", "wget", "-qO", "/dev/null", "${CKAN_DATAPUSHER_URL}"]
@@ -90,8 +87,8 @@ services:
     image: ${INTERNAL_REG}/mdepckan/ckan-postgresql:latest
     deploy:
       update_config:
-        x-aws-min_percent: 50%
-        x-aws-max_percent: 200%
+        x-aws-min_percent: 50
+        x-aws-max_percent: 200
       resources:
           limits:
             cpus: '2'
@@ -117,12 +114,8 @@ services:
     image: ckan/ckan-solr:${SOLR_IMAGE_VERSION}
     deploy:
       update_config:
-        x-aws-min_percent: 50%
-        x-aws-max_percent: 200%
-      x-aws-autoscaling:
-        min: 2
-        max: 3
-        cpu: 75
+        x-aws-min_percent: 50
+        x-aws-max_percent: 200
     networks:
       - ckan-internal
     # restart: unless-stopped
@@ -136,12 +129,8 @@ services:
     image: redis:${REDIS_VERSION}
     deploy:
       update_config:
-        x-aws-min_percent: 50%
-        x-aws-max_percent: 200%
-      x-aws-autoscaling:
-        min: 2
-        max: 3
-        cpu: 75
+        x-aws-min_percent: 50
+        x-aws-max_percent: 200
     # restart: unless-stopped
     healthcheck:
       test: ["CMD", "redis-cli", "-e", "QUIT"]
