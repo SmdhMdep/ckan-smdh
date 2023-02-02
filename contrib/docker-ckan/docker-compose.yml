@@ -17,13 +17,13 @@ volumes:
 x-aws-loadbalancer: "MDEP-Staging-ALB"
 x-aws-cloudformation:
   Resources:
-    CkanTCP5000Listener:
+    Ckan5000Listener:
       Properties:
         DefaultActions:
           - ForwardConfig:
               TargetGroups:
                 - TargetGroupArn:
-                    Ref: CkanTCP5000TargetGroup
+                    Ref: Ckan5000TargetGroup
             Type: forward
         Certificates:
           - CertificateArn: "${CERT_ARN}"
@@ -36,15 +36,18 @@ services:
     container_name: ${CKAN_CONTAINER_NAME}
     image: ${INTERNAL_REG}/mdepckan/ckan-deploy:latest
     deploy:
+      update_config:
+        x-aws-min_percent: 50
+        x-aws-max_percent: 200
       # replicas: 2
       resources:
           limits:
             cpus: '2'
             memory: 16GB
-#       x-aws-autoscaling:
-#         min: 1
-#         max: 3
-#         cpu: 75
+      x-aws-autoscaling:
+        min: 2
+        max: 4
+        cpu: 75
     env_file:
       - .env
     networks:
@@ -63,11 +66,16 @@ services:
     healthcheck:
       test: ["CMD", "wget", "-qO", "/dev/null", "${CKAN_SITE_URL}"]
     ports:
-      - "${CKAN_PORT_HOST}:${CKAN_PORT}"
+      - target: "${CKAN_PORT_HOST}"
+        x-aws-protocol: http
     
   datapusher:
     container_name: ${DATAPUSHER_CONTAINER_NAME}
     image: ckan/ckan-base-datapusher:${DATAPUSHER_VERSION}
+    deploy:
+      update_config:
+        x-aws-min_percent: 50
+        x-aws-max_percent: 200
     # restart: unless-stopped
     healthcheck:
       test: ["CMD", "wget", "-qO", "/dev/null", "${CKAN_DATAPUSHER_URL}"]
@@ -78,10 +86,17 @@ services:
     container_name: ${POSTGRESQL_CONTAINER_NAME}
     image: ${INTERNAL_REG}/mdepckan/ckan-postgresql:latest
     deploy:
+      update_config:
+        x-aws-min_percent: 50
+        x-aws-max_percent: 200
       resources:
           limits:
             cpus: '2'
             memory: 8GB
+      x-aws-autoscaling:
+        min: 2
+        max: 3
+        cpu: 75
     environment:
       - DATASTORE_READONLY_PASSWORD=${DATASTORE_READONLY_PASSWORD}
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
@@ -97,6 +112,10 @@ services:
   solr:
     container_name: ${SOLR_CONTAINER_NAME}
     image: ckan/ckan-solr:${SOLR_IMAGE_VERSION}
+    deploy:
+      update_config:
+        x-aws-min_percent: 50
+        x-aws-max_percent: 200
     networks:
       - ckan-internal
     # restart: unless-stopped
@@ -108,6 +127,10 @@ services:
   redis:
     container_name: ${REDIS_CONTAINER_NAME}
     image: redis:${REDIS_VERSION}
+    deploy:
+      update_config:
+        x-aws-min_percent: 50
+        x-aws-max_percent: 200
     # restart: unless-stopped
     healthcheck:
       test: ["CMD", "redis-cli", "-e", "QUIT"]
