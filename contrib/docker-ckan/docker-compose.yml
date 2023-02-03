@@ -13,6 +13,10 @@ volumes:
     driver_opts:
       uid: 0
       gid: 0
+  redis_data:
+    driver_opts:
+      uid: 0
+      gid: 0
 
 x-aws-loadbalancer: "MDEP-Staging-ALB"
 x-aws-cloudformation:
@@ -136,6 +140,9 @@ services:
       test: ["CMD", "redis-cli", "-e", "QUIT"]
     networks:
       - ckan-internal
+    volumes:
+      - redis_data:/data
+    privileged: true
 
 networks:
     ckan-internal:
