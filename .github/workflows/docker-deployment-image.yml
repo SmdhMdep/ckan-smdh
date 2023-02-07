@@ -1,6 +1,8 @@
 name: Create Ckan Deployment image
 
 on:
+   repository_dispatch:
+      types: [ Build Docker Image - dispatch ]
    workflow_dispatch:
    workflow_run:
    # only runs additional steps if [ Create Ckan Base image ] was successful
@@ -42,8 +44,13 @@ jobs:
       
       # TODO: use Docker Metadata action in the future to manage the semantic versioning of images
       - name: Set sha output
-        id: sha
-        run: echo "::set-output name=sha::$(git rev-parse --short HEAD)"
+        id: tags
+        run: |
+         if [ ${{ github.event_name }} == "repository_dispatch" ]; then
+            echo "::set-output name=tag::'${{ github.event.client_payload.satellite_repo}}-${{ github.event.client_payload.merge_commit_sha}}'"
+         else
+            echo "::set-output name=tag::$(git rev-parse --short HEAD)"
+         fi
 
       - name: Build and push
         id: docker_build
@@ -58,7 +65,7 @@ jobs:
           # don't push the image if it's a pull request, only build it which is a way of testing if the image can be successfully built
           push: ${{ github.event_name != 'pull_request' }}
           tags: |
-            ${{ secrets.CONTAINER_REGISTRY_URL }}/mdepckan/ckan-deploy:${{ steps.sha.outputs.sha }}
+            ${{ secrets.CONTAINER_REGISTRY_URL }}/mdepckan/ckan-deploy:${{ steps.tags.outputs.tag }}
             ${{ secrets.CONTAINER_REGISTRY_URL }}/mdepckan/ckan-deploy:latest
           # labels: ${{ steps.docker_meta.outputs.labels }}
           build-args: |
