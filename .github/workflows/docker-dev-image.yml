@@ -47,7 +47,7 @@ jobs:
         id: tags
         run: |
          if [ ${{ github.event_name }} == "repository_dispatch" ]; then
-            echo "::set-output name=tag::'${{ github.event.client_payload.satellite_repo}}-${{ github.event.client_payload.merge_commit_sha}}'"
+            echo "::set-output name=tag::${{ github.event.client_payload.satellite_repo}}-${{ github.event.client_payload.merge_commit_sha }}"
          else
             echo "::set-output name=tag::$(git rev-parse --short HEAD)"
          fi
