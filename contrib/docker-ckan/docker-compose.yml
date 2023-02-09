@@ -13,6 +13,10 @@ volumes:
     driver_opts:
       uid: 0
       gid: 0
+  redis_data:
+    driver_opts:
+      uid: 0
+      gid: 0
 
 x-aws-loadbalancer: "MDEP-Staging-ALB"
 x-aws-cloudformation:
@@ -93,10 +97,6 @@ services:
           limits:
             cpus: '2'
             memory: 8GB
-      x-aws-autoscaling:
-        min: 2
-        max: 3
-        cpu: 75
     environment:
       - DATASTORE_READONLY_PASSWORD=${DATASTORE_READONLY_PASSWORD}
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
@@ -136,6 +136,9 @@ services:
       test: ["CMD", "redis-cli", "-e", "QUIT"]
     networks:
       - ckan-internal
+    volumes:
+      - redis_data:/data
+    privileged: true
 
 networks:
     ckan-internal:
