@@ -3,20 +3,20 @@ version: "3.8"
 volumes:
   ckan_storage:
     driver_opts:
-      uid: 0
-      gid: 0
+      uid: 92
+      gid: 92
   pg_data:
     driver_opts:
-      uid: 0
-      gid: 0
+      uid: 70
+      gid: 70
   solr_data:
     driver_opts:
-      uid: 0
-      gid: 0
+      uid: 8983
+      gid: 8983
   redis_data:
     driver_opts:
-      uid: 0
-      gid: 0
+      uid: 999
+      gid: 999
 
 x-aws-loadbalancer: "MDEP-Staging-ALB"
 x-aws-cloudformation:
