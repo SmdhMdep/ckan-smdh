@@ -3,16 +3,16 @@ version: "3.8"
 volumes:
   ckan_storage:
     driver_opts:
-      uid: 92
-      gid: 92
+      uid: 0
+      gid: 0
   pg_data:
     driver_opts:
-      uid: 70
-      gid: 70
+      uid: 0
+      gid: 0
   solr_data:
     driver_opts:
-      uid: 8983
-      gid: 8983
+      uid: 0
+      gid: 0
   redis_data:
     driver_opts:
       uid: 999
@@ -127,6 +127,7 @@ services:
   redis:
     container_name: ${REDIS_CONTAINER_NAME}
     image: redis:${REDIS_VERSION}
+    user: "redis:redis"
     deploy:
       update_config:
         x-aws-min_percent: 50
