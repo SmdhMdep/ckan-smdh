@@ -139,7 +139,6 @@ services:
       - ckan-internal
     volumes:
       - redis_data:/data
-    privileged: true
 
 networks:
     ckan-internal:
