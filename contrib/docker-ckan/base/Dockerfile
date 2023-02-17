@@ -14,7 +14,7 @@ ENV CKAN_SITE_URL=http://localhost:5000
 ENV CKAN__PLUGINS image_view text_view recline_view datastore datapusher envvars
 
 # UWSGI options
-ENV UWSGI_HARAKIRI=50
+ENV UWSGI_HARAKIRI=360
 
 WORKDIR ${APP_DIR}
 
