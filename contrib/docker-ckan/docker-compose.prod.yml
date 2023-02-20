@@ -17,15 +17,6 @@ x-aws-cloudformation:
     # create our own LB side security group for the ckan_internal network
     # which we attach to the ALB (manually) - all this will be done automatically in the future with udpates to compose-cli hopefully
     # see https://github.com/docker/compose-cli/pull/2215
-    CkanLB:
-      Properties:
-        GroupDescription: Security group for ckan-LB comm
-        Tags:
-          - Key: com.docker.compose.project
-            Value: docker-ckan
-          - Key: com.docker.compose.network
-            Value: docker-ckan_ckan-internal
-      Type: AWS::EC2::SecurityGroup
     CkanLB5000Ingress:
       Properties:
         CidrIp: 0.0.0.0/0
@@ -36,3 +27,13 @@ x-aws-cloudformation:
         IpProtocol: TCP
         ToPort: 5000
       Type: AWS::EC2::SecurityGroupIngress
+    CkanLB:
+      Properties:
+        GroupDescription: Security group for ckan-LB comm
+        Tags:
+          - Key: com.docker.compose.project
+            Value: docker-ckan
+          - Key: com.docker.compose.network
+            Value: docker-ckan_ckan-internal
+      Type: AWS::EC2::SecurityGroup
+ 
