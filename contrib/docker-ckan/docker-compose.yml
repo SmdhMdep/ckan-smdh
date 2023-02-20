@@ -37,6 +37,9 @@ x-aws-cloudformation:
     Ckaninternal5000Ingress:
       Properties:
         Description: LB side comm with ckan:5000
+        FromPort: 5000
+        ToPort: 5000
+        IpProtocol: TCP
         GroupId:
           Ref: CkaninternalNetwork
         IpProtocol: "-1"
