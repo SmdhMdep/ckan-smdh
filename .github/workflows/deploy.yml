@@ -72,4 +72,4 @@ jobs:
           
       - name: Start the Stack
         run: |
-         docker compose -f contrib/docker-ckan/docker-compose.yml --env-file contrib/docker-ckan/.env up
+         docker compose -f contrib/docker-ckan/docker-compose.yml -f contrib/docker-ckan/docker-compose.prod.yml --env-file contrib/docker-ckan/.env up
