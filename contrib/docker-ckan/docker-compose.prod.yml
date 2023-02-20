@@ -26,3 +26,13 @@ x-aws-cloudformation:
           - Key: com.docker.compose.network
             Value: docker-ckan_ckan-internal
       Type: AWS::EC2::SecurityGroup
+    CkanLB5000Ingress:
+      Properties:
+        CidrIp: 0.0.0.0/0
+        Description: 5000/tcp on CkanLB
+        FromPort: 5000
+        GroupId:
+          Ref: CkanLB
+        IpProtocol: TCP
+        ToPort: 5000
+      Type: AWS::EC2::SecurityGroupIngress
