@@ -44,7 +44,7 @@ x-aws-cloudformation:
           Ref: CkanLB
       Type: AWS::EC2::SecurityGroupIngress
     # create our own LB side security group for the ckan_internal network
-    # qhich we attach to the ALB
+    # which we attach to the ALB
     CkanLB:
       Properties:
         GroupDescription: Security group for ckan-LB comm
