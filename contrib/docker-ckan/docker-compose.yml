@@ -60,6 +60,10 @@ services:
     container_name: ${DATAPUSHER_CONTAINER_NAME}
     image: ckan/ckan-base-datapusher:${DATAPUSHER_VERSION}
     deploy:
+      resources:
+          limits:
+            cpus: '1'
+            memory: 4GB
       update_config:
         x-aws-min_percent: 50
         x-aws-max_percent: 200
@@ -99,7 +103,7 @@ services:
       resources:
           limits:
             cpus: '2'
-            memory: 16GB
+            memory: 8GB
       update_config:
         x-aws-min_percent: 50
         x-aws-max_percent: 200
@@ -116,6 +120,10 @@ services:
     image: redis:${REDIS_VERSION}
     # user: "redis:redis"
     deploy:
+      resources:
+          limits:
+            cpus: '1'
+            memory: 4GB
       update_config:
         x-aws-min_percent: 50
         x-aws-max_percent: 200
