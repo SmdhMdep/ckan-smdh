@@ -96,6 +96,10 @@ services:
     container_name: ${SOLR_CONTAINER_NAME}
     image: ckan/ckan-solr:${SOLR_IMAGE_VERSION}
     deploy:
+      resources:
+          limits:
+            cpus: '2'
+            memory: 16GB
       update_config:
         x-aws-min_percent: 50
         x-aws-max_percent: 200
