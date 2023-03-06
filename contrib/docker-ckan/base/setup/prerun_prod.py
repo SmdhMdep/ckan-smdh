@@ -90,7 +90,6 @@ def check_solr_connection(retry=None):
         schema_name = json.loads(conn_info)
         if 'ckan' in schema_name['name']:
             print('[prerun] Succesfully connected to solr and CKAN schema loaded')  # noqa
-            print('[prerun] Succesfully connected to solr, but CKAN schema not found')  # noqa
 
 
 def init_db():
