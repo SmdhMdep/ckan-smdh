@@ -51,7 +51,7 @@ services:
       - ckan_storage:/var/lib/ckan
     # restart: unless-stopped
     healthcheck:
-      test: ["CMD", "wget", "-qO", "/dev/null", "${CKAN_SITE_URL}"]
+      test: ["CMD", "wget", "-qO", "/dev/null", "${CKAN_SITE_URL}/api/3/action/license_list"]
     ports:
       - target: "${CKAN_PORT_HOST}"
         x-aws-protocol: http
