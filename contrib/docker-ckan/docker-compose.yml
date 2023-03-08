@@ -63,6 +63,10 @@ services:
       update_config:
         x-aws-min_percent: 50
         x-aws-max_percent: 200
+      resources:
+          limits:
+            cpus: '1'
+            memory: 4GB
     # restart: unless-stopped
     healthcheck:
       test: ["CMD", "wget", "-qO", "/dev/null", "${CKAN_DATAPUSHER_URL}"]
@@ -119,6 +123,10 @@ services:
       update_config:
         x-aws-min_percent: 50
         x-aws-max_percent: 200
+      resources:
+          limits:
+            cpus: '1'
+            memory: 4GB
     # restart: unless-stopped
     healthcheck:
       test: ["CMD", "redis-cli", "-e", "QUIT"]

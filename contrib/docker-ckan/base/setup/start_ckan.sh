@@ -2,11 +2,12 @@
 
 # This script is run by the ckan container to start CKAN
 
-# Set up the Secret key used by Beaker and Flask
-# This can be overriden using a CKAN___BEAKER__SESSION__SECRET env var
 echo "Setting up beaker to use the database instead of disk"
-ckan config-tool $CKAN_INI "beaker.session.type=ext:database"
-ckan config-tool $CKAN_INI "beaker.session.url=$CKAN_SQLALCHEMY_URL"
+ckan config-tool $CKAN_INI "beaker.session.type = ext:database"
+ckan config-tool $CKAN_INI "beaker.session.url = $CKAN_SQLALCHEMY_URL"
+
+echo "Setting up session timeout"
+ckan config-tool $CKAN_INI "who.timeout = $CKAN_SESSION_TIMEOUT"
 
 # Run the prerun script to init CKAN and create the default admin user
 sudo -u ckan -EH python3 $APP_DIR/prerun_prod.py
