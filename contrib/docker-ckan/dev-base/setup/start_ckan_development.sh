@@ -56,6 +56,13 @@ done
 echo "Enabling debug mode"
 ckan config-tool $CKAN_INI -s DEFAULT "debug = true"
 
+echo "Setting up beaker to use the database instead of disk"
+ckan config-tool $CKAN_INI "beaker.session.type = ext:database"
+ckan config-tool $CKAN_INI "beaker.session.url = $CKAN_SQLALCHEMY_URL"
+
+echo "Setting up session timeout"
+ckan config-tool $CKAN_INI "who.timeout = $CKAN_SESSION_TIMEOUT"
+
 # Update the plugins setting in the ini file with the values defined in the env var
 echo "Loading the following plugins: $CKAN__PLUGINS"
 ckan config-tool $CKAN_INI "ckan.plugins = $CKAN__PLUGINS"

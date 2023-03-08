@@ -95,8 +95,7 @@ COPY ./contrib/docker-ckan/base/setup/start_ckan.sh ${APP_DIR}
 ADD https://raw.githubusercontent.com/SmdhMdep/ckan-smdh/main/wsgi.py ${APP_DIR}
 
 # Create entrypoint directory for children image scripts
-ONBUILD RUN mkdir /docker-entrypoint.d && \
-    echo '@hourly ckan -c /srv/app/ckan.ini tracking update  && ckan -c /srv/app/ckan.ini search-index rebuild -r' >> /var/spool/cron/crontabs/root
+ONBUILD RUN mkdir /docker-entrypoint.d
 
 RUN chown ckan -R /srv/app \
     && chmod +x ${APP_DIR}/start_ckan.sh
