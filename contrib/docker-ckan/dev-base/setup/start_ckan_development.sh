@@ -1,15 +1,16 @@
 #!/bin/bash
 
-# Set up the Secret key used by Beaker and Flask
-# This can be overriden using a CKAN___BEAKER__SESSION__SECRET env var
-# if grep -E "beaker.session.secret ?= ?$" ckan.ini
-# then
-#     echo "Setting beaker.session.secret in ini file"
-#     ckan config-tool $CKAN_INI "beaker.session.secret=$(python3 -c 'import secrets; print(secrets.token_urlsafe(30))')"
-#     JWT_SECRET=$(python3 -c 'import secrets; print("string:" + secrets.token_urlsafe())')
-#     ckan config-tool $CKAN_INI "api_token.jwt.encode.secret=${JWT_SECRET}"
-#     ckan config-tool $CKAN_INI "api_token.jwt.decode.secret=${JWT_SECRET}"
-# fi
+# Run the prerun script to init CKAN and create the default admin user
+sudo -u ckan -EH python3 $APP_DIR/prerun.py
+echo "Running prerun script"
+sudo -u ckan -EH python3 $APP_DIR/prerun.py
+
+echo "Override ckan.ini sqlalchemy.url default value"
+ckan config-tool $CKAN_INI "sqlalchemy.url = $CKAN_SQLALCHEMY_URL"
+
+echo "Override ckan.ini datastore settings"
+ckan config-tool $CKAN_INI "ckan.datastore.write_url = $CKAN_DATASTORE_WRITE_URL"
+ckan config-tool $CKAN_INI "ckan.datastore.read_url = $CKAN_DATASTORE_READ_URL"
 
 # Install any local extensions in the src_extensions volume
 echo "Looking for local extensions to install..."
@@ -123,9 +124,6 @@ echo "Loading Private Datasets settinngs into ckan.ini"
 ckan config-tool $CKAN_INI "ckan.privatedatasets.parser = $CKAN__PRIVATEDATASETS__PARSER"
 # ckan config-tool $CKAN_INI "ckan.privatedatasets.show_acquire_url_on_create = $CKAN__PRIVATEDATASETS__SHOW_ACQUIRE_URL_ON_CREATE"
 # ckan config-tool $CKAN_INI "ckan.privatedatasets.show_acquire_url_on_edit = $CKAN__PRIVATEDATASETS__SHOW_ACQUIRE_URL_ON_EDIT"
-
-# Run the prerun script to init CKAN and create the default admin user
-sudo -u ckan -EH python3 $APP_DIR/prerun.py
 
 # Run any startup scripts provided by images extending this one
 if [[ -d "/docker-entrypoint.d" ]]

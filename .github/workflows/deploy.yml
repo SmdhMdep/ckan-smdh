@@ -54,6 +54,7 @@ jobs:
       - name: Update env file
         run: | 
          sed -e 's|^POSTGRES_PASSWORD=.*|POSTGRES_PASSWORD=${{ secrets.DB_P }}|g
+         s|^POSTGRES_HOST=.*|POSTGRES_HOST=${{ secrets.PG_HOST }}|g
          s|^DATASTORE_READONLY_PASSWORD=.*|DATASTORE_READONLY_PASSWORD=${{ secrets.DT_P }}|g
          s|^CKAN_SMTP_SERVER=.*|CKAN_SMTP_SERVER=${{ secrets.SMTP_SRV }}|g
          s|^CKAN_SITE_URL=.*|CKAN_SITE_URL=${{ secrets.MDEP_URL }}|g

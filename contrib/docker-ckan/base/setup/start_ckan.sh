@@ -2,6 +2,17 @@
 
 # This script is run by the ckan container to start CKAN
 
+# Run the prerun script to init CKAN and create the default admin user
+echo "Running prerun script"
+sudo -u ckan -EH python3 $APP_DIR/prerun_prod.py
+
+echo "Override ckan.ini sqlalchemy.url default value"
+ckan config-tool $CKAN_INI "sqlalchemy.url = $CKAN_SQLALCHEMY_URL"
+
+echo "Override ckan.ini datastore settings"
+ckan config-tool $CKAN_INI "ckan.datastore.write_url = $CKAN_DATASTORE_WRITE_URL"
+ckan config-tool $CKAN_INI "ckan.datastore.read_url = $CKAN_DATASTORE_READ_URL"
+
 echo "Setting up beaker to use the database instead of disk"
 ckan config-tool $CKAN_INI "beaker.session.type = ext:database"
 ckan config-tool $CKAN_INI "beaker.session.url = $CKAN_SQLALCHEMY_URL"
@@ -9,8 +20,6 @@ ckan config-tool $CKAN_INI "beaker.session.url = $CKAN_SQLALCHEMY_URL"
 echo "Setting up session timeout"
 ckan config-tool $CKAN_INI "who.timeout = $CKAN_SESSION_TIMEOUT"
 
-# Run the prerun script to init CKAN and create the default admin user
-sudo -u ckan -EH python3 $APP_DIR/prerun_prod.py
 
 # Run any startup scripts provided by images extending this one
 if [[ -d "/docker-entrypoint.d" ]]
