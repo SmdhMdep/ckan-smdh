@@ -1,7 +1,6 @@
 ARG INTERNAL_REG
 
 FROM ${INTERNAL_REG}/mdepckan/ckan-base:latest
-#FROM ckan/ckan-base:2.9.7
 
 # Set up environment variables
 ENV APP_DIR=/srv/app

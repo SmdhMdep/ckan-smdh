@@ -5,10 +5,6 @@ volumes:
     driver_opts:
       uid: 0
       gid: 0
-  pg_data:
-    driver_opts:
-      uid: 0
-      gid: 0
   solr_data:
     driver_opts:
       uid: 0
@@ -26,7 +22,7 @@ services:
       update_config:
         x-aws-min_percent: 50
         x-aws-max_percent: 200
-      # replicas: 2
+      replicas: 2
       resources:
           limits:
             cpus: '2'
@@ -40,8 +36,6 @@ services:
     networks:
       - ckan-internal
     depends_on:
-      db:
-        condition: service_healthy
       solr:
         condition: service_healthy
       redis:
@@ -49,9 +43,6 @@ services:
 
     volumes:
       - ckan_storage:/var/lib/ckan
-    # restart: unless-stopped
-    healthcheck:
-      test: ["CMD", "wget", "-qO", "/dev/null", "${CKAN_SITE_URL}/api/3/action/license_list"]
     ports:
       - target: "${CKAN_PORT_HOST}"
         x-aws-protocol: http
@@ -67,32 +58,7 @@ services:
           limits:
             cpus: '1'
             memory: 4GB
-    # restart: unless-stopped
-    healthcheck:
-      test: ["CMD", "wget", "-qO", "/dev/null", "${CKAN_DATAPUSHER_URL}"]
-    networks:
-      - ckan-internal
-
-  db:
-    container_name: ${POSTGRESQL_CONTAINER_NAME}
-    image: ${INTERNAL_REG}/mdepckan/ckan-postgresql:latest
-    deploy:
-      update_config:
-        x-aws-min_percent: 50
-        x-aws-max_percent: 200
-      resources:
-          limits:
-            cpus: '2'
-            memory: 8GB
-    environment:
-      - DATASTORE_READONLY_PASSWORD=${DATASTORE_READONLY_PASSWORD}
-      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
-      - PGDATA=/var/lib/postgresql/data/db
-    volumes:
-      - pg_data:/var/lib/postgresql/data
-    # restart: unless-stopped
-    healthcheck:
-      test: ["CMD", "pg_isready", "-U", "ckan"]
+   
     networks:
       - ckan-internal
      
@@ -103,7 +69,7 @@ services:
       resources:
           limits:
             cpus: '2'
-            memory: 16GB
+            memory: 4GB
       update_config:
         x-aws-min_percent: 50
         x-aws-max_percent: 200
@@ -112,8 +78,6 @@ services:
     # restart: unless-stopped
     volumes:
       - solr_data:/var/solr
-    healthcheck:
-      test: ["CMD", "wget", "-qO", "/dev/null", "http://localhost:8983/solr/"]
 
   redis:
     container_name: ${REDIS_CONTAINER_NAME}
@@ -127,9 +91,6 @@ services:
           limits:
             cpus: '1'
             memory: 4GB
-    # restart: unless-stopped
-    healthcheck:
-      test: ["CMD", "redis-cli", "-e", "QUIT"]
     networks:
       - ckan-internal
     volumes:
