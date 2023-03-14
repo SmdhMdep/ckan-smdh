@@ -43,7 +43,7 @@ UWSGI_OPTS="--plugins http,python \
             --http 0.0.0.0:5000 \
             --master --enable-threads \
             --lazy-apps \
-            -p 2 -L -b 32768 --vacuum \
+            -p 3 -L -b 32768 --vacuum \
             --harakiri $UWSGI_HARAKIRI"
 
 echo "Enabling ckan tracking"
