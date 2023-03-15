@@ -40,12 +40,14 @@ services:
         condition: service_healthy
       redis:
         condition: service_healthy
-
     volumes:
       - ckan_storage:/var/lib/ckan
     ports:
       - target: "${CKAN_PORT_HOST}"
         x-aws-protocol: http
+    healthcheck:
+      test: ["CMD", "wget", "-qO", "/dev/null", "${CKAN_SITE_URL}/api/3/action/status_show"]
+
     
   datapusher:
     container_name: ${DATAPUSHER_CONTAINER_NAME}
