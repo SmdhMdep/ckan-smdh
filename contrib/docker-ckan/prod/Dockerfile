@@ -15,7 +15,7 @@ RUN if ! [ /usr/share/zoneinfo/${TZ} -ef /etc/localtime ]; then \
 ### SSO ###
 RUN pip3 install -e 'git+https://github.com/SmdhMdep/ckanext-sso.git@main#egg=ckanext-sso' && \ 
    pip3 install -r ${APP_DIR}/src/ckanext-sso/requirements.txt
-#    pip3 install -U requests[security]
+
 ## SAML2AUTH ###
 RUN pip3 install -e 'git+https://github.com/SmdhMdep/ckanext-saml2auth.git@main#egg=ckanext-saml2auth'
 
