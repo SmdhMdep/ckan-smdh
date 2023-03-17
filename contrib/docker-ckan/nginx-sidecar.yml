@@ -2,7 +2,7 @@ DependsOn:
   - Condition: START
     ContainerName: ckan
 Essential: true
-Image: 450869586150.dkr.ecr.eu-west-2.amazonaws.com/mdepckan/nginx:latest
+Image: 450869586150.dkr.ecr.eu-west-2.amazonaws.com/mdepckan/ckan-nginx:latest
 Name: nginx
 LogConfiguration:
   LogDriver: awslogs
