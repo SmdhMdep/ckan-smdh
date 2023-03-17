@@ -1,0 +1,16 @@
+DependsOn:
+  - Condition: START
+    ContainerName: ckan
+Essential: true
+Image: 450869586150.dkr.ecr.eu-west-2.amazonaws.com/mdepckan/nginx:latest
+Name: nginx
+LogConfiguration:
+  LogDriver: awslogs
+  Options:
+    awslogs-group:
+      Ref: LogGroup
+    awslogs-region:
+      Ref: AWS::Region
+    awslogs-stream-prefix: docker-ckan
+PortMappings:
+  - ContainerPort: 80

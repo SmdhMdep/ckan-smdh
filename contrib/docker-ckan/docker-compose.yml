@@ -43,8 +43,7 @@ services:
     volumes:
       - ckan_storage:/var/lib/ckan
     ports:
-      - target: "${CKAN_PORT_HOST}"
-        x-aws-protocol: http
+      - "${NGINX_PORT_HOST}:${NGINX_PORT}"
     healthcheck:
       test: ["CMD", "wget", "-qO", "/dev/null", "${CKAN_SITE_URL}/api/3/action/status_show"]
 
