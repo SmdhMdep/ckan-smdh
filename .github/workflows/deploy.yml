@@ -76,6 +76,7 @@ jobs:
         
       - name: Deploy to ECS
         run: |
+         cd ./contrib/docker-ckan \
          docker compose \ 
          -f contrib/docker-ckan/docker-compose.yml \
          -f  cf_temp.yml \
