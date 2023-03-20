@@ -1,6 +1,6 @@
 DependsOn:
-  - Condition: START
-    ContainerName: ckan
+  - Condition: SUCCESS
+    ContainerName: ckan_health_check
 Essential: true
 Image: 450869586150.dkr.ecr.eu-west-2.amazonaws.com/mdepckan/ckan-nginx:latest
 Name: nginx
@@ -14,3 +14,9 @@ LogConfiguration:
     awslogs-stream-prefix: docker-ckan
 PortMappings:
   - ContainerPort: 80
+    HostPort: 80
+    Protocol: tcp
+Ulimits:
+  - Name: nofile
+    SoftLimit: 20000
+    HardLimit: 20000

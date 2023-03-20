@@ -71,11 +71,13 @@ jobs:
          echo INTERNAL_REG=${{ secrets.CONTAINER_REGISTRY_URL }} >> contrib/docker-ckan/.env
          echo "CERT_ARN=${{ secrets.CERT_ARN }}" >> contrib/docker-ckan/.env
           
-      - name: Start the Stack
+      - name: Prepare CF template
+        run: ./inject-sidecar.sh
+        
+      - name: Deploy to ECS
         run: |
          docker compose \ 
          -f contrib/docker-ckan/docker-compose.yml \
-         -f contrib/docker-ckan/docker-compose.prod.yml \
-         -f <(./inject-sidecar.sh) \
+         -f  cf_temp.yml \
          --env-file contrib/docker-ckan/.env \
          up

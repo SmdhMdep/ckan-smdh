@@ -1,0 +1,18 @@
+DependsOn:
+  - Condition: SUCCESS
+    ContainerName: Ckan_ResolvConf_InitContainer
+  - Condition: START
+    ContainerName: ckan
+Name: ckan_health_check
+Image: 450869586150.dkr.ecr.eu-west-2.amazonaws.com/mdepckan/ckan-deploy:latest
+Command:
+    - /srv/app/health_check.sh
+LogConfiguration:
+  LogDriver: awslogs
+  Options:
+    awslogs-group:
+      Ref: LogGroup
+    awslogs-region:
+      Ref: AWS::Region
+    awslogs-stream-prefix: docker-ckan
+Essential: false

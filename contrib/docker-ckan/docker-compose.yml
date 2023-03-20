@@ -31,6 +31,10 @@ services:
         min: 2
         max: 4
         cpu: 75
+    ulimits:
+      nofile:
+        soft: 20000
+        hard: 20000
     env_file:
       - .env
     networks:

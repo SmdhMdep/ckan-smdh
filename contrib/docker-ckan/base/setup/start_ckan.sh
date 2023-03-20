@@ -9,6 +9,12 @@ sudo -u ckan -EH python3 $APP_DIR/prerun_prod.py
 echo "Override ckan.ini sqlalchemy.url default value"
 ckan config-tool $CKAN_INI "sqlalchemy.url = $CKAN_SQLALCHEMY_URL"
 
+echo "Override SQLAlchemy config"
+ckan config-tool $CKAN_INI "sqlalchemy.pool_size = 10"
+ckan config-tool $CKAN_INI "sqlalchemy.pool_timeout = 30"
+ckan config-tool $CKAN_INI "sqlalchemy.max_overflow = 10"
+ckan config-tool $CKAN_INI "sqlalchemy.pool_recycle = 1800"
+
 echo "Override ckan.ini datastore settings"
 ckan config-tool $CKAN_INI "ckan.datastore.write_url = $CKAN_DATASTORE_WRITE_URL"
 ckan config-tool $CKAN_INI "ckan.datastore.read_url = $CKAN_DATASTORE_READ_URL"
