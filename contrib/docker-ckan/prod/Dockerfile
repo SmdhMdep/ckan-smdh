@@ -48,3 +48,11 @@ RUN pip3 install -e 'git+https://github.com/SmdhMdep/ckanext-granularvisibility.
 ## GENERAL PUBLIC ##
 RUN pip3 install -e 'git+https://github.com/SmdhMdep/ckanext-generalpublic.git@main#egg=ckanext-generalpublic' && \
     pip3 install -r ${APP_DIR}/src/ckanext-generalpublic/requirements.txt
+
+# Copy the healthcheck script
+COPY health_check.sh ${APP_DIR}/health_check.sh
+RUN chmod +x ${APP_DIR}/health_check.sh
+
+# Copy the tracking cron job script
+COPY tracking_cron_job.sh ${APP_DIR}/tracking_cron_job.sh
+RUN chmod +x ${APP_DIR}/tracking_cron_job.sh
