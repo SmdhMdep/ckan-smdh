@@ -50,9 +50,9 @@ RUN pip3 install -e 'git+https://github.com/SmdhMdep/ckanext-generalpublic.git@m
     pip3 install -r ${APP_DIR}/src/ckanext-generalpublic/requirements.txt
 
 # Copy the healthcheck script
-COPY contrib/docker-ckan/health_check.sh ${APP_DIR}/health_check.sh
+COPY contrib/docker-ckan/prod/health_check.sh ${APP_DIR}/health_check.sh
 RUN chmod +x ${APP_DIR}/health_check.sh
 
 # Copy the tracking cron job script
-COPY contrib/docker-ckan/tracking_cron_job.sh ${APP_DIR}/tracking_cron_job.sh
+COPY contrib/docker-ckan/prod/tracking_cron_job.sh ${APP_DIR}/tracking_cron_job.sh
 RUN chmod +x ${APP_DIR}/tracking_cron_job.sh
