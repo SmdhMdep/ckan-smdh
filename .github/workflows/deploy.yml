@@ -72,7 +72,7 @@ jobs:
          echo "CERT_ARN=${{ secrets.CERT_ARN }}" >> contrib/docker-ckan/.env
           
       - name: Prepare CF template
-        run: ./contrib/docker-ckan/inject-sidecars.sh
+        run: ./contrib/docker-ckan/inject_sidecars.sh
         
       - name: Deploy to ECS
         run: |
