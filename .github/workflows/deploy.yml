@@ -74,7 +74,7 @@ jobs:
       - name: Prepare CF template
         run: | 
          cd contrib/docker-ckan
-         inject_sidecars.sh
+         ./inject_sidecars.sh
         
       - name: Deploy to ECS
         run: |
