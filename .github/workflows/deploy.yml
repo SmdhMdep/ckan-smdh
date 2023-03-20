@@ -72,11 +72,10 @@ jobs:
          echo "CERT_ARN=${{ secrets.CERT_ARN }}" >> contrib/docker-ckan/.env
           
       - name: Prepare CF template
-        run: ./inject-sidecar.sh
+        run: ./contrib/docker-ckan/inject-sidecars.sh
         
       - name: Deploy to ECS
         run: |
-         cd ./contrib/docker-ckan \
          docker compose \ 
          -f contrib/docker-ckan/docker-compose.yml \
          -f  cf_temp.yml \
