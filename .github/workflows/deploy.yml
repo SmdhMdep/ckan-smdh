@@ -77,7 +77,7 @@ jobs:
           aws cloudformation deploy \
           --template-file contrib/docker-ckan/cf_template_networking.yml \
           --stack-name smdh-staging-networking \
-          -- parameter-overrides DefaultVpcId=${{ secrets.DEFAULT_VPC_ID }}
+          --parameter-overrides DefaultVpcId=${{ secrets.DEFAULT_VPC_ID }}
 
           NEW_VPC_ID=$(aws cloudformation describe-stacks \
           --stack-name smdh-staging-networking \
