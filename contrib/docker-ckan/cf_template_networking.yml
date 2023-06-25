@@ -1,0 +1,222 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: "AWS CloudFormation Template for MDEP Staging VPC"
+Parameters:
+  DefaultVpcId:
+    Description: "Default VPC ID"
+    Type: String
+Outputs:
+  VpcId:
+    Description: The ID of the VPC created
+    Value: 
+      Ref: SmdhVPC
+    Export:
+      Name: Smdh-Staging-VPC-Id
+Resources:
+  SmdhVPC:
+    Type: AWS::EC2::VPC
+    Properties:
+      CidrBlock: 10.0.0.0/16
+      EnableDnsSupport: true
+      EnableDnsHostnames: true
+      Tags:
+        - Key: Name
+          Value: MDEP-Staging-VPC
+  SmdhSubnet1:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId:
+        Ref: SmdhVPC
+      CidrBlock: 10.0.1.0/24
+      MapPublicIpOnLaunch: false
+      AvailabilityZone: 
+        Fn::Select:
+          - 0
+          - Fn::GetAZs:
+              Ref: AWS::Region
+      Tags:
+        - Key: Name
+          Value: MDEP-Staging-Subnet1
+  SmdhSubnet2:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId:
+        Ref: SmdhVPC
+      CidrBlock: 10.0.2.0/24
+      MapPublicIpOnLaunch: false
+      AvailabilityZone:
+        Fn::Select:
+          - 1
+          - Fn::GetAZs:
+              Ref: AWS::Region
+      Tags:
+        - Key: Name
+          Value: MDEP-Staging-Subnet2
+  SmdhSubnet3:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId:
+        Ref: SmdhVPC
+      CidrBlock: 10.0.3.0/24
+      MapPublicIpOnLaunch: false
+      AvailabilityZone:
+        Fn::Select:
+        - 2
+        - Fn::GetAZs:
+            Ref: AWS::Region
+      Tags:
+        - Key: Name
+          Value: MDEP-Staging-Subnet3
+  SmdhElasticIP1:
+    Type: AWS::EC2::EIP
+    Properties:
+      Domain: vpc
+  SmdhElasticIP2:
+    Type: AWS::EC2::EIP
+    Properties:
+      Domain: vpc
+  SmdhElasticIP3:
+    Type: AWS::EC2::EIP
+    Properties:
+      Domain: vpc
+  SmdhNATGateway1:
+    Type: AWS::EC2::NatGateway
+    Properties:
+      AllocationId: 
+        Fn::GetAtt:
+          - SmdhElasticIP1
+          - AllocationId
+      SubnetId:
+        Ref: SmdhSubnet1
+  SmdhNATGateway2:
+    Type: AWS::EC2::NatGateway
+    Properties:
+      AllocationId: 
+        Fn::GetAtt:
+          - SmdhElasticIP2
+          - AllocationId
+      SubnetId:
+        Ref: SmdhSubnet2
+  SmdhNATGateway3:
+    Type: AWS::EC2::NatGateway
+    Properties:
+      AllocationId: 
+        Fn::GetAtt:
+          - SmdhElasticIP3
+          - AllocationId
+      SubnetId:
+        Ref: SmdhSubnet3
+  SmdhRouteTable:
+    Type: AWS::EC2::RouteTable
+    Properties:
+      VpcId:
+        Ref: SmdhVPC
+      Tags:
+        - Key: Name
+          Value: MDEP-Staging-RouteTable
+  SmdhRoute1:
+    Type: AWS::EC2::Route
+    Properties:
+      RouteTableId:
+        Ref: SmdhRouteTable
+      DestinationCidrBlock: 0.0.0.0/0
+      NatGatewayId:
+        Ref: SmdhNATGateway1
+  SmdhRoute2:
+    Type: AWS::EC2::Route
+    Properties:
+      RouteTableId:
+        Ref: SmdhRouteTable
+      DestinationCidrBlock: 0.0.0.0/0
+      NatGatewayId:
+        Ref: SmdhNATGateway2 
+  SmdhRoute3:
+    Type: AWS::EC2::Route
+    Properties:
+      RouteTableId:
+        Ref: SmdhRouteTable
+      DestinationCidrBlock: 0.0.0.0/0
+      NatGatewayId:
+        Ref: SmdhNATGateway3
+  SmdhSubnetRouteTableAssociation1:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      SubnetId: 
+        Ref: SmdhSubnet1
+      RouteTableId:
+        Ref: SmdhRouteTable
+  SmdhSubnetRouteTableAssociation2:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      SubnetId:
+        Ref: SmdhSubnet2
+      RouteTableId:
+        Ref: SmdhRouteTable
+  SmdhSubnetRouteTableAssociation3:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      SubnetId: 
+        Ref: SmdhSubnet3
+      RouteTableId:
+        Ref: SmdhRouteTable
+  SmdhECRVPCEndpointSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: Security group for ECR VPC Endpoint
+      VpcId:
+        Ref: SmdhVPC
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: 443
+          ToPort: 443
+          CidrIp: 10.0.1.0/24
+        - IpProtocol: tcp
+          FromPort: 443
+          ToPort: 443
+          CidrIp: 10.0.2.0/24
+        - IpProtocol: tcp
+          FromPort: 443
+          ToPort: 443
+          CidrIp: 10.0.3.0/24
+      SecurityGroupEgress:
+        - IpProtocol: tcp
+          FromPort: 5432
+          ToPort: 5432
+          CidrIp: 172.31.0.0/16
+      Tags:
+        - Key: Name
+          Value: MDEP-Staging-ECRVPCEndpointSecurityGroup
+  SmdhECRVPCEndpoint:
+    Type: AWS::EC2::VPCEndpoint
+    Properties:
+      ServiceName: 
+        Fn::Sub: com.amazonaws.${AWS::Region}.ecr.dkr
+      VpcId:
+        Ref: SmdhVPC
+      PrivateDnsEnabled: true
+      SecurityGroupIds: 
+        - Ref: SmdhECRVPCEndpointSecurityGroup
+      SubnetIds: 
+        - Ref: SmdhSubnet1
+        - Ref: SmdhSubnet2
+        - Ref: SmdhSubnet3
+      VpcEndpointType: Interface
+  SmdhVpcPeeringConnection:
+    Type: AWS::EC2::VPCPeeringConnection
+    Properties:
+      PeerVpcId:
+        Ref: DefaultVpcId
+      VpcId:
+        Ref: SmdhVPC
+      PeerRegion: 
+        Ref: AWS::Region
+      Tags:
+        - Key: Name
+          Value: MDEP-Staging-VpcPeeringConnection  
+  RouteToPeeredVPC:
+    Type: AWS::EC2::Route
+    Properties:
+      RouteTableId: 
+        Ref: SmdhRouteTable
+      DestinationCidrBlock: 172.31.0.0/16
+      VpcPeeringConnectionId: 
+        Ref: SmdhVpcPeeringConnection
