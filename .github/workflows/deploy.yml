@@ -38,6 +38,7 @@ jobs:
         uses: aws-actions/configure-aws-credentials@v1
         with:
           role-to-assume: ${{ secrets.ROLE_OIDC }}
+          role-duration-seconds: 2100
           aws-region: eu-west-2
           role-session-name: CKANDockerDeployment
       
@@ -70,7 +71,21 @@ jobs:
          
          echo INTERNAL_REG=${{ secrets.CONTAINER_REGISTRY_URL }} >> contrib/docker-ckan/.env
          echo "CERT_ARN=${{ secrets.CERT_ARN }}" >> contrib/docker-ckan/.env
-          
+      
+      - name: Create Networking resources
+        run: |
+          aws cloudformation deploy \
+          --template-file contrib/docker-ckan/cf_template_networking.yml \
+          --stack-name smdh-staging-networking \
+          -- parameter-overrides DefaultVpcId=${{ secrets.DEFAULT_VPC_ID }}
+
+          NEW_VPC_ID=$(aws cloudformation describe-stacks \
+          --stack-name smdh-staging-networking \
+          --query "Stacks[0].Outputs[?OutputKey=='VpcId'].OutputValue" \
+          --output text)
+
+          echo "NEW_VPC_ID=${NEW_VPC_ID}" >> contrib/docker-ckan/.env
+
       - name: Prepare CF template
         run: | 
          cd contrib/docker-ckan
