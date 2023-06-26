@@ -78,7 +78,8 @@ Resources:
         - Fn::GetAtt:
             - SmdhEfsSecurityGroup
             - GroupId
-      SubnetId: ${PRIVATE_SUBNET1_ID}
+      SubnetId:
+        Ref: PrivateSubnet1Id
   
   CkanFileSystemMountTarget2:
     Type: AWS::EFS::MountTarget
@@ -89,7 +90,8 @@ Resources:
         - Fn::GetAtt:
             - SmdhEfsSecurityGroup
             - GroupId
-      SubnetId: ${PRIVATE_SUBNET2_ID}
+      SubnetId:
+        Ref: PrivateSubnet2Id
   
   CkanFileSystemMountTarget3:
     Type: AWS::EFS::MountTarget
@@ -100,7 +102,8 @@ Resources:
         - Fn::GetAtt:
             - SmdhEfsSecurityGroup
             - GroupId
-      SubnetId: ${PRIVATE_SUBNET3_ID}
+      SubnetId:
+        Ref: PrivateSubnet3Id
 
   SolrFileSystem:
     Type: AWS::EFS::FileSystem
@@ -134,7 +137,8 @@ Resources:
         - Fn::GetAtt:
             - SmdhEfsSecurityGroup
             - GroupId
-      SubnetId: ${PRIVATE_SUBNET1_ID}
+      SubnetId:
+        Ref: PrivateSubnet1Id
   
   SolrFileSystemMountTarget2:
     Type: AWS::EFS::MountTarget
@@ -145,7 +149,8 @@ Resources:
         - Fn::GetAtt:
             - SmdhEfsSecurityGroup
             - GroupId
-      SubnetId: ${PRIVATE_SUBNET2_ID}
+      SubnetId:
+        Ref: PrivateSubnet2Id
   
   SolrFileSystemMountTarget3:
     Type: AWS::EFS::MountTarget
@@ -156,7 +161,8 @@ Resources:
         - Fn::GetAtt:
             - SmdhEfsSecurityGroup
             - GroupId
-      SubnetId: ${PRIVATE_SUBNET3_ID}
+      SubnetId:
+        Ref: PrivateSubnet3Id
 
   RedisFileSystem:
     Type: AWS::EFS::FileSystem
@@ -190,7 +196,8 @@ Resources:
         - Fn::GetAtt:
             - SmdhEfsSecurityGroup
             - GroupId
-      SubnetId: ${PRIVATE_SUBNET1_ID}
+      SubnetId:
+        Ref: PrivateSubnet1Id
   
   RedisFileSystemMountTarget2:
     Type: AWS::EFS::MountTarget
@@ -201,7 +208,8 @@ Resources:
         - Fn::GetAtt:
             - SmdhEfsSecurityGroup
             - GroupId
-      SubnetId: ${PRIVATE_SUBNET2_ID}
+      SubnetId:
+        Ref: PrivateSubnet2Id
   
   RedisFileSystemMountTarget3:
     Type: AWS::EFS::MountTarget
@@ -212,7 +220,8 @@ Resources:
         - Fn::GetAtt:
             - SmdhEfsSecurityGroup
             - GroupId
-      SubnetId: ${PRIVATE_SUBNET3_ID}
+      SubnetId:
+        Ref: PrivateSubnet3Id
 
 Outputs:
   CkanFileSystemId:
