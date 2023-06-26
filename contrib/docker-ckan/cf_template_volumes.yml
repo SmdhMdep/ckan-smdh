@@ -46,8 +46,6 @@ Resources:
           Value: Smdh-staging-CkanFileSystem
       BackupPolicy:
         Status: ENABLED
-        BackupRetentionPeriod: 7
-        BackupWindow: 02:00-03:00
       LifecyclePolicies:
         - TransitionToIA: None
 
@@ -100,8 +98,6 @@ Resources:
           Value: Smdh-staging-SolrFileSystem
       BackupPolicy:
         Status: ENABLED
-        BackupRetentionPeriod: 7
-        BackupWindow: 02:00-03:00
       LifecyclePolicies:
         - TransitionToIA: None
   
@@ -154,8 +150,6 @@ Resources:
           Value: Smdh-staging-RedisFileSystem
       BackupPolicy:
         Status: ENABLED
-        BackupRetentionPeriod: 7
-        BackupWindow: 02:00-03:00
       LifecyclePolicies:
         - TransitionToIA: None
   
