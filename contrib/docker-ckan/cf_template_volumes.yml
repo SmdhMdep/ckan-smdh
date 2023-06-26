@@ -48,8 +48,6 @@ Resources:
           Value: Smdh-staging-CkanFileSystem
       BackupPolicy:
         Status: ENABLED
-      LifecyclePolicies:
-        - TransitionToIA: None
 
   CkanFileSystemAccessPoint:
     Type: AWS::EFS::AccessPoint
@@ -100,8 +98,6 @@ Resources:
           Value: Smdh-staging-SolrFileSystem
       BackupPolicy:
         Status: ENABLED
-      LifecyclePolicies:
-        - TransitionToIA: None
   
   SolrFileSystemAccessPoint:
     Type: AWS::EFS::AccessPoint
@@ -152,8 +148,6 @@ Resources:
           Value: Smdh-staging-RedisFileSystem
       BackupPolicy:
         Status: ENABLED
-      LifecyclePolicies:
-        - TransitionToIA: None
   
   RedisFileSystemAccessPoint:
     Type: AWS::EFS::AccessPoint
