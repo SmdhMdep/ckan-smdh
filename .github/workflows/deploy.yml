@@ -10,9 +10,7 @@ on:
    push:
        branches: [ "deployment-workflow" ]
 
-
 jobs:
-  
   deploy:
     name: Deploy to AWS ECS
     runs-on: ubuntu-latest
@@ -79,40 +77,40 @@ jobs:
           --stack-name smdh-staging-networking \
           --parameter-overrides DefaultVpcId=${{ secrets.DEFAULT_VPC_ID }}
 
-          NEW_VPC_ID=$(aws cloudformation describe-stacks \
+          echo "NEW_VPC_ID=$(aws cloudformation describe-stacks \
           --stack-name smdh-staging-networking \
           --query "Stacks[0].Outputs[?OutputKey=='VpcId'].OutputValue" \
-          --output text)
+          --output text)" >> $GITHUB_ENV
 
-          PPRIVATE_SUBNET1_ID=$(aws cloudformation describe-stacks \
+          echo "PRIVATE_SUBNET1_ID=$(aws cloudformation describe-stacks \
           --stack-name smdh-staging-networking \
           --query "Stacks[0].Outputs[?OutputKey=='PrivateSubnet1Id'].OutputValue" \
-          --output text)
+          --output text)" >> $GITHUB_ENV
 
-          PRIVATE_SUBNET2_ID=$(aws cloudformation describe-stacks \
+          echo "PRIVATE_SUBNET2_ID=$(aws cloudformation describe-stacks \
           --stack-name smdh-staging-networking \
           --query "Stacks[0].Outputs[?OutputKey=='PrivateSubnet2Id'].OutputValue" \
-          --output text)
+          --output text)" >> $GITHUB_ENV
 
-          PRIVATE_SUBNET3_ID=$(aws cloudformation describe-stacks \
+          echo "PRIVATE_SUBNET3_ID=$(aws cloudformation describe-stacks \
           --stack-name smdh-staging-networking \
           --query "Stacks[0].Outputs[?OutputKey=='PrivateSubnet3Id'].OutputValue" \
-          --output text)
+          --output text)" >> $GITHUB_ENV
 
-          PUBLIC_SUBNET1_ID=$(aws cloudformation describe-stacks \
+          echo "PUBLIC_SUBNET1_ID=$(aws cloudformation describe-stacks \
           --stack-name smdh-staging-networking \
           --query "Stacks[0].Outputs[?OutputKey=='PublicSubnet1Id'].OutputValue" \
-          --output text)
+          --output text)" >> $GITHUB_ENV
 
-          PUBLIC_SUBNET2_ID=$(aws cloudformation describe-stacks \
+          echo "PUBLIC_SUBNET2_ID=$(aws cloudformation describe-stacks \
           --stack-name smdh-staging-networking \
           --query "Stacks[0].Outputs[?OutputKey=='PublicSubnet2Id'].OutputValue" \
-          --output text)
+          --output text)" >> $GITHUB_ENV
 
-          PUBLIC_SUBNET3_ID=$(aws cloudformation describe-stacks \
+          echo "PUBLIC_SUBNET3_ID=$(aws cloudformation describe-stacks \
           --stack-name smdh-staging-networking \
           --query "Stacks[0].Outputs[?OutputKey=='PublicSubnet3Id'].OutputValue" \
-          --output text)
+          --output text)" >> $GITHUB_ENV
 
           echo "NEW_VPC_ID=${NEW_VPC_ID}" >> contrib/docker-ckan/.env
           echo "PRIVATE_SUBNET1_ID=${PRIVATE_SUBNET1_ID}" >> contrib/docker-ckan/.env
@@ -121,7 +119,7 @@ jobs:
           echo "PUBLIC_SUBNET1_ID=${PUBLIC_SUBNET1_ID}" >> contrib/docker-ckan/.env
           echo "PUBLIC_SUBNET2_ID=${PUBLIC_SUBNET2_ID}" >> contrib/docker-ckan/.env
           echo "PUBLIC_SUBNET3_ID=${PUBLIC_SUBNET3_ID}" >> contrib/docker-ckan/.env
-
+        
       
       - name: Create EFS volumes
         run: |
@@ -129,10 +127,10 @@ jobs:
           --template-file contrib/docker-ckan/cf_template_volumes.yml \
           --stack-name smdh-staging-efs \
           --parameter-overrides \
-            NewVpcId=${NEW_VPC_ID} \
-            PrivateSubnet1Id=${PRIVATE_SUBNET1_ID} \
-            PrivateSubnet2Id=${PRIVATE_SUBNET2_ID} \
-            PrivateSubnet3Id=${PRIVATE_SUBNET3_ID}
+            NewVpcId=${{ env.NEW_VPC_ID }} \
+            PrivateSubnet1Id=${{ env.PRIVATE_SUBNET1_ID }} \
+            PrivateSubnet2Id=${{ env.PRIVATE_SUBNET2_ID }} \
+            PrivateSubnet3Id=${{ env.PRIVATE_SUBNET3_ID }}
 
           CKAN_EFS_ID=$(aws cloudformation describe-stacks \
           --stack-name smdh-staging-efs \
