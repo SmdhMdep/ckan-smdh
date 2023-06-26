@@ -33,7 +33,9 @@ Resources:
       FromPort: 2049
       ToPort: 2049
       SourceSecurityGroupId:
-        Ref: SmdhEfsSecurityGroup
+        Fn::GetAtt:
+          - SmdhEfsSecurityGroup
+          - GroupId
 
   CkanFileSystem:
     Type: AWS::EFS::FileSystem
