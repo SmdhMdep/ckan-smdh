@@ -24,9 +24,10 @@ Resources:
 
   SecurityGroupIngress:
     Type: AWS::EC2::SecurityGroupIngress
-    GroupId:
-      Ref: SmdhEfsSecurityGroup
-    - IpProtocol: tcp
+    Properties:
+      GroupId:
+        Ref: SmdhEfsSecurityGroup
+      IpProtocol: tcp
       FromPort: 2049
       ToPort: 2049
       SourceSecurityGroupId:
