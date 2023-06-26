@@ -4,6 +4,14 @@ Parameters:
   NewVpcId:
     Description: "Newly created VPC ID"
     Type: String
+  PrivateSubnet1Id:
+    Description: "Private Subnet 1 ID"
+    Type: String
+  PrivateSubnet2Id:
+    Description: "Private Subnet 2 ID"
+    Type: String
+  PrivateSubnet3Id:
+    
 Resources:
 
   # Because we have 1 public subnet and 3 private ones in the newly created VPC, if we
@@ -66,7 +74,9 @@ Resources:
       FileSystemId:
         Ref: CkanFileSystem
       SecurityGroups:
-        - Ref: SmdhEfsSecurityGroup
+        - Fn::GetAtt:
+            - SmdhEfsSecurityGroup
+            - GroupId
       SubnetId: ${PRIVATE_SUBNET1_ID}
   
   CkanFileSystemMountTarget2:
@@ -75,7 +85,9 @@ Resources:
       FileSystemId:
         Ref: CkanFileSystem
       SecurityGroups:
-        - Ref: SmdhEfsSecurityGroup
+        - Fn::GetAtt:
+            - SmdhEfsSecurityGroup
+            - GroupId
       SubnetId: ${PRIVATE_SUBNET2_ID}
   
   CkanFileSystemMountTarget3:
@@ -84,7 +96,9 @@ Resources:
       FileSystemId:
         Ref: CkanFileSystem
       SecurityGroups:
-        - Ref: SmdhEfsSecurityGroup
+        - Fn::GetAtt:
+            - SmdhEfsSecurityGroup
+            - GroupId
       SubnetId: ${PRIVATE_SUBNET3_ID}
 
   SolrFileSystem:
@@ -116,7 +130,9 @@ Resources:
       FileSystemId:
         Ref: SolrFileSystem
       SecurityGroups:
-        - Ref: SmdhEfsSecurityGroup
+        - Fn::GetAtt:
+            - SmdhEfsSecurityGroup
+            - GroupId
       SubnetId: ${PRIVATE_SUBNET1_ID}
   
   SolrFileSystemMountTarget2:
@@ -125,7 +141,9 @@ Resources:
       FileSystemId:
         Ref: SolrFileSystem
       SecurityGroups:
-        - Ref: SmdhEfsSecurityGroup
+        - Fn::GetAtt:
+            - SmdhEfsSecurityGroup
+            - GroupId
       SubnetId: ${PRIVATE_SUBNET2_ID}
   
   SolrFileSystemMountTarget3:
@@ -134,7 +152,9 @@ Resources:
       FileSystemId:
         Ref: SolrFileSystem
       SecurityGroups:
-        - Ref: SmdhEfsSecurityGroup
+        - Fn::GetAtt:
+            - SmdhEfsSecurityGroup
+            - GroupId
       SubnetId: ${PRIVATE_SUBNET3_ID}
 
   RedisFileSystem:
@@ -166,7 +186,9 @@ Resources:
       FileSystemId:
         Ref: RedisFileSystem
       SecurityGroups:
-        - Ref: SmdhEfsSecurityGroup
+        - Fn::GetAtt:
+            - SmdhEfsSecurityGroup
+            - GroupId
       SubnetId: ${PRIVATE_SUBNET1_ID}
   
   RedisFileSystemMountTarget2:
@@ -175,7 +197,9 @@ Resources:
       FileSystemId:
         Ref: RedisFileSystem
       SecurityGroups:
-        - Ref: SmdhEfsSecurityGroup
+        - Fn::GetAtt:
+            - SmdhEfsSecurityGroup
+            - GroupId
       SubnetId: ${PRIVATE_SUBNET2_ID}
   
   RedisFileSystemMountTarget3:
@@ -184,7 +208,9 @@ Resources:
       FileSystemId:
         Ref: RedisFileSystem
       SecurityGroups:
-        - Ref: SmdhEfsSecurityGroup
+        - Fn::GetAtt:
+            - SmdhEfsSecurityGroup
+            - GroupId
       SubnetId: ${PRIVATE_SUBNET3_ID}
 
 Outputs:
