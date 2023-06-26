@@ -18,15 +18,19 @@ Resources:
       GroupDescription: Security Group for EFS volumes used by SMDH Staging ECS tasks
       VpcId:
         Ref: NewVpcId
-      SecurityGroupIngress:
-        - IpProtocol: tcp
-          FromPort: 2049
-          ToPort: 2049
-          SourceSecurityGroupId:
-            Ref: SmdhEfsSecurityGroup
       Tags:
         - Key: Name
           Value: EFS-ECS-Security-Group
+
+  SecurityGroupIngress:
+    Type: AWS::EC2::SecurityGroupIngress
+    GroupId:
+      Ref: SmdhEfsSecurityGroup
+    - IpProtocol: tcp
+      FromPort: 2049
+      ToPort: 2049
+      SourceSecurityGroupId:
+        Ref: SmdhEfsSecurityGroup
 
   CkanFileSystem:
     Type: AWS::EFS::FileSystem
