@@ -11,7 +11,8 @@ Parameters:
     Description: "Private Subnet 2 ID"
     Type: String
   PrivateSubnet3Id:
-    
+    Description: "Private Subnet 3 ID"
+    Type: String
 Resources:
 
   # Because we have 1 public subnet and 3 private ones in the newly created VPC, if we
