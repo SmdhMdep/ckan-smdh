@@ -1,35 +1,102 @@
-x-aws-vpc: ${NEW_VPC_ID}
 x-aws-cloudformation:
   Resources:
+    SmdhECSDBSecurityGroup:
+      Type: AWS::EC2::SecurityGroup
+      Properties:
+        GroupDescription: Security group which allows ECS task to initiate connections to the DB
+        VpcId: ${NEW_VPC_ID}
+    
+    SmdhDBECSSecurityGroup:
+      Type: AWS::EC2::SecurityGroup
+      Properties:
+        GroupDescription: Security group which allows the DB to receive connections from the ECS task
+        VpcId: ${NEW_VPC_ID}
+
+    SmdhECSDBSecurityGroupEgress:
+      Type: AWS::EC2::SecurityGroupEgress
+      Properties:
+        GroupId:
+          Ref: SmdhECSDBSecurityGroup
+        IpProtocol: tcp
+        FromPort: 5432
+        ToPort: 5432
+        DestinationSecurityGroupId:
+          Ref: SmdhDBECSSecurityGroup
+    
+    SmdhDBECSSecurityGroupIngress:
+      Type: AWS::EC2::SecurityGroupIngress
+      Properties:
+        GroupId:
+          Ref: SmdhDBECSSecurityGroup
+        IpProtocol: tcp
+        FromPort: 5432
+        ToPort: 5432
+        SourceSecurityGroupId:
+          Ref: SmdhECSDBSecurityGroup
+
+    CkanTCP80Listener:
+      Type: AWS::ElasticLoadBalancingV2::Listener
+      Properties:
+        Certificates:
+          - CertificateArn: "${CERT_ARN}"
+        Protocol: HTTPS
+        Port: 443
+
+    LoadBalancer:
+      Type: AWS::ElasticLoadBalancingV2::LoadBalancer
+      Properties:
+        Scheme: internet-facing
+        Subnets:
+          - ${PUBLIC_SUBNET1_ID}
+          - ${PUBLIC_SUBNET2_ID}
+          - ${PUBLIC_SUBNET3_ID}
+        Type: application
+
     CkanService:
       Properties:
         NetworkConfiguration:
           AwsvpcConfiguration:
             AssignPublicIp: DISABLED
+            SecurityGroups:
+              - Ref: SmdhECSDBSecurityGroup
+              - ${EFS_SECURITY_GROUP_ID}
+            Subnets:
+              - ${PRIVATE_SUBNET1_ID}
+              - ${PRIVATE_SUBNET2_ID}
+              - ${PRIVATE_SUBNET3_ID}
 
     DatapusherService:
       Properties:
         NetworkConfiguration:
           AwsvpcConfiguration:
             AssignPublicIp: DISABLED
+            Subnets:
+              - ${PRIVATE_SUBNET1_ID}
+              - ${PRIVATE_SUBNET2_ID}
+              - ${PRIVATE_SUBNET3_ID}
 
     RedisService:
       Properties:
         NetworkConfiguration:
           AwsvpcConfiguration:
             AssignPublicIp: DISABLED
+            SecurityGroups:
+              - ${EFS_SECURITY_GROUP_ID}
+            Subnets:
+              - ${PRIVATE_SUBNET1_ID}
+              - ${PRIVATE_SUBNET2_ID}
+              - ${PRIVATE_SUBNET3_ID}
 
     SolrService:
       Properties:
         NetworkConfiguration:
           AwsvpcConfiguration:
             AssignPublicIp: DISABLED
+            SecurityGroups:
+              - ${EFS_SECURITY_GROUP_ID}
+            Subnets:
+              - ${PRIVATE_SUBNET1_ID}
+              - ${PRIVATE_SUBNET2_ID}
+              - ${PRIVATE_SUBNET3_ID}
 
-    CkanTCP80Listener:
-      Properties:
-        Certificates:
-          - CertificateArn: "${CERT_ARN}"
-        Protocol: HTTPS
-        Port: 443
-      Type: AWS::ElasticLoadBalancingV2::Listener
   

@@ -2,14 +2,20 @@ version: "3.8"
 
 volumes:
   ckan_storage:
+    external: true
+    name: ${CKAN_EFS_ID}
     driver_opts:
       uid: 0
       gid: 0
   solr_data:
+    external: true
+    name: ${SOLR_EFS_ID}
     driver_opts:
       uid: 0
       gid: 0
   redis_data:
+    external: true
+    name: ${REDIS_EFS_ID}
     driver_opts:
       uid: 0
       gid: 0
@@ -37,8 +43,6 @@ services:
         hard: 20000
     env_file:
       - .env
-    networks:
-      - ckan-internal
     depends_on:
       solr:
         condition: service_healthy
@@ -63,9 +67,6 @@ services:
           limits:
             cpus: '1'
             memory: 4GB
-   
-    networks:
-      - ckan-internal
      
   solr:
     container_name: ${SOLR_CONTAINER_NAME}
@@ -78,8 +79,6 @@ services:
       update_config:
         x-aws-min_percent: 0
         x-aws-max_percent: 100
-    networks:
-      - ckan-internal
     # restart: unless-stopped
     volumes:
       - solr_data:/var/solr
@@ -96,11 +95,5 @@ services:
           limits:
             cpus: '1'
             memory: 4GB
-    networks:
-      - ckan-internal
     volumes:
       - redis_data:/data
-
-networks:
-    ckan-internal:
-      external: false

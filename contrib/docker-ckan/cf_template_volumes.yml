@@ -1,0 +1,217 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: "AWS CloudFormation Template for MDEP Staging EFS volumes"
+Parameters:
+  NewVpcId:
+    Description: "Newly created VPC ID"
+    Type: String
+Resources:
+
+  # Because we have 1 public subnet and 3 private ones in the newly created VPC, if we
+  # rely on compose-cli to create the EFS volumes, it will create Mount Targets
+  # in every subnet, including the public subnet, which is not what we want. So we 
+  # create the EFS volumes and their respective mount targets here, and let compose-cli
+  # to use them.
+
+  SmdhEfsSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: Security Group for EFS volumes used by SMDH Staging ECS tasks
+      VpcId:
+        Ref: NewVpcId
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: 2049
+          ToPort: 2049
+          SourceSecurityGroupId:
+            Ref: SmdhEfsSecurityGroup
+      Tags:
+        - Key: Name
+          Value: EFS-ECS-Security-Group
+
+  CkanFileSystem:
+    Type: AWS::EFS::FileSystem
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      Encrypted: true
+      PerformanceMode: generalPurpose
+      ThroughputMode: bursting
+      FileSystemTags:
+        - Key: Name
+          Value: Smdh-staging-CkanFileSystem
+      BackupPolicy:
+        Status: ENABLED
+        BackupRetentionPeriod: 7
+        BackupWindow: 02:00-03:00
+      LifecyclePolicies:
+        - TransitionToIA: None
+
+  CkanFileSystemAccessPoint:
+    Type: AWS::EFS::AccessPoint
+    Properties:
+      FileSystemId:
+        Ref: CkanFileSystem
+      PosixUser:
+        Gid: "0"
+        Uid: "0"
+  
+  CkanFileSystemMountTarget1:
+    Type: AWS::EFS::MountTarget
+    Properties:
+      FileSystemId:
+        Ref: CkanFileSystem
+      SecurityGroups:
+        - Ref: SmdhEfsSecurityGroup
+      SubnetId: ${PRIVATE_SUBNET1_ID}
+  
+  CkanFileSystemMountTarget2:
+    Type: AWS::EFS::MountTarget
+    Properties:
+      FileSystemId:
+        Ref: CkanFileSystem
+      SecurityGroups:
+        - Ref: SmdhEfsSecurityGroup
+      SubnetId: ${PRIVATE_SUBNET2_ID}
+  
+  CkanFileSystemMountTarget3:
+    Type: AWS::EFS::MountTarget
+    Properties:
+      FileSystemId:
+        Ref: CkanFileSystem
+      SecurityGroups:
+        - Ref: SmdhEfsSecurityGroup
+      SubnetId: ${PRIVATE_SUBNET3_ID}
+
+  SolrFileSystem:
+    Type: AWS::EFS::FileSystem
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      Encrypted: true
+      PerformanceMode: generalPurpose
+      ThroughputMode: bursting
+      FileSystemTags:
+        - Key: Name
+          Value: Smdh-staging-SolrFileSystem
+      BackupPolicy:
+        Status: ENABLED
+        BackupRetentionPeriod: 7
+        BackupWindow: 02:00-03:00
+      LifecyclePolicies:
+        - TransitionToIA: None
+  
+  SolrFileSystemAccessPoint:
+    Type: AWS::EFS::AccessPoint
+    Properties:
+      FileSystemId:
+        Ref: SolrFileSystem
+      PosixUser:
+        Gid: "0"
+        Uid: "0"
+  
+  SolrFileSystemMountTarget1:
+    Type: AWS::EFS::MountTarget
+    Properties:
+      FileSystemId:
+        Ref: SolrFileSystem
+      SecurityGroups:
+        - Ref: SmdhEfsSecurityGroup
+      SubnetId: ${PRIVATE_SUBNET1_ID}
+  
+  SolrFileSystemMountTarget2:
+    Type: AWS::EFS::MountTarget
+    Properties:
+      FileSystemId:
+        Ref: SolrFileSystem
+      SecurityGroups:
+        - Ref: SmdhEfsSecurityGroup
+      SubnetId: ${PRIVATE_SUBNET2_ID}
+  
+  SolrFileSystemMountTarget3:
+    Type: AWS::EFS::MountTarget
+    Properties:
+      FileSystemId:
+        Ref: SolrFileSystem
+      SecurityGroups:
+        - Ref: SmdhEfsSecurityGroup
+      SubnetId: ${PRIVATE_SUBNET3_ID}
+
+  RedisFileSystem:
+    Type: AWS::EFS::FileSystem
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      Encrypted: true
+      PerformanceMode: generalPurpose
+      ThroughputMode: bursting
+      FileSystemTags:
+        - Key: Name
+          Value: Smdh-staging-RedisFileSystem
+      BackupPolicy:
+        Status: ENABLED
+        BackupRetentionPeriod: 7
+        BackupWindow: 02:00-03:00
+      LifecyclePolicies:
+        - TransitionToIA: None
+  
+  RedisFileSystemAccessPoint:
+    Type: AWS::EFS::AccessPoint
+    Properties:
+      FileSystemId:
+        Ref: RedisFileSystem
+      PosixUser:
+        Gid: "0"
+        Uid: "0"
+  
+  RedisFileSystemMountTarget1:
+    Type: AWS::EFS::MountTarget
+    Properties:
+      FileSystemId:
+        Ref: RedisFileSystem
+      SecurityGroups:
+        - Ref: SmdhEfsSecurityGroup
+      SubnetId: ${PRIVATE_SUBNET1_ID}
+  
+  RedisFileSystemMountTarget2:
+    Type: AWS::EFS::MountTarget
+    Properties:
+      FileSystemId:
+        Ref: RedisFileSystem
+      SecurityGroups:
+        - Ref: SmdhEfsSecurityGroup
+      SubnetId: ${PRIVATE_SUBNET2_ID}
+  
+  RedisFileSystemMountTarget3:
+    Type: AWS::EFS::MountTarget
+    Properties:
+      FileSystemId:
+        Ref: RedisFileSystem
+      SecurityGroups:
+        - Ref: SmdhEfsSecurityGroup
+      SubnetId: ${PRIVATE_SUBNET3_ID}
+
+Outputs:
+  CkanFileSystemId:
+    Description: "CkanFileSystemId"
+    Value: 
+      Ref: CkanFileSystem
+    Export:
+      Name: CkanFileSystemId
+  RedisFileSystemId:
+    Description: "RedisFileSystemId"
+    Value: 
+      Ref: RedisFileSystem
+    Export:
+      Name: RedisFileSystemId
+  SolrFileSystemId:
+    Description: "SolrFileSystemId"
+    Value: 
+      Ref: SolrFileSystem
+    Export:
+      Name: SolrFileSystemId
+  EFSSecurityGroup:
+    Description: "EFSSecurityGroup"
+    Value: 
+      Ref: SmdhEfsSecurityGroup
+    Export:
+      Name: EFSSecurityGroup
