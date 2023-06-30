@@ -75,9 +75,6 @@ services:
           limits:
             cpus: '2'
             memory: 4GB
-      update_config:
-        x-aws-min_percent: 50
-        x-aws-max_percent: 200
     networks:
       - ckan-internal
     # restart: unless-stopped
