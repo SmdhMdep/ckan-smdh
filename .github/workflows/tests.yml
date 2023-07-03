@@ -29,12 +29,12 @@ env:
 
 jobs:
   build:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     strategy:
       matrix:
         test_group: [1, 2, 3, 4, 5, 6]
         
-    container: python:3-stretch
+    container: python:3.9.6-buster
     
     services:
     
@@ -50,6 +50,11 @@ jobs:
         
       ckan-redis: 
         image: redis:3
+
+      ckan-solr: 
+        image: ckan/ckan-solr:2.9-solr8
+        ports:
+          - 8983:8983
     
     steps:
       - uses: actions/checkout@v3
@@ -58,7 +63,8 @@ jobs:
           # OS Dependencies
           #apt update
           apt-get update -y
-          apt-get install -y postgresql-client solr-jetty openjdk-8-jdk
+          apt-get install -y postgresql-client
+          apt-get install -y libxml2-dev libxslt1-dev python3-dev lib32z1-dev zlib1g-dev python3-lxml
           
           # CkAN dependencies
           pip install -r requirement-setuptools.txt
@@ -67,13 +73,10 @@ jobs:
           python setup.py develop
           pip check
           
+          
       - name: Init environment
         run: |
-        
-         # SOLR config
-          cp ckan/config/solr/schema.xml /etc/solr/conf/schema.xml
-          service jetty9 restart || true  # erroring out but does seem to work
-          
+
           # Database Creation
           psql --host=ckan-postgres --username=ckan --command="CREATE USER ${CKAN_POSTGRES_USER} WITH PASSWORD '${CKAN_POSTGRES_PWD}' NOSUPERUSER NOCREATEDB NOCREATEROLE;"
           createdb --encoding=utf-8 --host=ckan-postgres --username=ckan --owner=${CKAN_POSTGRES_USER} ${CKAN_POSTGRES_DB}

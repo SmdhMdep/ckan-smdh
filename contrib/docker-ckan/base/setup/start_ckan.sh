@@ -56,10 +56,10 @@ echo "Enabling ckan tracking"
 ckan config-tool $CKAN_INI "ckan.tracking_enabled = true"
 
 echo "Loading FrontEnd settings into ckan.ini"
-ckan config-tool $CKAN_INI "ckan.site_title = MDEP AEP"
-ckan config-tool $CKAN_INI "ckan.site_logo = /base/images/made-smarter-logo-2.png"
+ckan config-tool $CKAN_INI "ckan.site_title = Asset Explorer"
+ckan config-tool $CKAN_INI "ckan.site_logo = /base/images/Mdep_black_yellow_logo.png"
 # ckan config-tool $CKAN_INI "ckan.site_description = "
-ckan config-tool $CKAN_INI "ckan.favicon = /base/images/ckan.ico"
+ckan config-tool $CKAN_INI "ckan.favicon = /base/images/mdep_favicon.ico"
 
 echo "Loading Email settings into ckan.ini"
 ckan config-tool $CKAN_INI "smtp.server = $CKAN_SMTP_SERVER"
