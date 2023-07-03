@@ -50,6 +50,11 @@ jobs:
         
       ckan-redis: 
         image: redis:3
+
+      ckan-solr: 
+        image: ckan/ckan-solr:2.9-solr8
+        ports:
+          - 8983:8983
     
     steps:
       - uses: actions/checkout@v3
@@ -69,11 +74,7 @@ jobs:
           
       - name: Init environment
         run: |
-        
-         # SOLR config
-          cp ckan/config/solr/schema.xml /etc/solr/conf/schema.xml
-          service jetty9 restart || true  # erroring out but does seem to work
-          
+
           # Database Creation
           psql --host=ckan-postgres --username=ckan --command="CREATE USER ${CKAN_POSTGRES_USER} WITH PASSWORD '${CKAN_POSTGRES_PWD}' NOSUPERUSER NOCREATEDB NOCREATEROLE;"
           createdb --encoding=utf-8 --host=ckan-postgres --username=ckan --owner=${CKAN_POSTGRES_USER} ${CKAN_POSTGRES_DB}
