@@ -34,7 +34,7 @@ jobs:
       matrix:
         test_group: [1, 2, 3, 4, 5, 6]
         
-    container: python:3-stretch
+    container: python:3-bullseye
     
     services:
     
@@ -64,14 +64,15 @@ jobs:
           #apt update
           apt-get update -y
           apt-get install -y postgresql-client
-          apt-get install -y python3-dev libxml2-dev libxslt1-dev zlib1g-dev libffi-dev libssl-dev
+          apt-get install -y python3-dev libxml2-dev libxslt1-dev
           
           # CkAN dependencies
-          pip install -r requirement-setuptools.txt
-          pip install -r requirements.txt
-          pip install -r dev-requirements.txt
+          pip3 install -r requirement-setuptools.txt
+          pip3 install -r requirements.txt
+          pip3 install -r dev-requirements.txt
           python setup.py develop
-          pip check
+          pip3 check
+          
           
       - name: Init environment
         run: |
