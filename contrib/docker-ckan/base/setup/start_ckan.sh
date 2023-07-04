@@ -55,6 +55,12 @@ UWSGI_OPTS="--plugins http,python \
 echo "Enabling ckan tracking"
 ckan config-tool $CKAN_INI "ckan.tracking_enabled = true"
 
+# echo "Loading Datapusher+ settings into ckan.ini"
+# ckan config-tool $CKAN_INI "ckan.datapusher.formats = csv xls xlsx xlsm xlsb tsv tab application/csv application/vnd.ms-excel application/vnd.openxmlformats-officedocument.spreadsheetml.sheet ods application/vnd.oasis.opendocument.spreadsheet"
+
+echo "Loading default views into ckan.ini"
+ckan config-tool $CKAN_INI "ckan.views.default_views = image_view text_view recline_view pdf_view"
+
 echo "Loading FrontEnd settings into ckan.ini"
 ckan config-tool $CKAN_INI "ckan.site_title = Asset Explorer"
 ckan config-tool $CKAN_INI "ckan.site_logo = /base/images/Mdep_black_yellow_logo.svg"
@@ -68,6 +74,7 @@ ckan config-tool $CKAN_INI "smtp.user = $CKAN_SMTP_USER"
 ckan config-tool $CKAN_INI "smtp.password = $CKAN_SMTP_PASSWORD"
 ckan config-tool $CKAN_INI "smtp.mail_from = $CKAN_SMTP_MAIL_FROM"
 ckan config-tool $CKAN_INI "smtp.reply_to = $CKAN_SMTP_REPLY_TO"
+
 
 echo "Loading SAML2 settings into ckan.ini"
 ckan config-tool $CKAN_INI "ckanext.saml2auth.idp_metadata.location = remote"
