@@ -77,6 +77,10 @@ RUN pip3 install -e 'git+https://github.com/SmdhMdep/ckanext-generalpublic.git@m
     pip3 install -r ${APP_DIR}/src/ckanext-generalpublic/requirements.txt && \
     pip3 install -r ${APP_DIR}/src/ckanext-generalpublic/dev-requirements.txt
 
+## CKANEXT-PDFVIEW ##
+RUN pip3 install -e 'git+https://github.com/ckan/ckanext-pdfview.git@master#egg=ckanext-pdfview' && \
+    pip3 install -r ${APP_DIR}/src/ckanext-pdfview/dev-requirements.txt
+
 COPY patches ${APP_DIR}/patches
 
 RUN for d in $APP_DIR/patches/*; do \

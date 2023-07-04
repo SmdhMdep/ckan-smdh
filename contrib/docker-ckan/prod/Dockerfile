@@ -49,6 +49,9 @@ RUN pip3 install -e 'git+https://github.com/SmdhMdep/ckanext-granularvisibility.
 RUN pip3 install -e 'git+https://github.com/SmdhMdep/ckanext-generalpublic.git@main#egg=ckanext-generalpublic' && \
     pip3 install -r ${APP_DIR}/src/ckanext-generalpublic/requirements.txt
 
+## CKANEXT-PDFVIEW ##
+RUN pip3 install -e 'git+https://github.com/ckan/ckanext-pdfview.git@master#egg=ckanext-pdfview'
+
 # Copy the healthcheck script
 COPY contrib/docker-ckan/prod/health_check.sh ${APP_DIR}/health_check.sh
 RUN chmod +x ${APP_DIR}/health_check.sh
