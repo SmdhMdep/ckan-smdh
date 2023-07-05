@@ -1,9 +1,8 @@
 #!/bin/bash
 
 # Run the prerun script to init CKAN and create the default admin user
-sudo -u ckan -EH python3 $APP_DIR/prerun.py
 echo "Running prerun script"
-sudo -u ckan -EH python3 $APP_DIR/prerun.py
+python3 $APP_DIR/prerun.py
 
 echo "Override ckan.ini sqlalchemy.url default value"
 ckan config-tool $CKAN_INI "sqlalchemy.url = $CKAN_SQLALCHEMY_URL"
@@ -141,5 +140,5 @@ fi
 # Start supervisord
 supervisord --configuration /etc/supervisord.conf &
 
-# Start the development server with automatic reload
-sudo -u ckan -EH ckan -c $CKAN_INI run -H 0.0.0.0
+# Start the development server as the ckan user with automatic reload
+su ckan -c "/usr/bin/ckan -c $CKAN_INI run -H 0.0.0.0"

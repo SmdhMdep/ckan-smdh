@@ -4,7 +4,7 @@
 
 # Run the prerun script to init CKAN and create the default admin user
 echo "Running prerun script"
-sudo -u ckan -EH python3 $APP_DIR/prerun_prod.py
+python3 $APP_DIR/prerun_prod.py
 
 echo "Override ckan.ini sqlalchemy.url default value"
 ckan config-tool $CKAN_INI "sqlalchemy.url = $CKAN_SQLALCHEMY_URL"
@@ -113,7 +113,7 @@ then
     supervisord --configuration /etc/supervisord.conf &
     # Start uwsgi
     echo "STARTING CKAN..."
-    sudo -u ckan -EH uwsgi $UWSGI_OPTS
+    uwsgi $UWSGI_OPTS
 else
   echo "[prerun] failed...not starting CKAN."
 fi

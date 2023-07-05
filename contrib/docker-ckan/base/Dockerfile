@@ -1,4 +1,4 @@
-FROM alpine:3.13
+FROM alpine:3.15
 
 # Internals, you probably don't need to change these
 ENV APP_DIR=/srv/app
@@ -35,8 +35,7 @@ RUN apk add --no-cache tzdata \
         uwsgi-gevent \
         libmagic \
         curl \
-        patch \
-        sudo && \
+        patch && \
     # Packages to build CKAN requirements and plugins
     apk add --no-cache --virtual .build-deps \
         postgresql-dev \
@@ -83,7 +82,7 @@ RUN cd ${SRC_DIR}/ckan && \
 
 # Create a local user and group to run the app
 RUN addgroup -g 92 -S ckan && \
-    adduser -u 92 -h /srv/app -s /bin/bash -D -G ckan ckan
+    adduser -u 92 -h /home/ckan -s /bin/bash -D -G ckan ckan
 
 # Create local storage folder
 RUN mkdir -p ${CKAN_STORAGE_PATH} && \
@@ -93,15 +92,12 @@ COPY ./contrib/docker-ckan/base/setup/prerun.py ${APP_DIR}
 COPY ./contrib/docker-ckan/base/setup/prerun_prod.py ${APP_DIR}
 COPY ./contrib/docker-ckan/base/setup/start_ckan.sh ${APP_DIR}
 ADD https://raw.githubusercontent.com/SmdhMdep/ckan-smdh/main/wsgi.py ${APP_DIR}
+RUN chmod 644 ${APP_DIR}/wsgi.py
 
 # Create entrypoint directory for children image scripts
 ONBUILD RUN mkdir /docker-entrypoint.d
 
-RUN chown ckan -R /srv/app \
-    && chmod +x ${APP_DIR}/start_ckan.sh
-
-RUN addgroup sudo && \
-    adduser ckan sudo
+RUN chmod +x ${APP_DIR}/start_ckan.sh
 
 EXPOSE 5000
 
