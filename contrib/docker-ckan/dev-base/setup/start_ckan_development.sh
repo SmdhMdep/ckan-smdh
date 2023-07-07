@@ -67,6 +67,12 @@ ckan config-tool $CKAN_INI "who.timeout = $CKAN_SESSION_TIMEOUT"
 echo "Loading the following plugins: $CKAN__PLUGINS"
 ckan config-tool $CKAN_INI "ckan.plugins = $CKAN__PLUGINS"
 
+echo "Loading Datapusher+ settings into ckan.ini"
+ckan config-tool $CKAN_INI "ckan.datapusher.formats = csv xls xlsx xlsm xlsb tsv tab application/csv application/vnd.ms-excel application/vnd.openxmlformats-officedocument.spreadsheetml.sheet ods application/vnd.oasis.opendocument.spreadsheet"
+
+echo "Loading default views into ckan.ini"
+ckan config-tool $CKAN_INI "ckan.views.default_views = image_view text_view recline_view pdf_view"
+
 # Update test-core.ini DB, SOLR & Redis settings
 echo "Loading test settings into test-core.ini"
 ckan config-tool $SRC_DIR/ckan/test-core.ini \

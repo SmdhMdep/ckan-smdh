@@ -36,7 +36,7 @@ services:
     
   datapusher:
     container_name: ${DATAPUSHER_CONTAINER_NAME}
-    image: ckan/ckan-base-datapusher:${DATAPUSHER_VERSION}
+    image: ${INTERNAL_REG}/mdepckan/ckan-datapusher:latest
     restart: unless-stopped
     healthcheck:
       test: ["CMD", "wget", "-qO", "/dev/null", "http://localhost:8800"]
