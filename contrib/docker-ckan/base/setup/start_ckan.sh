@@ -55,8 +55,8 @@ UWSGI_OPTS="--plugins http,python \
 echo "Enabling ckan tracking"
 ckan config-tool $CKAN_INI "ckan.tracking_enabled = true"
 
-# echo "Loading Datapusher+ settings into ckan.ini"
-# ckan config-tool $CKAN_INI "ckan.datapusher.formats = csv xls xlsx xlsm xlsb tsv tab application/csv application/vnd.ms-excel application/vnd.openxmlformats-officedocument.spreadsheetml.sheet ods application/vnd.oasis.opendocument.spreadsheet"
+echo "Loading Datapusher+ settings into ckan.ini"
+ckan config-tool $CKAN_INI "ckan.datapusher.formats = csv xls xlsx xlsm xlsb tsv tab application/csv application/vnd.ms-excel application/vnd.openxmlformats-officedocument.spreadsheetml.sheet ods application/vnd.oasis.opendocument.spreadsheet"
 
 echo "Loading default views into ckan.ini"
 ckan config-tool $CKAN_INI "ckan.views.default_views = image_view text_view recline_view pdf_view"
