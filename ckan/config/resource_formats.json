@@ -92,6 +92,5 @@
   ["XML", "XML File", "application/xml", ["text/xml", "http://purl.org/net/mediatypes/application/xml"]],
   ["XSLT", "Extensible Stylesheet Language Transformations", "application/xslt+xml", []],
   ["XYZ", "XYZ Chemical File", "chemical/x-xyz", []],
-  ["ZIP", "Zip File", "application/zip", ["zip", "http://purl.org/NET/mediatypes/application/zip"]],
-  ["TAB", "Tab Separated Values File", "text/tab-separated-values", []]
+  ["ZIP", "Zip File", "application/zip", ["zip", "http://purl.org/NET/mediatypes/application/zip"]]
 ]
