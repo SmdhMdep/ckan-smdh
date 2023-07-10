@@ -54,7 +54,7 @@ services:
     
   datapusher:
     container_name: ${DATAPUSHER_CONTAINER_NAME}
-    image: ${INTERNAL_REG}/mdepckan/ckan-datapusher:latest
+    image: ckan/ckan-base-datapusher:${DATAPUSHER_VERSION}
     deploy:
       update_config:
         x-aws-min_percent: 50
