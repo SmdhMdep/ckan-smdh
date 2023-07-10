@@ -59,7 +59,7 @@ ckan config-tool $CKAN_INI "ckan.tracking_enabled = true"
 # ckan config-tool $CKAN_INI "ckan.datapusher.formats = csv xls xlsx xlsm xlsb tsv tab application/csv application/vnd.ms-excel application/vnd.openxmlformats-officedocument.spreadsheetml.sheet ods application/vnd.oasis.opendocument.spreadsheet"
 
 echo "Loading default views into ckan.ini"
-ckan config-tool $CKAN_INI "ckan.views.default_views = image_view text_view recline_view pdf_view"
+ckan config-tool $CKAN_INI "ckan.views.default_views = image_view text_view datatables_view pdf_view"
 
 echo "Loading FrontEnd settings into ckan.ini"
 ckan config-tool $CKAN_INI "ckan.site_title = Asset Explorer"
