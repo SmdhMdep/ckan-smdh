@@ -34,10 +34,6 @@ RUN  pip3 install -e 'git+https://github.com/SmdhMdep/ckanext-smdh.git@main#egg=
 RUN pip3 install -e 'git+https://github.com/SmdhMdep/ckanext-falkor.git@main#egg=ckanext-falkor' && \
     pip3 install -r ${APP_DIR}/src/ckanext-falkor/requirements.txt
 
-## S3FILESTORE ###
-RUN pip3 install -e 'git+https://github.com/SmdhMdep/ckanext-s3filestore.git@main#egg=ckanext-s3filestore' && \
-    pip3 install -r ${APP_DIR}/src/ckanext-s3filestore/requirements.txt
-
 ## TAGLIST ###
 RUN pip3 install -e 'git+https://github.com/SmdhMdep/ckanext-taglist.git@main#egg=ckanext-taglist' && \
     pip3 install -r ${APP_DIR}/src/ckanext-taglist/requirements.txt
@@ -51,6 +47,18 @@ RUN pip3 install -e 'git+https://github.com/SmdhMdep/ckanext-generalpublic.git@m
 
 ## CKANEXT-PDFVIEW ##
 RUN pip3 install -e 'git+https://github.com/ckan/ckanext-pdfview.git@master#egg=ckanext-pdfview'
+
+## CLOUDSTORAGE ##
+RUN pip3 install -e 'git+https://github.com/SmdhMdep/ckanext-cloudstorage.git@master#egg=ckanext-cloudstorage' && \
+    pip3 install -r ${APP_DIR}/src/ckanext-cloudstorage/requirements.txt
+
+## DATASCI SHARING ##
+RUN pip3 install -e 'git+https://github.com/SmdhMdep/ckanext-datasci-sharing.git@main#egg=ckanext-datasci-sharing' && \
+    pip3 install -r ${APP_DIR}/src/ckanext-datasci-sharing/requirements.txt
+
+## DATASET FORM CHAIN ##
+RUN pip3 install -e 'git+https://github.com/SmdhMdep/ckanext-datasetformchain.git@main#egg=ckanext-datasetformchain' && \
+    pip3 install -r ${APP_DIR}/src/ckanext-datasetformchain/requirements.txt
 
 # Copy the healthcheck script
 COPY contrib/docker-ckan/prod/health_check.sh ${APP_DIR}/health_check.sh

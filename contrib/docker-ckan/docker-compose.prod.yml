@@ -14,4 +14,30 @@ x-aws-cloudformation:
         Protocol: HTTPS
         Port: 443
       Type: AWS::ElasticLoadBalancingV2::Listener
- 
+
+services:
+  ckan:
+    x-aws-role:
+      Version: "2012-10-17"
+      Statement:
+        - Sid: S3BucketAccess
+          Effect: Allow
+          Action:
+            - s3:*
+            - s3-object-lambda:*
+          Resource:
+            - arn:aws:s3:::${CKAN_SMDH__AWS_STORAGE_BUCKET_NAME}
+        - Sid: DataSciSharingIAMAccess
+          Effect: Allow
+          Action:
+            - iam:ListPolicies
+            - iam:ListRoles
+            - iam:ListUsers
+            - iam:ListGroups
+          Resource: "*"
+        - Sid: DataSciSharingIAMManagedResourcesActions
+          Effect: Allow
+          Action: iam:*
+          Resource:
+            - arn:aws:iam::450869586150:policy/ckan-smdh/datasci-sharing/*
+            - arn:aws:iam::450869586150:group/ckan-smdh/datasci-sharing/*
