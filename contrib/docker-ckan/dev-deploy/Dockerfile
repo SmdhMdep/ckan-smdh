@@ -58,11 +58,6 @@ RUN pip3 install -e 'git+https://github.com/SmdhMdep/ckanext-falkor.git@main#egg
     pip3 install -r ${APP_DIR}/src/ckanext-falkor/requirements.txt && \
     pip3 install -r ${APP_DIR}/src/ckanext-falkor/dev-requirements.txt
 
-## S3FILESTORE ###
-RUN pip3 install -e 'git+https://github.com/SmdhMdep/ckanext-s3filestore.git@main#egg=ckanext-s3filestore' && \
-    pip3 install -r ${APP_DIR}/src/ckanext-s3filestore/requirements.txt && \
-    pip3 install -r ${APP_DIR}/src/ckanext-s3filestore/dev-requirements.txt
-
 ## TAGLIST ###
 RUN pip3 install -e 'git+https://github.com/SmdhMdep/ckanext-taglist.git@main#egg=ckanext-taglist' && \
     pip3 install -r ${APP_DIR}/src/ckanext-taglist/requirements.txt && \
@@ -80,6 +75,18 @@ RUN pip3 install -e 'git+https://github.com/SmdhMdep/ckanext-generalpublic.git@m
 ## CKANEXT-PDFVIEW ##
 RUN pip3 install -e 'git+https://github.com/ckan/ckanext-pdfview.git@master#egg=ckanext-pdfview' && \
     pip3 install -r ${APP_DIR}/src/ckanext-pdfview/dev-requirements.txt
+
+## CLOUDSTORAGE ##
+RUN pip3 install -e 'git+https://github.com/SmdhMdep/ckanext-cloudstorage.git@master#egg=ckanext-cloudstorage' && \
+    pip3 install -r ${APP_DIR}/src/ckanext-cloudstorage/requirements.txt
+
+## DATASCI SHARING ##
+RUN pip3 install -e 'git+https://github.com/SmdhMdep/ckanext-datasci-sharing.git@main#egg=ckanext-datasci-sharing' && \
+    pip3 install -r ${APP_DIR}/src/ckanext-datasci-sharing/requirements.txt
+
+## DATASET FORM CHAIN ##
+RUN pip3 install -e 'git+https://github.com/SmdhMdep/ckanext-datasetformchain.git@main#egg=ckanext-datasetformchain' && \
+    pip3 install -r ${APP_DIR}/src/ckanext-datasetformchain/requirements.txt
 
 COPY patches ${APP_DIR}/patches
 

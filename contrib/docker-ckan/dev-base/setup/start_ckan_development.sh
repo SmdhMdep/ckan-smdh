@@ -114,21 +114,23 @@ ckan config-tool $CKAN_INI "ckanext.saml2auth.want_assertions_or_response_signed
 ckan config-tool $CKAN_INI "ckanext.saml2auth.logout_expected_binding = $CKANEXT__SAML2AUTH__LOGOUT_EXPECTED_BINDING"
 ckan config-tool $CKAN_INI "ckanext.saml2auth.enable_ckan_internal_login = $CKANEXT__SAML2AUTH__ENABLE_CKAN_INTERNAL_LOGIN"
 
-echo "Loading S3Filestore settings into ckan.ini"
-ckan config-tool $CKAN_INI "ckanext.s3filestore.aws_bucket_name = $CKANEXT__S3FILESTORE__AWS_BUCKET_NAME"
-ckan config-tool $CKAN_INI "ckanext.s3filestore.region_name = $CKANEXT__S3FILESTORE__REGION_NAME"
-ckan config-tool $CKAN_INI "ckanext.s3filestore.signature_version = $CKANEXT__S3FILESTORE__SIGNATURE_VERSION"
-ckan config-tool $CKAN_INI "ckanext.s3filestore.aws_access_key_id = $CKANEXT__S3FILESTORE__AWS_ACCESS_KEY_ID"
-ckan config-tool $CKAN_INI "ckanext.s3filestore.aws_secret_access_key = $CKANEXT__S3FILESTORE__AWS_SECRET_ACCESS_KEY"
-ckan config-tool $CKAN_INI "ckanext.s3filestore.filesystem_download_fallback = $CKANEXT__S3FILESTORE__FILESYSTEM_DOWNLOAD_FALLBACK"
-ckan config-tool $CKAN_INI "ckanext.s3filestore.signed_url_expiry = $CKANEXT__S3FILESTORE__SIGNED_URL_EXPIRY"
-ckan config-tool $CKAN_INI "ckanext.s3filestore.signed_url_cache_window = $CKANEXT__S3FILESTORE__SIGNED_URL_CACHE_WINDOW"
-ckan config-tool $CKAN_INI "ckanext.s3filestore.public_cache_window = $CKANEXT__S3FILESTORE__PUBLIC_URL_CACE_WINDOW"
-
 echo "Loading Private Datasets settinngs into ckan.ini"
 ckan config-tool $CKAN_INI "ckan.privatedatasets.parser = $CKAN__PRIVATEDATASETS__PARSER"
 # ckan config-tool $CKAN_INI "ckan.privatedatasets.show_acquire_url_on_create = $CKAN__PRIVATEDATASETS__SHOW_ACQUIRE_URL_ON_CREATE"
 # ckan config-tool $CKAN_INI "ckan.privatedatasets.show_acquire_url_on_edit = $CKAN__PRIVATEDATASETS__SHOW_ACQUIRE_URL_ON_EDIT"
+
+echo "Loading Datasci Sharing settings into ckan.ini"
+ckan config-tool $CKAN_INI \
+    "ckanext.datasci_sharing.iam_resources_prefix = $CKANEXT__DATASCI_SHARING__IAM_RESOURCES_PREFIX" \
+    "ckanext.datasci_sharing.bucket_name = $CKANEXT__DATASCI_SHARING__BUCKET_NAME" \
+    "ckanext.datasci_sharing.aws_access_key_id = $CKANEXT__DATASCI_SHARING__AWS_ACCESS_KEY_ID" \
+    "ckanext.datasci_sharing.aws_secret_access_key = $CKANEXT__DATASCI_SHARING__AWS_SECRET_ACCESS_KEY"
+
+echo "Loading Cloudstorage settings into ckan.ini"
+ckan config-tool $CKAN_INI \
+    "ckanext.cloudstorage.driver = $CKANEXT__CLOUDSTORAGE__DRIVER" \
+    "ckanext.cloudstorage.driver_options = $CKANEXT__CLOUDSTORAGE__DRIVER_OPTIONS" \
+    "ckanext.cloudstorage.container_name = $CKANEXT__CLOUDSTORAGE__CONTAINER_NAME"
 
 # Run any startup scripts provided by images extending this one
 if [[ -d "/docker-entrypoint.d" ]]
