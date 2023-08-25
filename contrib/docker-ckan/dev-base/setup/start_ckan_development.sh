@@ -148,7 +148,7 @@ then
 fi
 
 # Start supervisord
-supervisord --configuration /etc/supervisord.conf &
+supervisord --configuration /etc/supervisord.conf
 
 # Start the development server as the ckan user with automatic reload
 if [[ "$WORKER_PROCESS" != "true" ]]
