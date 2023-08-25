@@ -5,6 +5,7 @@ crontab_file=$(mktemp)
 # add your cron jobs below
 cat <<EOF > $crontab_file
 # min   hour    day     month   weekday command
+*       *       *       *       *       ckan -c $CKAN_INI cloudstorage sync
 
 EOF
 

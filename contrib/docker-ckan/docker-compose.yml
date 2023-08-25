@@ -15,7 +15,7 @@ volumes:
       gid: 0
 
 services:
-  ckan:
+  ckan: &ckan
     container_name: ${CKAN_CONTAINER_NAME}
     image: ${INTERNAL_REG}/mdepckan/ckan-deploy:latest
     deploy:
@@ -51,7 +51,27 @@ services:
     healthcheck:
       test: ["CMD", "wget", "-qO", "/dev/null", "${CKAN_SITE_URL}/api/3/action/status_show"]
 
-    
+  ckan-worker:
+    <<: *ckan
+    container_name: ${WORKER_CONTAINER_NAME}
+    image: ${INTERNAL_REG}/mdepckan/ckan-deploy:latest
+    depends_on:
+      solr:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    deploy:
+      replicas: 1
+      resources:
+          limits:
+            cpus: '4'
+            memory: 16GB
+    ports: []
+    environment:
+      - WORKER_PROCESS=true
+    healthcheck:
+      test: ["CMD", "/srv/app/probe_worker.sh"]
+
   datapusher:
     container_name: ${DATAPUSHER_CONTAINER_NAME}
     image: ckan/ckan-base-datapusher:${DATAPUSHER_VERSION}

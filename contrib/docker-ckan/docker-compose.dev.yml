@@ -7,7 +7,7 @@ volumes:
 
 services:
 
-  ckan-dev:
+  ckan-dev: &ckan
     container_name: ${CKAN_CONTAINER_NAME}
     build:
       context: dev-deploy/
@@ -26,14 +26,30 @@ services:
         condition: service_healthy
     ports:
       - "0.0.0.0:${CKAN_PORT_HOST}:${CKAN_PORT}"
-
     volumes:
       - ckan_storage:/var/lib/ckan
       - ./src:/srv/app/src_extensions
     restart: unless-stopped
     healthcheck:
       test: ["CMD", "wget", "-qO", "/dev/null", "http://localhost:5000"]
-    
+
+  ckan-dev-worker:
+    <<: *ckan
+    container_name: ${WORKER_CONTAINER_NAME}
+    image: ${COMPOSE_PROJECT_NAME}-ckan-dev
+    depends_on:
+      db:
+        condition: service_healthy
+      solr:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    ports: []
+    environment:
+      - WORKER_PROCESS=true
+    healthcheck:
+      test: ["CMD", "/srv/app/probe_worker.sh"]
+
   datapusher:
     container_name: ${DATAPUSHER_CONTAINER_NAME}
     image: ckan/ckan-base-datapusher:${DATAPUSHER_VERSION}
@@ -66,6 +82,8 @@ services:
     restart: unless-stopped
     volumes:
       - solr_data:/var/solr
+    environment:
+      - SOLR_OPTS=-XX:-UseLargePages
     healthcheck:
       test: ["CMD", "wget", "-qO", "/dev/null", "http://localhost:8983/solr/"]
 
