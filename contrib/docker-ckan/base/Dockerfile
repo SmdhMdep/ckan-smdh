@@ -90,6 +90,9 @@ RUN mkdir -p ${CKAN_STORAGE_PATH} && \
 
 COPY ./contrib/docker-ckan/base/setup/prerun.py ${APP_DIR}
 COPY ./contrib/docker-ckan/base/setup/prerun_prod.py ${APP_DIR}
+COPY ./contrib/docker-ckan/base/setup/probe_worker.sh ${APP_DIR}
+COPY ./contrib/docker-ckan/base/setup/cron_service.conf ${APP_DIR}
+COPY ./contrib/docker-ckan/base/setup/start_cron.sh ${APP_DIR}
 COPY ./contrib/docker-ckan/base/setup/start_ckan.sh ${APP_DIR}
 ADD https://raw.githubusercontent.com/SmdhMdep/ckan-smdh/main/wsgi.py ${APP_DIR}
 RUN chmod 644 ${APP_DIR}/wsgi.py
@@ -97,7 +100,7 @@ RUN chmod 644 ${APP_DIR}/wsgi.py
 # Create entrypoint directory for children image scripts
 ONBUILD RUN mkdir /docker-entrypoint.d
 
-RUN chmod +x ${APP_DIR}/start_ckan.sh
+RUN chmod +x ${APP_DIR}/start_ckan.sh ${APP_DIR}/probe_worker.sh ${APP_DIR}/start_cron.sh
 
 EXPOSE 5000
 
