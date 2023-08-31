@@ -45,17 +45,13 @@ services:
           Effect: Allow
           Action: [iam:*]
           Resource:
-            - Fn::Join: [":", ["arn:aws:iam:", Ref: "AWS::AccountId", "policy/ckan-smdh/datasci-sharing/*"]]
-            - Fn::Join: [":", ["arn:aws:iam:", Ref: "AWS::AccountId", "group/ckan-smdh/datasci-sharing/*"]]
+            - "arn:aws:iam::${AWS_ACCOUNT_ID}:policy/ckan-smdh/datasci-sharing/*"
+            - "arn:aws:iam::${AWS_ACCOUNT_ID}:group/ckan-smdh/datasci-sharing/*"
         - Sid: SQSResourceManagement
           Effect: Allow
           Action: [sqs:*]
           Resource:
-            Fn::Join: [":", [
-                "arn:aws:sqs:${CKANEXT__CLOUDSTORAGE__SYNC__QUEUE_REGION}",
-                Ref: "AWS::AccountId",
-                "${CKANEXT__CLOUDSTORAGE__SYNC__QUEUE_NAME}",
-              ]]
+            - "arn:aws:sqs:${CKANEXT__CLOUDSTORAGE__SYNC__QUEUE_REGION}:${AWS_ACCOUNT_ID}:${CKANEXT__CLOUDSTORAGE__SYNC__QUEUE_NAME}"
 
   ckan-worker:
     x-aws-role: *ckan-role

@@ -53,7 +53,8 @@ jobs:
         
       - name: Update env file
         run: | 
-         sed -e 's|^POSTGRES_PASSWORD=.*|POSTGRES_PASSWORD=${{ secrets.DB_P }}|g
+         sed -e 's|^AWS_ACCOUNT_ID=.*|AWS_ACCOUNT_ID=${{ secrets.AWS_ACCOUNT_ID }}|g
+         s|^POSTGRES_PASSWORD=.*|POSTGRES_PASSWORD=${{ secrets.DB_P }}|g
          s|^POSTGRES_HOST=.*|POSTGRES_HOST=${{ secrets.PG_HOST }}|g
          s|^DATASTORE_READONLY_PASSWORD=.*|DATASTORE_READONLY_PASSWORD=${{ secrets.DT_P }}|g
          s|^CKAN_SMTP_SERVER=.*|CKAN_SMTP_SERVER=${{ secrets.SMTP_SRV }}|g
