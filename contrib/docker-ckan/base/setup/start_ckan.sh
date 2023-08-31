@@ -107,15 +107,25 @@ echo "Loading Cloudstorage settings into ckan.ini"
 ckan config-tool $CKAN_INI \
     "ckanext.cloudstorage.driver = $CKANEXT__CLOUDSTORAGE__DRIVER" \
     "ckanext.cloudstorage.driver_options = $CKANEXT__CLOUDSTORAGE__DRIVER_OPTIONS" \
-    "ckanext.cloudstorage.container_name = $CKANEXT__CLOUDSTORAGE__CONTAINER_NAME"
+    "ckanext.cloudstorage.container_name = $CKANEXT__CLOUDSTORAGE__CONTAINER_NAME" \
+    "ckanext.cloudstorage.sync.queue_region = $CKANEXT__CLOUDSTORAGE__SYNC__QUEUE_REGION" \
+    "ckanext.cloudstorage.sync.queue_url = $CKANEXT__CLOUDSTORAGE__SYNC__QUEUE_URL"
 
 if [ $? -eq 0 ]
 then
     # Start supervisord
-    supervisord --configuration /etc/supervisord.conf &
+    supervisord --configuration /etc/supervisord.conf
     # Start uwsgi
-    echo "STARTING CKAN..."
-    uwsgi $UWSGI_OPTS
+    if [[ "$WORKER_PROCESS" != "true" ]]
+    then
+        echo "STARTING CKAN SERVER..."
+        uwsgi $UWSGI_OPTS
+    else
+        echo "STARTING CRON..."
+        ./start_cron.sh
+        echo "STARTING CKAN WORKER..."
+        su ckan -c "/usr/bin/ckan -c $CKAN_INI jobs worker"
+    fi
 else
   echo "[prerun] failed...not starting CKAN."
 fi

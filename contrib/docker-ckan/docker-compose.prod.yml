@@ -14,10 +14,16 @@ x-aws-cloudformation:
         Protocol: HTTPS
         Port: 443
       Type: AWS::ElasticLoadBalancingV2::Listener
+    # compose ecs integration doesn't handle 0 min percent for update config.
+    CkanworkerService:
+      Properties:
+        DeploymentConfiguration:
+          MaximumPercent: 100
+          MinimumHealthyPercent: 0
 
 services:
   ckan:
-    x-aws-role:
+    x-aws-role: &ckan-role
       Version: "2012-10-17"
       Statement:
         - Sid: S3BucketAccess
@@ -26,7 +32,7 @@ services:
             - s3:*
             - s3-object-lambda:*
           Resource:
-            - arn:aws:s3:::${CKAN_SMDH__AWS_STORAGE_BUCKET_NAME}
+            - arn:aws:s3:::${CKAN_SMDH__AWS_STORAGE_BUCKET_NAME}/*
         - Sid: DataSciSharingIAMAccess
           Effect: Allow
           Action:
@@ -37,7 +43,15 @@ services:
           Resource: "*"
         - Sid: DataSciSharingIAMManagedResourcesActions
           Effect: Allow
-          Action: iam:*
+          Action: [iam:*]
           Resource:
-            - arn:aws:iam::450869586150:policy/ckan-smdh/datasci-sharing/*
-            - arn:aws:iam::450869586150:group/ckan-smdh/datasci-sharing/*
+            - "arn:aws:iam::${AWS_ACCOUNT_ID}:policy/ckan-smdh/datasci-sharing/*"
+            - "arn:aws:iam::${AWS_ACCOUNT_ID}:group/ckan-smdh/datasci-sharing/*"
+        - Sid: SQSResourceManagement
+          Effect: Allow
+          Action: [sqs:*]
+          Resource:
+            - "arn:aws:sqs:${CKANEXT__CLOUDSTORAGE__SYNC__QUEUE_REGION}:${AWS_ACCOUNT_ID}:${CKANEXT__CLOUDSTORAGE__SYNC__QUEUE_NAME}"
+
+  ckan-worker:
+    x-aws-role: *ckan-role

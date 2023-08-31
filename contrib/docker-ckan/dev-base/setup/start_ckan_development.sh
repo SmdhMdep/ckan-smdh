@@ -130,7 +130,9 @@ echo "Loading Cloudstorage settings into ckan.ini"
 ckan config-tool $CKAN_INI \
     "ckanext.cloudstorage.driver = $CKANEXT__CLOUDSTORAGE__DRIVER" \
     "ckanext.cloudstorage.driver_options = $CKANEXT__CLOUDSTORAGE__DRIVER_OPTIONS" \
-    "ckanext.cloudstorage.container_name = $CKANEXT__CLOUDSTORAGE__CONTAINER_NAME"
+    "ckanext.cloudstorage.container_name = $CKANEXT__CLOUDSTORAGE__CONTAINER_NAME" \
+    "ckanext.cloudstorage.sync.queue_region = $CKANEXT__CLOUDSTORAGE__SYNC__QUEUE_REGION" \
+    "ckanext.cloudstorage.sync.queue_url = $CKANEXT__CLOUDSTORAGE__SYNC__QUEUE_URL"
 
 # Run any startup scripts provided by images extending this one
 if [[ -d "/docker-entrypoint.d" ]]
@@ -146,7 +148,16 @@ then
 fi
 
 # Start supervisord
-supervisord --configuration /etc/supervisord.conf &
+supervisord --configuration /etc/supervisord.conf
 
 # Start the development server as the ckan user with automatic reload
-su ckan -c "/usr/bin/ckan -c $CKAN_INI run -H 0.0.0.0"
+if [[ "$WORKER_PROCESS" != "true" ]]
+then
+    echo "STARTING CKAN SERVER..."
+    su ckan -c "/usr/bin/ckan -c $CKAN_INI run -H 0.0.0.0"
+else
+    echo "STARTING CRON..."
+    ./start_cron.sh
+    echo "STARTING CKAN WORKER..."
+    su ckan -c "/usr/bin/ckan -c $CKAN_INI jobs worker"
+fi

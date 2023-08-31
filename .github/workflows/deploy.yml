@@ -53,7 +53,8 @@ jobs:
         
       - name: Update env file
         run: | 
-         sed -e 's|^POSTGRES_PASSWORD=.*|POSTGRES_PASSWORD=${{ secrets.DB_P }}|g
+         sed -e 's|^AWS_ACCOUNT_ID=.*|AWS_ACCOUNT_ID=${{ secrets.AWS_ACCOUNT_ID }}|g
+         s|^POSTGRES_PASSWORD=.*|POSTGRES_PASSWORD=${{ secrets.DB_P }}|g
          s|^POSTGRES_HOST=.*|POSTGRES_HOST=${{ secrets.PG_HOST }}|g
          s|^DATASTORE_READONLY_PASSWORD=.*|DATASTORE_READONLY_PASSWORD=${{ secrets.DT_P }}|g
          s|^CKAN_SMTP_SERVER=.*|CKAN_SMTP_SERVER=${{ secrets.SMTP_SRV }}|g
@@ -63,7 +64,9 @@ jobs:
          s|^CKANEXT__SAML2AUTH__IDP_METADATA__REMOTE_URL=.*|CKANEXT__SAML2AUTH__IDP_METADATA__REMOTE_URL=${{ secrets.SAML_REMOTE_URL }}|g
          s|^CKANEXT__SAML2AUTH__ENTITY_ID=.*|CKANEXT__SAML2AUTH__ENTITY_ID=${{ secrets.SAML_IDENTITY_ID }}|g
          s|^CKAN_SMDH__AWS_STORAGE_BUCKET_NAME=.*|CKAN_SMDH__AWS_STORAGE_BUCKET_NAME=${{ secrets.S3_NAME }}|g
-         s|^CKAN_SMDH__AWS_STORAGE_BUCKET_REGION=.*|CKAN_SMDH__AWS_STORAGE_BUCKET_REGION=${{ secrets.S3_REG }}|g' \
+         s|^CKAN_SMDH__AWS_STORAGE_BUCKET_REGION=.*|CKAN_SMDH__AWS_STORAGE_BUCKET_REGION=${{ secrets.S3_REG }}|g
+         s|^CKANEXT__CLOUDSTORAGE__SYNC__QUEUE_NAME=.*|CKANEXT__CLOUDSTORAGE__SYNC__QUEUE_NAME=${{ secrets.CKANEXT__CLOUDSTORAGE__SYNC__QUEUE_NAME }}|g
+         s|^CKANEXT__CLOUDSTORAGE__SYNC__QUEUE_URL=.*|CKANEXT__CLOUDSTORAGE__SYNC__QUEUE_URL=${{ secrets.CKANEXT__CLOUDSTORAGE__SYNC__QUEUE_URL }}|g' \
          "contrib/docker-ckan/prod.env.template" > "contrib/docker-ckan/.env"
          
          echo INTERNAL_REG=${{ secrets.CONTAINER_REGISTRY_URL }} >> contrib/docker-ckan/.env
