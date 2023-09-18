@@ -4,7 +4,7 @@
 
 # Run the prerun script to init CKAN and create the default admin user
 echo "Running prerun script"
-sudo -u ckan -EH python3 $APP_DIR/prerun_prod.py
+python3 $APP_DIR/prerun_prod.py
 
 echo "Override SQLAlchemy config"
 ckan config-tool $CKAN_INI "sqlalchemy.pool_size = 10"
@@ -106,7 +106,7 @@ then
     echo "STARTING CKAN..."
     supervisord --configuration /etc/supervisord.conf &
     # Start uwsgi
-    sudo -u ckan -EH uwsgi $UWSGI_OPTS & 
+    uwsgi $UWSGI_OPTS & 
     while ! curl -sSf http://localhost:5000 > /dev/null 2>&1; do
         echo "WAITING for CKAN to be up and running..."
         sleep 5
