@@ -63,7 +63,3 @@ RUN pip3 install -e 'git+https://github.com/SmdhMdep/ckanext-datasetformchain.gi
 # Copy the healthcheck script
 COPY contrib/docker-ckan/prod/health_check.sh ${APP_DIR}/health_check.sh
 RUN chmod +x ${APP_DIR}/health_check.sh
-
-# Copy the tracking cron job script
-COPY contrib/docker-ckan/prod/tracking_cron_job.sh ${APP_DIR}/tracking_cron_job.sh
-RUN chmod +x ${APP_DIR}/tracking_cron_job.sh
