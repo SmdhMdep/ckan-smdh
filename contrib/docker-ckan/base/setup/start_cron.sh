@@ -6,6 +6,8 @@ crontab_file=$(mktemp)
 cat <<EOF > $crontab_file
 # min   hour    day     month   weekday command
 *       *       *       *       *       ckan -c $CKAN_INI cloudstorage sync
+0       *       *       *       *       ckan -c $CKAN_INI tracking update
+0       *       *       *       *       ckan -c $CKAN_INI search-index rebuild
 
 EOF
 
