@@ -100,6 +100,8 @@ echo "Loading Datasci Sharing settings into ckan.ini"
 ckan config-tool $CKAN_INI \
     "ckanext.datasci_sharing.iam_resources_prefix = $CKANEXT__DATASCI_SHARING__IAM_RESOURCES_PREFIX" \
     "ckanext.datasci_sharing.bucket_name = $CKANEXT__DATASCI_SHARING__BUCKET_NAME" \
+    "ckanext.datasci_sharing.bucket_region = $CKAN_SMDH__AWS_STORAGE_BUCKET_REGION" \
+    "ckanext.datasci_sharing.aws_account_id = $CKAN_SMDH__AWS_ACCOUNT_ID" \
     "ckanext.datasci_sharing.aws_access_key_id = $CKANEXT__DATASCI_SHARING__AWS_ACCESS_KEY_ID" \
     "ckanext.datasci_sharing.aws_secret_access_key = $CKANEXT__DATASCI_SHARING__AWS_SECRET_ACCESS_KEY"
 
