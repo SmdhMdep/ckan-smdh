@@ -26,27 +26,19 @@ services:
     x-aws-role: &ckan-role
       Version: "2012-10-17"
       Statement:
-        - Sid: S3BucketAccess
+        - Sid: S3Access
           Effect: Allow
           Action:
             - s3:*
             - s3-object-lambda:*
           Resource:
-            - arn:aws:s3:::${CKAN_SMDH__AWS_STORAGE_BUCKET_NAME}/*
-        - Sid: DataSciSharingIAMAccess
+            - "arn:aws:s3:::${CKAN_SMDH__AWS_STORAGE_BUCKET_NAME}/*"
+            - "arn:aws:s3:${CKANEXT__DATASCI_SHARING__BUCKET_REGION}:${AWS_ACCOUNT_ID}:accesspoint/${CKAN_SMDH__AWS_STORAGE_BUCKET_NAME}*"
+        - Sid: LambdaInvoke
           Effect: Allow
-          Action:
-            - iam:ListPolicies
-            - iam:ListRoles
-            - iam:ListUsers
-            - iam:ListGroups
-          Resource: "*"
-        - Sid: DataSciSharingIAMManagedResourcesActions
-          Effect: Allow
-          Action: [iam:*]
+          Action: [lambda:InvokeFunction]
           Resource:
-            - "arn:aws:iam::${AWS_ACCOUNT_ID}:policy/ckan-smdh/datasci-sharing/*"
-            - "arn:aws:iam::${AWS_ACCOUNT_ID}:group/ckan-smdh/datasci-sharing/*"
+            - "arn:aws:lambda:eu-west-1:${AWS_ACCOUNT_ID}:function:GetShortGroup"
         - Sid: SQSResourceManagement
           Effect: Allow
           Action: [sqs:*]
