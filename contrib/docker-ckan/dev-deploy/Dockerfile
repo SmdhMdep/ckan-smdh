@@ -53,11 +53,6 @@ RUN  pip3 install -e 'git+https://github.com/SmdhMdep/ckanext-usertracking.git@m
 RUN  pip3 install -e 'git+https://github.com/SmdhMdep/ckanext-smdh.git@main#egg=ckanext-smdh' && \
     pip3 install -r ${APP_DIR}/src/ckanext-smdh/requirements.txt
 
-## FALKOR ###
-RUN pip3 install -e 'git+https://github.com/SmdhMdep/ckanext-falkor.git@main#egg=ckanext-falkor' && \
-    pip3 install -r ${APP_DIR}/src/ckanext-falkor/requirements.txt && \
-    pip3 install -r ${APP_DIR}/src/ckanext-falkor/dev-requirements.txt
-
 ## TAGLIST ###
 RUN pip3 install -e 'git+https://github.com/SmdhMdep/ckanext-taglist.git@main#egg=ckanext-taglist' && \
     pip3 install -r ${APP_DIR}/src/ckanext-taglist/requirements.txt && \
