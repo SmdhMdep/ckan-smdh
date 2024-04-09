@@ -1,6 +1,4 @@
-ARG INTERNAL_REG
-
-FROM ${INTERNAL_REG}/mdepckan/ckan-base:latest
+FROM mdepckan/ckan-base:latest
 
 
 ENV APP_DIR=/srv/app

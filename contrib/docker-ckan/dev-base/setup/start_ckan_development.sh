@@ -136,6 +136,17 @@ ckan config-tool $CKAN_INI \
     "ckanext.cloudstorage.sync.queue_region = $CKANEXT__CLOUDSTORAGE__SYNC__QUEUE_REGION" \
     "ckanext.cloudstorage.sync.queue_url = $CKANEXT__CLOUDSTORAGE__SYNC__QUEUE_URL"
 
+echo "Loading Falkor settings into ckan.ini"
+ckan config-tool $CKAN_INI \
+    "ckanext.falkor.tenant_id=$CKANEXT_FALKOR_TENANT_ID" \
+    "ckanext.falkor.core_api_url=$CKANEXT_FALKOR_CORE_BASE_URL" \
+    "ckanext.falkor.admin_api_url=$CKANEXT_FALKOR_ADMIN_BASE_URL" \
+    "ckanext.falkor.auth.endpoint=$CKANEXT_FALKOR_AUTH_ENDPOINT" \
+    "ckanext.falkor.auth.client_id=$CKANEXT_FALKOR_AUTH_CLIENT_ID" \
+    "ckanext.falkor.auth.client_secret=$CKANEXT_FALKOR_AUTH_CLIENT_SECRET" \
+    "ckanext.falkor.auth.username=$CKANEXT_FALKOR_AUTH_USERNAME" \
+    "ckanext.falkor.auth.password=$CKANEXT_FALKOR_AUTH_PASSWORD"
+
 # Run any startup scripts provided by images extending this one
 if [[ -d "/docker-entrypoint.d" ]]
 then

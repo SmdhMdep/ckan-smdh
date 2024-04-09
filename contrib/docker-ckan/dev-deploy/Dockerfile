@@ -1,6 +1,6 @@
 ARG INTERNAL_REG
 
-FROM ${INTERNAL_REG}/mdepckan/ckan-dev:latest
+FROM mdepckan/ckan-dev:0.0.1
 
 
 # Set up environment variables
@@ -23,7 +23,7 @@ RUN if ! [ /usr/share/zoneinfo/${TZ} -ef /etc/localtime ]; then \
 #   This can be done by creating an overriding start_ckan_dev_development.sh file:
 #   (https://github.com/ckan/ckan-docker-base/blob/main/ckan-2.9/dev/setup/start_ckan_development.sh) ie: updating the 'ckan config-tool' lines
 #   For more on config-tool please see https://docs.ckan.org/en/latest/maintaining/cli.html#config-tool-tool-for-editing-options-in-a-ckan-config-file
-#   or using Crudini (https://github.com/pixelb/crudini) 
+#   or using Crudini (https://github.com/pixelb/crudini)
 #
 
 
@@ -34,7 +34,7 @@ RUN if ! [ /usr/share/zoneinfo/${TZ} -ef /etc/localtime ]; then \
 # runtime mounted ones)
 
 ### SSO ###
-RUN pip3 install -e 'git+https://github.com/SmdhMdep/ckanext-sso.git@main#egg=ckanext-sso' && \ 
+RUN pip3 install -e 'git+https://github.com/SmdhMdep/ckanext-sso.git@main#egg=ckanext-sso' && \
    pip3 install -r ${APP_DIR}/src/ckanext-sso/requirements.txt && \
    pip3 install -r ${APP_DIR}/src/ckanext-sso/dev-requirements.txt
 ## SAML2AUTH ###

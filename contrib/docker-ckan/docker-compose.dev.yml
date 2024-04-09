@@ -6,15 +6,13 @@ volumes:
   solr_data:
 
 services:
-
   ckan-dev: &ckan
     container_name: ${CKAN_CONTAINER_NAME}
-    build:
-      context: dev-deploy/
-      dockerfile: Dockerfile
-      args:
-        - TZ=${TZ}
-        - INTERNAL_REG=${INTERNAL_REG}
+    image: mdepckan/ckan-deploy:latest
+    # build:
+    #   args:
+    #     - TZ=${TZ}
+    #     - INTERNAL_REG=${INTERNAL_REG}
     env_file:
       - dev.env
     depends_on:
@@ -62,8 +60,8 @@ services:
     build:
       context: postgresql/
       args:
-       - DATASTORE_READONLY_PASSWORD=${DATASTORE_READONLY_PASSWORD}
-       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+        - DATASTORE_READONLY_PASSWORD=${DATASTORE_READONLY_PASSWORD}
+        - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
     environment:
       - DATASTORE_READONLY_PASSWORD=${DATASTORE_READONLY_PASSWORD}
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
@@ -75,7 +73,7 @@ services:
       test: ["CMD", "pg_isready", "-U", "ckan"]
     ports:
       - "5433:5432"
-     
+
   solr:
     container_name: ${SOLR_CONTAINER_NAME}
     image: ckan/ckan-solr:${SOLR_IMAGE_VERSION}
