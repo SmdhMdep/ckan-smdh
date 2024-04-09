@@ -1,6 +1,6 @@
 ARG INTERNAL_REG
 
-FROM mdepckan/ckan-dev:0.0.1
+FROM mdepckan/ckan-dev:latest
 
 
 # Set up environment variables

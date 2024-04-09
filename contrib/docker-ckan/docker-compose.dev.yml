@@ -34,7 +34,7 @@ services:
   ckan-dev-worker:
     <<: *ckan
     container_name: ${WORKER_CONTAINER_NAME}
-    image: ${COMPOSE_PROJECT_NAME}-ckan-dev
+    image: mdepckan/ckan-deploy:latest
     depends_on:
       db:
         condition: service_healthy
