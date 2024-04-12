@@ -113,8 +113,6 @@ ckan config-tool $CKAN_INI \
     "ckanext.cloudstorage.sync.queue_region = $CKANEXT__CLOUDSTORAGE__SYNC__QUEUE_REGION" \
     "ckanext.cloudstorage.sync.queue_url = $CKANEXT__CLOUDSTORAGE__SYNC__QUEUE_URL"
 
-echo "IS IT THIS ONE?"
-
 if [ $? -eq 0 ]
 then
     # Start supervisord
