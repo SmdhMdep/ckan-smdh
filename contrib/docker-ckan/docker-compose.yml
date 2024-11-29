@@ -46,10 +46,15 @@ services:
         condition: service_healthy
     volumes:
       - ckan_storage:/var/lib/ckan
-    ports:
-      - "${NGINX_PORT_HOST}:${NGINX_PORT}"
     healthcheck:
-      test: ["CMD", "wget", "-qO", "/dev/null", "${CKAN_SITE_URL}/api/3/action/status_show"]
+      test:
+        [
+          "CMD",
+          "wget",
+          "-qO",
+          "/dev/null",
+          "http://localhost:${CKAN_PORT}/api/3/action/status_show",
+        ]
 
   ckan-worker:
     <<: *ckan

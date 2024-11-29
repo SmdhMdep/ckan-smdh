@@ -31,7 +31,14 @@ services:
       - ./src:/srv/app/src_extensions
     restart: unless-stopped
     healthcheck:
-      test: ["CMD", "wget", "-qO", "/dev/null", "http://localhost:5000"]
+      test:
+        [
+          "CMD",
+          "wget",
+          "-qO",
+          "/dev/null",
+          "http://localhost:${CKAN_PORT}/api/3/action/status_show",
+        ]
 
   ckan-dev-worker:
     <<: *ckan

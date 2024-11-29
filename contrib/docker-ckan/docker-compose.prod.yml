@@ -23,6 +23,12 @@ x-aws-cloudformation:
 
 services:
   ckan:
+    ports:
+      # use NGINX port mapping here so that the target group CkanTCP80TargetGroup
+      # is correctly configured to point to the right ports. We later inject the
+      # NGINX sidecar and replace this port to point to CKAN's port, and also point
+      # the target group to the injected NGINX container instead.
+      - "${NGINX_PORT_HOST}:${NGINX_PORT}"
     x-aws-role: &ckan-role
       Version: "2012-10-17"
       Statement:
