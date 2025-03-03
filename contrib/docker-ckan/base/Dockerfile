@@ -1,4 +1,4 @@
-FROM alpine:3.21
+FROM alpine:3.16
 
 # Internals, you probably don't need to change these
 ENV APP_DIR=/srv/app
