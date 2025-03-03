@@ -60,6 +60,10 @@ jobs:
         id: sha
         run: echo "::set-output name=sha::$(git rev-parse --short HEAD)"
 
+      - name: change python settings
+        id: python
+        run: python3 -m pip config set global.break-system-packages true
+
       - name: Build and push
         id: docker_build
         uses: docker/build-push-action@v3
