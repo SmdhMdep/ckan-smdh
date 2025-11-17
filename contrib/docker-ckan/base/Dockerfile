@@ -35,6 +35,7 @@ RUN apk add --no-cache tzdata \
         uwsgi-gevent \
         libmagic \
         curl \
+        bash \
         patch && \
     # Packages to build CKAN requirements and plugins
     apk add --no-cache --virtual .build-deps \
