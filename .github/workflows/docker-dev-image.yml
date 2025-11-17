@@ -27,10 +27,10 @@ jobs:
 
       - name: Set up Docker Buildx
         id: buildx
-        uses: docker/setup-buildx-action@v1
+        uses: docker/setup-buildx-action@v3
 
       - name: Configure AWS Credentials
-        uses: aws-actions/configure-aws-credentials@v1
+        uses: aws-actions/configure-aws-credentials@v5.1.0
         with:
           role-to-assume: ${{ secrets.ROLE_OIDC }}
           aws-region: eu-west-2
@@ -39,7 +39,7 @@ jobs:
 
       - name: Login into the Container Registry
         id: login-ecr
-        uses: aws-actions/amazon-ecr-login@v1
+        uses: aws-actions/amazon-ecr-login@v2
 
       
       # TODO: use Docker Metadata action in the future to manage the semantic versioning of images
@@ -54,7 +54,7 @@ jobs:
 
       - name: Build and push
         id: docker_build
-        uses: docker/build-push-action@v3
+        uses: docker/build-push-action@v6
         with:
           file: ./contrib/docker-ckan/dev-base/Dockerfile
           context: .
