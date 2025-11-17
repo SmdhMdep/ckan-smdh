@@ -93,7 +93,7 @@ jobs:
         run: |
           mkdir -p ~/junit/result
           # python -m pytest ${PYTEST_COMMON_OPTIONS} --splits 4 --group ${{matrix.test_group}} --splitting-algorithm least_duration
-          python -m pytest ${PYTEST_COMMON_OPTIONS} --test-group ${{matrix.test_group}}
+          python -m pytest -p no:typeguard ${PYTEST_COMMON_OPTIONS} --test-group ${{matrix.test_group}}
           
       - name: Run coveralls
         env: 
