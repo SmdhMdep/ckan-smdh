@@ -46,7 +46,7 @@ jobs:
         ports:
           - 6379:6379
       ckan-solr:
-        image: ckan/ckan-solr:master
+        image: ckan/ckan-solr:2.9-solr8
         ports:
           - 8983:8983
 
