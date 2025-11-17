@@ -24,7 +24,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Cache Docker layers
-        uses: actions/cache@v2
+        uses: actions/cache@v4
         with:
           path: /tmp/.buildx-cache
           key: ${{ runner.os }}-buildx-${{ github.sha }}
@@ -35,7 +35,7 @@ jobs:
 
 
       - name: Configure AWS Credentials
-        uses: aws-actions/configure-aws-credentials@v1
+        uses: aws-actions/configure-aws-credentials@v5.1.0
         with:
           role-to-assume: ${{ secrets.ROLE_OIDC }}
           aws-region: eu-west-2
@@ -44,11 +44,11 @@ jobs:
 
       - name: Login into the Container Registry
         id: login-ecr
-        uses: aws-actions/amazon-ecr-login@v1
+        uses: aws-actions/amazon-ecr-login@v2
 
       - name: Set up Docker Buildx
         id: buildx
-        uses: docker/setup-buildx-action@v1
+        uses: docker/setup-buildx-action@v3
       
       # TODO: use Docker Metadata action in the future to manage the semantic versioning of images
       - name: Set sha output
@@ -57,7 +57,7 @@ jobs:
 
       - name: Build and push
         id: docker_build
-        uses: docker/build-push-action@v3
+        uses: docker/build-push-action@v6
         with:
           file: ./contrib/docker-ckan/nginx/Dockerfile
           context: ./contrib/docker-ckan/nginx
