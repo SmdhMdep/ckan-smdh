@@ -11,16 +11,22 @@ ENV GIT_URL=https://github.com/SmdhMdep/ckan-smdh.git
 ENV GIT_BRANCH=main
 # Customize these on the .env file if needed
 ENV CKAN_SITE_URL=http://localhost:5000
-ENV CKAN__PLUGINS image_view text_view recline_view datastore datapusher envvars
+ENV CKAN__PLUGINS="image_view text_view recline_view datastore datapusher envvars"
 
 # UWSGI options
 ENV UWSGI_HARAKIRI=360
 
 WORKDIR ${APP_DIR}
+# Set up timezone
+RUN apk add --no-cache tzdata
+RUN echo ${TZ} > /etc/timezone
+# Make sure both files are not exactly the same
+RUN if ! [ /usr/share/zoneinfo/${TZ} -ef /etc/localtime ]; then \
+        cp /usr/share/zoneinfo/${TZ} /etc/localtime ;\
+    fi ;
 
 # Install necessary packages to run CKAN
-RUN apk add --no-cache tzdata \
-        git \
+RUN apk add git \
         gettext \
         postgresql-client \
         python3 \
@@ -76,6 +82,7 @@ RUN cd ${SRC_DIR}/ckan && \
     pip3 install --no-binary markdown -r requirements.txt && \
     # Install CKAN envvars to support loading config from environment variables
     pip3 install -e git+https://github.com/okfn/ckanext-envvars.git#egg=ckanext-envvars && \
+    pip3 install uwsgi==2.0.20 gevent && \
     # Create and update CKAN config
     ckan generate config ${CKAN_INI} && \
     ckan config-tool ${CKAN_INI} "ckan.plugins = ${CKAN__PLUGINS}"

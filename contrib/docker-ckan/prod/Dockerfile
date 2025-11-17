@@ -58,4 +58,5 @@ RUN pip3 install -e 'git+https://github.com/SmdhMdep/ckanext-datasetformchain.gi
 
 # Copy the healthcheck script
 COPY contrib/docker-ckan/prod/health_check.sh ${APP_DIR}/health_check.sh
-RUN chmod +x ${APP_DIR}/health_check.sh
+RUN chown ckan -R /srv/app \
+    && chmod +x ${APP_DIR}/health_check.sh
