@@ -70,8 +70,6 @@ jobs:
           pip install --upgrade pip
           pip install -r requirements.txt
           pip install -r dev-requirements.txt
-          # Force setuptools to stay below 81 to avoid typeguard conflicts
-          pip install --force-reinstall "setuptools>=65,<81"
           pip install -e .
           pip check
           
