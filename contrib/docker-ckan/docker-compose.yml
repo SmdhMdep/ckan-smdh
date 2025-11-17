@@ -47,14 +47,7 @@ services:
     volumes:
       - ckan_storage:/var/lib/ckan
     healthcheck:
-      test:
-        [
-          "CMD",
-          "wget",
-          "-qO",
-          "/dev/null",
-          "http://localhost:${CKAN_PORT}/api/3/action/status_show",
-        ]
+      test: ["CMD", "curl", "-f", "http://localhost:${CKAN_PORT}/api/3/action/status_show"]
 
   ckan-worker:
     <<: *ckan
