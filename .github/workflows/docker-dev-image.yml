@@ -23,7 +23,7 @@ jobs:
           # delay: 60000 # we try to check the status of the prerequisite workflows after 1 min
       
       - name: Checkout repo
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Set up Docker Buildx
         id: buildx

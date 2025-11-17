@@ -32,7 +32,7 @@ jobs:
         uses: withlogicco/setup-compose-cli@631064dfb7d769983c89a86bd42e6bc7936101dc
       
       - name: Checkout repo
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v1
