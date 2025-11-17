@@ -17,16 +17,10 @@ ENV CKAN__PLUGINS="image_view text_view recline_view datastore datapusher envvar
 ENV UWSGI_HARAKIRI=360
 
 WORKDIR ${APP_DIR}
-# Set up timezone
-RUN apk add --no-cache tzdata
-RUN echo ${TZ} > /etc/timezone
-# Make sure both files are not exactly the same
-RUN if ! [ /usr/share/zoneinfo/${TZ} -ef /etc/localtime ]; then \
-        cp /usr/share/zoneinfo/${TZ} /etc/localtime ;\
-    fi ;
 
 # Install necessary packages to run CKAN
-RUN apk add git \
+RUN apk add --no-cache tzdata \
+        git \
         gettext \
         postgresql-client \
         python3 \
