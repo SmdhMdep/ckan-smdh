@@ -67,6 +67,8 @@ jobs:
           apt-get install -y libxml2-dev libxslt1-dev python3-dev lib32z1-dev zlib1g-dev python3-lxml
           
           # CkAN dependencies
+          pip install --upgrade pip
+          pip install "setuptools>=65,<81"
           pip install -r requirement-setuptools.txt
           pip install -r requirements.txt
           pip install -r dev-requirements.txt
