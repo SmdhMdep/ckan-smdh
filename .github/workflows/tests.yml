@@ -69,10 +69,9 @@ jobs:
           # CkAN dependencies
           pip install --upgrade pip
           pip install "setuptools>=65,<81"
-          pip install -r requirement-setuptools.txt
           pip install -r requirements.txt
           pip install -r dev-requirements.txt
-          python install -e .
+          pip install -e .
           pip check
           
           
