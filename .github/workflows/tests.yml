@@ -72,7 +72,7 @@ jobs:
           pip install -r requirement-setuptools.txt
           pip install -r requirements.txt
           pip install -r dev-requirements.txt
-          python setup.py develop
+          python install -e .
           pip check
           
           
@@ -87,7 +87,7 @@ jobs:
           createdb --encoding=utf-8 --host=ckan-postgres --username=ckan --owner=${CKAN_DATASTORE_POSTGRES_WRITE_USER} ${CKAN_DATASTORE_POSTGRES_DB}
         
           # Database Initialization
-          ckan -c test-core-circle-ci.ini datastore set-permissions 2>/dev/null | psql --host=ckan-postgres --username=ckan
+          ckan -c test-core-circle-ci.ini datastore set-permissions set-permissions 2>&1 | grep -v "INFO\|WARNING\|CRITI" |psql --host=ckan-postgres --username=ckan
           psql --host=ckan-postgres --username=ckan --dbname=${CKAN_DATASTORE_POSTGRES_DB} --command="CREATE extension tablefunc;"
           ckan -c test-core-circle-ci.ini db init
           
