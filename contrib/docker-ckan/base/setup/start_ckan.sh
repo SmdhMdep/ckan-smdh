@@ -126,7 +126,7 @@ then
         echo "STARTING CRON..."
         ./start_cron.sh
         echo "STARTING CKAN WORKER..."
-        su ckan -c "/usr/bin/ckan -c $CKAN_INI jobs worker"
+        su ckan -c "ckan -c $CKAN_INI jobs worker"
     fi
 else
   echo "[prerun] failed...not starting CKAN."
